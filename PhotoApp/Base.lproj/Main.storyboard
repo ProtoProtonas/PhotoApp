@@ -702,16 +702,61 @@
         <scene sceneID="hIz-AP-VOD">
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                    <view key="view" wantsLayer="YES" focusRingType="exterior" id="m2S-Jp-Qdl">
+                        <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xVH-AW-Wma">
-                                <rect key="frame" x="13" y="-11" width="480" height="270"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="1gV-Ss-4qO"/>
-                            </imageView>
+                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="8" minMagnification="0.80000000000000004" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGs-qN-YZD">
+                                <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
+                                <clipView key="contentView" autoresizesSubviews="NO" copiesOnScroll="NO" id="F9A-OQ-BHa">
+                                    <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <view appearanceType="aqua" translatesAutoresizingMaskIntoConstraints="NO" id="OLg-Wv-hbR">
+                                            <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
+                                            <subviews>
+                                                <imageView autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xVH-AW-Wma">
+                                                    <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
+                                                    <imageCell key="cell" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" id="1gV-Ss-4qO"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="xVH-AW-Wma" firstAttribute="leading" secondItem="OLg-Wv-hbR" secondAttribute="leading" id="EM8-KU-GIC"/>
+                                                <constraint firstItem="xVH-AW-Wma" firstAttribute="centerY" secondItem="OLg-Wv-hbR" secondAttribute="centerY" id="Lcg-z4-7ow"/>
+                                                <constraint firstAttribute="bottom" secondItem="xVH-AW-Wma" secondAttribute="bottom" id="TC2-jR-ov5"/>
+                                                <constraint firstItem="xVH-AW-Wma" firstAttribute="leading" secondItem="OLg-Wv-hbR" secondAttribute="leading" id="jb3-Qw-J6R"/>
+                                                <constraint firstAttribute="trailing" secondItem="xVH-AW-Wma" secondAttribute="trailing" id="k93-EU-yAC"/>
+                                                <constraint firstItem="xVH-AW-Wma" firstAttribute="top" secondItem="OLg-Wv-hbR" secondAttribute="top" id="kPH-Ab-NVv"/>
+                                                <constraint firstItem="xVH-AW-Wma" firstAttribute="centerX" secondItem="OLg-Wv-hbR" secondAttribute="centerX" id="s2d-Fs-2Id"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="OLg-Wv-hbR" firstAttribute="top" secondItem="F9A-OQ-BHa" secondAttribute="top" id="4Zc-nq-QDv"/>
+                                        <constraint firstAttribute="trailing" secondItem="OLg-Wv-hbR" secondAttribute="trailing" id="6RF-ox-zNG"/>
+                                        <constraint firstItem="OLg-Wv-hbR" firstAttribute="leading" secondItem="F9A-OQ-BHa" secondAttribute="leading" id="Xls-K4-OEG"/>
+                                        <constraint firstItem="OLg-Wv-hbR" firstAttribute="top" secondItem="F9A-OQ-BHa" secondAttribute="top" id="gkK-LO-nSe"/>
+                                        <constraint firstAttribute="trailing" secondItem="OLg-Wv-hbR" secondAttribute="trailing" id="k9U-eT-NL7"/>
+                                        <constraint firstAttribute="bottom" secondItem="OLg-Wv-hbR" secondAttribute="bottom" id="rk3-kB-kNh"/>
+                                    </constraints>
+                                    <color key="backgroundColor" red="0.3541362429199113" green="0.35676073227861094" blue="0.36552784974093266" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="5TX-qg-S3E">
+                                    <rect key="frame" x="-100" y="-100" width="539" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="KDU-Dk-nGr">
+                                    <rect key="frame" x="-100" y="-100" width="16" height="377"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="WGs-qN-YZD" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="7yR-2Z-hxx"/>
+                            <constraint firstAttribute="bottom" secondItem="WGs-qN-YZD" secondAttribute="bottom" id="L0g-hO-Qoe"/>
+                            <constraint firstAttribute="trailing" secondItem="WGs-qN-YZD" secondAttribute="trailing" id="j7q-3p-dtW"/>
+                            <constraint firstItem="WGs-qN-YZD" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="tWb-IN-29v"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="imageView" destination="xVH-AW-Wma" id="Huc-Ff-LgU"/>
@@ -719,7 +764,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="42.5" y="817.5"/>
         </scene>
     </scenes>
 </document>

@@ -11,10 +11,11 @@ import Cocoa
 class ViewController: NSViewController {
     
     @IBOutlet var imageView: NSImageView?
+    @IBOutlet var scrollView: NSScrollView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(imageView)
+        //print(imageView)
         imageView?.image = NSImage(named: NSImage.Name(rawValue: "photo"))
         // Do any additional setup after loading the view.
     }
@@ -27,4 +28,3 @@ class ViewController: NSViewController {
 
 
 }
-
