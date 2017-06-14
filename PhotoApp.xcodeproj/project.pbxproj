@@ -59,12 +59,12 @@
 			children = (
 				4CFF372E1EEFBA540009E8D8 /* AppDelegate.swift */,
 				4CFF37301EEFBA540009E8D8 /* ViewController.swift */,
+				4CBCA73E1EF15A9B006DB385 /* CenteredClipView.swift */,
+				4CBCA7401EF15C56006DB385 /* Document.swift */,
 				4CFF37321EEFBA540009E8D8 /* Assets.xcassets */,
 				4CFF37341EEFBA540009E8D8 /* Main.storyboard */,
 				4CFF37371EEFBA540009E8D8 /* Info.plist */,
 				4CFF37381EEFBA540009E8D8 /* PhotoApp.entitlements */,
-				4CBCA73E1EF15A9B006DB385 /* CenteredClipView.swift */,
-				4CBCA7401EF15C56006DB385 /* Document.swift */,
 			);
 			path = PhotoApp;
 			sourceTree = "<group>";
