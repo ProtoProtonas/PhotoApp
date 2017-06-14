@@ -706,9 +706,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="8" minMagnification="0.80000000000000004" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGs-qN-YZD">
+                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="8" minMagnification="0.10000000000000001" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGs-qN-YZD">
                                 <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
-                                <clipView key="contentView" autoresizesSubviews="NO" copiesOnScroll="NO" id="F9A-OQ-BHa">
+                                <clipView key="contentView" autoresizesSubviews="NO" copiesOnScroll="NO" id="F9A-OQ-BHa" customClass="CenteredClipView" customModule="PhotoApp" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
