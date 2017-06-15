@@ -22,13 +22,15 @@ class Document: NSDocument {
     
     override func makeWindowControllers() {
         // padaro storyboard kuris atvaizduoja dokumenta
-        let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
-        let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as! NSWindowController
+        let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil) //sukuriamas storyboard
+        let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as! NSWindowController // sukuria window controller
         self.addWindowController(windowController)
         if let viewController = windowControllers.first?.contentViewController as? ViewController {
             viewController.imageView?.image = loadedImage
         }
     }
+    
+    
 
     override func data(ofType typeName: String) throws -> Data {
         // Insert code here to write your document to data of the specified type. If outError != NULL, ensure that you create and set an appropriate error when returning nil.
@@ -40,5 +42,4 @@ class Document: NSDocument {
         loadedImage = NSImage(data: data)
     }
     
-
 }
