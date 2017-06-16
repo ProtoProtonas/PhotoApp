@@ -12,6 +12,7 @@ class ViewController: NSViewController {
     
     @IBOutlet var imageView: NSImageView?
     @IBOutlet var scrollView: NSScrollView?
+    @IBOutlet var box: NSBox?
     
     override func viewDidLoad() {
         super.viewDidLoad()
