@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13122.17" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13122.17" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13122.17"/>
-        <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -679,25 +678,55 @@
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="0.0"/>
+            <point key="canvasLocation" x="67" y="-85"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController storyboardIdentifier="Document Window Controller" id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                <windowController storyboardIdentifier="Document Window Controller" id="B8D-0N-5wS" customClass="WindowController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <window key="window" title="Reikia Atsikratyti" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="preferred" id="IQv-IB-iLA" userLabel="Window Name">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES"/>
-                        <rect key="contentRect" x="240" y="300" width="500" height="400"/>
+                        <rect key="contentRect" x="240" y="300" width="500" height="349"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <toolbar key="toolbar" implicitIdentifier="FD37B77E-F834-4B64-89F5-AA4C77798AF6" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="txx-G7-LGA">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="jBc-lw-ofK"/>
+                                <toolbarItem implicitItemIdentifier="78284F32-A688-4B93-B3CD-B09F468E3178" label="Zoom In" paletteLabel="Zoom In" tag="125" image="plus" id="gSn-h1-lY6">
+                                    <connections>
+                                        <action selector="zoomIn:" target="B8D-0N-5wS" id="sXE-Bd-XNt"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="D48DA0CE-3C1F-46C8-8A3B-E0CBC06299EC" label="Zoom Out" paletteLabel="Zoom Out" tag="126" image="minus" id="dEh-Rw-rmZ">
+                                    <connections>
+                                        <action selector="zoomOut:" target="B8D-0N-5wS" id="nDC-kC-Rpx"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="5aT-p3-UXs"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="lpf-vb-vRk"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="kyU-eI-OWr"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="nnk-od-JOO"/>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="gSn-h1-lY6"/>
+                                <toolbarItem reference="dEh-Rw-rmZ"/>
+                                <toolbarItem reference="kyU-eI-OWr"/>
+                                <toolbarItem reference="jBc-lw-ofK"/>
+                                <toolbarItem reference="nnk-od-JOO"/>
+                                <toolbarItem reference="lpf-vb-vRk"/>
+                            </defaultToolbarItems>
+                        </toolbar>
                     </window>
                     <connections>
+                        <outlet property="toolbar" destination="txx-G7-LGA" id="Eax-bo-NZg"/>
+                        <outlet property="zoomIn" destination="gSn-h1-lY6" id="2XH-ww-cCw"/>
+                        <outlet property="zoomOut" destination="dEh-Rw-rmZ" id="sey-Cu-lkJ"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="82" y="293"/>
+            <point key="canvasLocation" x="82" y="267.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -751,42 +780,27 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <box fixedFrame="YES" boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="Of6-lz-lOh">
-                                <rect key="frame" x="215" y="150" width="177" height="114"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" ambiguous="YES" id="dy4-gw-MqH">
-                                    <rect key="frame" x="1" y="1" width="175" height="112"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wYA-Sg-M76">
-                                            <rect key="frame" x="47" y="40" width="81" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="push" title="Open..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AnA-cW-W1j">
-                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                        </button>
-                                    </subviews>
-                                </view>
-                                <color key="fillColor" name="gridColor" catalog="System" colorSpace="catalog"/>
-                            </box>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="WGs-qN-YZD" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="7yR-2Z-hxx"/>
                             <constraint firstAttribute="bottom" secondItem="WGs-qN-YZD" secondAttribute="bottom" id="L0g-hO-Qoe"/>
+                            <constraint firstItem="WGs-qN-YZD" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="aWt-FF-ZVf"/>
                             <constraint firstAttribute="trailing" secondItem="WGs-qN-YZD" secondAttribute="trailing" id="j7q-3p-dtW"/>
                             <constraint firstItem="WGs-qN-YZD" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="tWb-IN-29v"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="box" destination="Of6-lz-lOh" id="6Kc-Ub-rqu"/>
                         <outlet property="imageView" destination="xVH-AW-Wma" id="Huc-Ff-LgU"/>
                         <outlet property="scrollView" destination="WGs-qN-YZD" id="fqy-C5-HqM"/>
+                        <outlet property="size" destination="WGs-qN-YZD" id="Krh-K3-2iG"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="40" y="883"/>
+            <point key="canvasLocation" x="83" y="888"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="minus" width="279.27273559570312" height="279.27273559570312"/>
+        <image name="plus" width="17.886463165283203" height="17.886463165283203"/>
+    </resources>
 </document>

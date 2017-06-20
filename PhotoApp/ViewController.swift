@@ -8,24 +8,20 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, NSToolbarDelegate {
     
     @IBOutlet var imageView: NSImageView?
     @IBOutlet var scrollView: NSScrollView?
-    @IBOutlet var box: NSBox?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //imageView?.image = NSImage(named: NSImage.Name(rawValue: "photo"))
         // Do any additional setup after loading the view.
     }
-
+    
     override var representedObject: Any? {
         didSet {
-        // Update the view, if already loaded.
+            // Update the view, if already loaded.
         }
     }
-
-
 }
-
