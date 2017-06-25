@@ -15,8 +15,6 @@ class ViewController: NSViewController, NSToolbarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //imageView?.image = NSImage(named: NSImage.Name(rawValue: "photo"))
-        // Do any additional setup after loading the view.
     }
     
     override var representedObject: Any? {

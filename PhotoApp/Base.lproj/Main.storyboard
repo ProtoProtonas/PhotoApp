@@ -684,7 +684,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController storyboardIdentifier="Document Window Controller" id="B8D-0N-5wS" customClass="WindowController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Reikia Atsikratyti" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="preferred" id="IQv-IB-iLA" userLabel="Window Name">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="preferred" id="IQv-IB-iLA" userLabel="Window Name">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES"/>
                         <rect key="contentRect" x="240" y="300" width="500" height="349"/>
@@ -692,6 +692,11 @@
                         <toolbar key="toolbar" implicitIdentifier="FD37B77E-F834-4B64-89F5-AA4C77798AF6" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="txx-G7-LGA">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="jBc-lw-ofK"/>
+                                <toolbarItem implicitItemIdentifier="CCC791A2-BE9C-4B76-B99E-09397D78B8FF" label="Action" paletteLabel="Action" tag="-1" image="construction" id="DXG-VU-Iad">
+                                    <connections>
+                                        <action selector="filter:" target="B8D-0N-5wS" id="zRs-lo-GHy"/>
+                                    </connections>
+                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="78284F32-A688-4B93-B3CD-B09F468E3178" label="Zoom In" paletteLabel="Zoom In" tag="125" image="plus" id="gSn-h1-lY6">
                                     <connections>
                                         <action selector="zoomIn:" target="B8D-0N-5wS" id="sXE-Bd-XNt"/>
@@ -711,13 +716,13 @@
                                 <toolbarItem reference="gSn-h1-lY6"/>
                                 <toolbarItem reference="dEh-Rw-rmZ"/>
                                 <toolbarItem reference="kyU-eI-OWr"/>
+                                <toolbarItem reference="DXG-VU-Iad"/>
                                 <toolbarItem reference="jBc-lw-ofK"/>
-                                <toolbarItem reference="nnk-od-JOO"/>
-                                <toolbarItem reference="lpf-vb-vRk"/>
                             </defaultToolbarItems>
                         </toolbar>
                     </window>
                     <connections>
+                        <outlet property="action" destination="DXG-VU-Iad" id="Ld9-4h-ZTc"/>
                         <outlet property="toolbar" destination="txx-G7-LGA" id="Eax-bo-NZg"/>
                         <outlet property="zoomIn" destination="gSn-h1-lY6" id="2XH-ww-cCw"/>
                         <outlet property="zoomOut" destination="dEh-Rw-rmZ" id="sey-Cu-lkJ"/>
@@ -791,7 +796,6 @@
                     <connections>
                         <outlet property="imageView" destination="xVH-AW-Wma" id="Huc-Ff-LgU"/>
                         <outlet property="scrollView" destination="WGs-qN-YZD" id="fqy-C5-HqM"/>
-                        <outlet property="size" destination="WGs-qN-YZD" id="Krh-K3-2iG"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -800,6 +804,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="construction" width="160" height="160"/>
         <image name="minus" width="279.27273559570312" height="279.27273559570312"/>
         <image name="plus" width="17.886463165283203" height="17.886463165283203"/>
     </resources>
