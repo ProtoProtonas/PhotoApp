@@ -10,6 +10,7 @@
 		4C035A7D1EF72FE400DE6F5F /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C035A7C1EF72FE400DE6F5F /* WindowController.swift */; };
 		4CBCA73F1EF15A9B006DB385 /* CenteredClipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCA73E1EF15A9B006DB385 /* CenteredClipView.swift */; };
 		4CBCA7411EF15C56006DB385 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCA7401EF15C56006DB385 /* Document.swift */; };
+		4CFC5C4A1F00FB5000E8EBEE /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC5C491F00FB5000E8EBEE /* CustomImageView.swift */; };
 		4CFF372F1EEFBA540009E8D8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFF372E1EEFBA540009E8D8 /* AppDelegate.swift */; };
 		4CFF37311EEFBA540009E8D8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFF37301EEFBA540009E8D8 /* ViewController.swift */; };
 		4CFF37331EEFBA540009E8D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4CFF37321EEFBA540009E8D8 /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 		4C035A7C1EF72FE400DE6F5F /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; usesTabs = 1; };
 		4CBCA73E1EF15A9B006DB385 /* CenteredClipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredClipView.swift; sourceTree = "<group>"; };
 		4CBCA7401EF15C56006DB385 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		4CFC5C491F00FB5000E8EBEE /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		4CFF372B1EEFBA540009E8D8 /* PhotoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CFF372E1EEFBA540009E8D8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4CFF37301EEFBA540009E8D8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				4CBCA73E1EF15A9B006DB385 /* CenteredClipView.swift */,
 				4CBCA7401EF15C56006DB385 /* Document.swift */,
 				4C035A7C1EF72FE400DE6F5F /* WindowController.swift */,
+				4CFC5C491F00FB5000E8EBEE /* CustomImageView.swift */,
 				4CFF37321EEFBA540009E8D8 /* Assets.xcassets */,
 				4CFF37341EEFBA540009E8D8 /* Main.storyboard */,
 				4CFF37371EEFBA540009E8D8 /* Info.plist */,
@@ -148,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CBCA7411EF15C56006DB385 /* Document.swift in Sources */,
+				4CFC5C4A1F00FB5000E8EBEE /* CustomImageView.swift in Sources */,
 				4C035A7D1EF72FE400DE6F5F /* WindowController.swift in Sources */,
 				4CFF37311EEFBA540009E8D8 /* ViewController.swift in Sources */,
 				4CFF372F1EEFBA540009E8D8 /* AppDelegate.swift in Sources */,

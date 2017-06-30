@@ -32,75 +32,81 @@ class Document: NSDocument {
                 actuallyLoadedImage = image
             } else {
                 actuallyLoadedImage = NSImage(named: NSImage.Name(rawValue: "photo"))!
+                loadedImage = actuallyLoadedImage
             }
             viewController.imageView?.image = actuallyLoadedImage
-            windowController.window?.setFrame(CGRect(origin: origin(winsize: winsizeXY(imgsize: actuallyLoadedImage.size)), size: winsizeXY(imgsize: actuallyLoadedImage.size)), display: true)
+            windowController.window?.setFrame(CGRect(origin: origin(windowsize: windowsizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), size: windowsizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), display: true)
         }
         
     }
     
-    func winsizeXY(imgsize: CGSize) -> CGSize {
+    func windowsizeXY(imageSize: CGSize, window: NSWindow?) -> CGSize {
         
-        let toolHeight: CGFloat = 75.0 //NSWindow().toolbarHeight()
-        let dispX: CGFloat = (NSScreen.main?.visibleFrame.width)!
-        let dispY: CGFloat = (NSScreen.main?.visibleFrame.height)!
-        let imgX: CGFloat = imgsize.width
-        let imgY: CGFloat = imgsize.height
-        var winX: CGFloat
-        var winY: CGFloat
+        let toolbarHeight: CGFloat = window!.toolbarHeight()
+        let displayX: CGFloat = (NSScreen.main?.visibleFrame.width)!
+        let displayY: CGFloat = (NSScreen.main?.visibleFrame.height)!
+        let imageX: CGFloat = imageSize.width
+        let imageY: CGFloat = imageSize.height
+        var windowX: CGFloat
+        var windowY: CGFloat
         var tooBigX: Bool = false
         var tooBigY: Bool = false
         
-        if imgY > dispY { tooBigY = true }
-        if imgX > dispX { tooBigX = true }
+        if imageY > displayY { tooBigY = true }
+        if imageX > displayX { tooBigX = true }
         
-        let imgRatio: CGFloat = imgX/imgY
+        let imageRatio: CGFloat = imageX/imageY
         let tooBig = (tooBigX, tooBigY)
         
         switch tooBig {
         case (true, false) :
-            winX = dispX
-            winY = winX/imgRatio
+            windowX = displayX
+            windowY = windowX/imageRatio
         case (false, true) :
-            winY = dispY
-            winX = winY*imgRatio
+            windowY = displayY
+            windowX = windowY*imageRatio
         case (true, true) :
-            let dispRatio: CGFloat = dispX/dispY
+            let dispRatio: CGFloat = displayX/displayY
             
-            if dispRatio < imgRatio {
-                winX = dispX
-                winY = winX/imgRatio
+            if dispRatio < imageRatio {
+                windowX = displayX
+                windowY = windowX/imageRatio
             }
             else {
-                winY = dispY
-                winX = winY*imgRatio
+                windowY = displayY
+                windowX = windowY*imageRatio
             }
         default:
-        if imgY > 150.0 {
-            winY = imgY
-        } else { winY = 150.0 }
+        if imageY > 150.0 {
+            windowY = imageY
+        } else { windowY = 150.0 }
         
-        if imgX > 300.0 {
-            winX = imgX
-        } else { winX = 300.0 }
+        if imageX > 300.0 {
+            windowX = imageX
+        } else { windowX = 300.0 }
         }
-        winX = winX - toolHeight*imgRatio
-        //winY = winY + toolHeight
-        return CGSize(width: winX, height: winY)
+        windowX = windowX - 1.4*toolbarHeight*imageRatio
+        //windowY = windowY + toolHeight
+        return CGSize(width: windowX, height: windowY)
     }
     
-    func origin(winsize: CGSize) -> CGPoint {
+    func origin(windowsize: CGSize) -> CGPoint {
         //get display size
-        let dispX: CGFloat = (NSScreen.main?.frame.width)!
-        let dispY: CGFloat = (NSScreen.main?.frame.height)!
-        let winX: CGFloat = winsize.width
-        let winY: CGFloat = winsize.height
-        let point: CGPoint = CGPoint(x: (dispX - winX)/2, y: (dispY - winY)/2)
+        let displayX: CGFloat = (NSScreen.main?.frame.width)!
+        let displayY: CGFloat = (NSScreen.main?.frame.height)!
+        let windowX: CGFloat = windowsize.width
+        let windowY: CGFloat = windowsize.height
+        let point: CGPoint = CGPoint(x: (displayX - windowX)/2, y: (displayY - windowY)/2)
         return point
     }
     
     override func data(ofType typeName: String) throws -> Data {
-        return loadedImage!.tiffRepresentation!
+        if let view = windowControllers.first?.window?.contentView?.subviews.first as? NSScrollView,
+            let imageView = view.documentView?.subviews.first as? NSImageView,
+            let tiffData = imageView.image?.tiffRepresentation {
+            return tiffData
+        }
+        fatalError("Unable to write data")
     }
     
     override func read(from data: Data, ofType typeName: String) throws {

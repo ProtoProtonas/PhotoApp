@@ -678,7 +678,7 @@
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="67" y="-85"/>
+            <point key="canvasLocation" x="51" y="-244"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -689,47 +689,101 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES"/>
                         <rect key="contentRect" x="240" y="300" width="500" height="349"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <toolbar key="toolbar" implicitIdentifier="FD37B77E-F834-4B64-89F5-AA4C77798AF6" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="txx-G7-LGA">
+                        <toolbar key="toolbar" implicitIdentifier="1F702558-953E-4DE4-B8CE-82E4057DDC34" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="IwL-sU-Rwo">
                             <allowedToolbarItems>
-                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="jBc-lw-ofK"/>
-                                <toolbarItem implicitItemIdentifier="CCC791A2-BE9C-4B76-B99E-09397D78B8FF" label="Action" paletteLabel="Action" tag="-1" image="construction" id="DXG-VU-Iad">
-                                    <connections>
-                                        <action selector="filter:" target="B8D-0N-5wS" id="zRs-lo-GHy"/>
-                                    </connections>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="78284F32-A688-4B93-B3CD-B09F468E3178" label="Zoom In" paletteLabel="Zoom In" tag="125" image="plus" id="gSn-h1-lY6">
-                                    <connections>
-                                        <action selector="zoomIn:" target="B8D-0N-5wS" id="sXE-Bd-XNt"/>
-                                    </connections>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="D48DA0CE-3C1F-46C8-8A3B-E0CBC06299EC" label="Zoom Out" paletteLabel="Zoom Out" tag="126" image="minus" id="dEh-Rw-rmZ">
-                                    <connections>
-                                        <action selector="zoomOut:" target="B8D-0N-5wS" id="nDC-kC-Rpx"/>
-                                    </connections>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="5aT-p3-UXs"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="lpf-vb-vRk"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="kyU-eI-OWr"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="nnk-od-JOO"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="QRw-w9-OR5"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="X5R-zt-nDE"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="vrp-iU-zQY"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Lw1-e8-J39"/>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
-                                <toolbarItem reference="gSn-h1-lY6"/>
-                                <toolbarItem reference="dEh-Rw-rmZ"/>
-                                <toolbarItem reference="kyU-eI-OWr"/>
-                                <toolbarItem reference="DXG-VU-Iad"/>
-                                <toolbarItem reference="jBc-lw-ofK"/>
+                                <toolbarItem reference="Lw1-e8-J39"/>
                             </defaultToolbarItems>
+                            <connections>
+                                <outlet property="delegate" destination="B8D-0N-5wS" id="VI0-6M-Lej"/>
+                            </connections>
                         </toolbar>
                     </window>
                     <connections>
-                        <outlet property="action" destination="DXG-VU-Iad" id="Ld9-4h-ZTc"/>
-                        <outlet property="toolbar" destination="txx-G7-LGA" id="Eax-bo-NZg"/>
-                        <outlet property="zoomIn" destination="gSn-h1-lY6" id="2XH-ww-cCw"/>
-                        <outlet property="zoomOut" destination="dEh-Rw-rmZ" id="sey-Cu-lkJ"/>
+                        <outlet property="applyButton" destination="h6E-gG-f5f" id="Uyh-Ut-nQa"/>
+                        <outlet property="filterChoicePopUpButton" destination="dV3-cb-2rX" id="RbJ-PK-fiy"/>
+                        <outlet property="filterView" destination="K4s-3x-kTZ" id="gRW-kw-cXN"/>
+                        <outlet property="toolbar" destination="IwL-sU-Rwo" id="ccI-ff-WRF"/>
+                        <outlet property="zoomControlView" destination="0vT-0n-VJf" id="RxX-j1-cgE"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customView id="K4s-3x-kTZ" userLabel="Filter View">
+                    <rect key="frame" x="0.0" y="0.0" width="267" height="47"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dV3-cb-2rX">
+                            <rect key="frame" x="7" y="12" width="119" height="26"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <popUpButtonCell key="cell" type="push" title="Box Blur" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="lN0-kU-VeN" id="MSc-EX-7rF">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="CLD-L9-0hf">
+                                    <items>
+                                        <menuItem title="Box Blur" state="on" id="lN0-kU-VeN"/>
+                                        <menuItem title="Disc Blur" id="Qmb-HW-o9U"/>
+                                        <menuItem title="Gaussian Blur" id="njS-0v-AGh"/>
+                                        <menuItem title="Masked Variable Blur" id="W2V-EV-FH8"/>
+                                        <menuItem title="Median Filter" id="eOC-5m-JyV"/>
+                                        <menuItem title="Motion Blur" id="0B3-E0-vWq"/>
+                                        <menuItem title="Noise Reduction" id="kDe-Lf-yeZ"/>
+                                        <menuItem title="Zoom Blur" id="Gkz-KA-aYe"/>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                        </popUpButton>
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JeA-z2-DTK">
+                            <rect key="frame" x="131" y="15" width="55" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="0-100" drawsBackground="YES" id="5YX-yP-sh3">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h6E-gG-f5f">
+                            <rect key="frame" x="188" y="8" width="72" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="11c-vc-x4g">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                                <connections>
+                                    <action selector="filter:" target="B8D-0N-5wS" id="Kt5-AB-L8s"/>
+                                </connections>
+                            </buttonCell>
+                        </button>
+                    </subviews>
+                </customView>
+                <customView id="0vT-0n-VJf" userLabel="Zoom Controls">
+                    <rect key="frame" x="0.0" y="0.0" width="84" height="40"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <segmentedControl identifier="Zoom" toolTip="Zoom In/Out" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7N3-nI-uFE">
+                            <rect key="frame" x="7" y="8" width="70" height="24"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="0CK-Ce-aO9">
+                                <font key="font" metaFont="system" size="15"/>
+                                <segments>
+                                    <segment toolTip="Zoom Out" image="minus" imageScaling="proportionallyUpOrDown" width="32">
+                                        <nil key="label"/>
+                                    </segment>
+                                    <segment toolTip="Zoom In" image="plus" width="32" tag="1">
+                                        <nil key="label"/>
+                                    </segment>
+                                </segments>
+                            </segmentedCell>
+                            <connections>
+                                <action selector="changeZoom:" target="B8D-0N-5wS" id="BWK-6w-2q1"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                </customView>
             </objects>
             <point key="canvasLocation" x="82" y="267.5"/>
         </scene>
@@ -750,7 +804,7 @@
                                         <view appearanceType="aqua" translatesAutoresizingMaskIntoConstraints="NO" id="OLg-Wv-hbR">
                                             <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
                                             <subviews>
-                                                <imageView autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xVH-AW-Wma">
+                                                <imageView autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xVH-AW-Wma" customClass="CustomImageView" customModule="PhotoApp" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
                                                     <imageCell key="cell" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" id="1gV-Ss-4qO"/>
                                                 </imageView>
@@ -804,7 +858,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="construction" width="160" height="160"/>
         <image name="minus" width="279.27273559570312" height="279.27273559570312"/>
         <image name="plus" width="17.886463165283203" height="17.886463165283203"/>
     </resources>

@@ -10,7 +10,7 @@ import Cocoa
 
 class ViewController: NSViewController, NSToolbarDelegate {
     
-    @IBOutlet var imageView: NSImageView?
+    @IBOutlet var imageView: CustomImageView?
     @IBOutlet var scrollView: NSScrollView?
     
     override func viewDidLoad() {

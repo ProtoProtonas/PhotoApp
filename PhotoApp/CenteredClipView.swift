@@ -12,7 +12,7 @@ class CenteredClipView: NSClipView
 {
     override func constrainBoundsRect(_ proposedBounds: NSRect) -> NSRect {
         var rect = super.constrainBoundsRect(proposedBounds)
-        if let containerView = self.documentView /*as? NSView*/ {
+        if let containerView = documentView /*as? NSView*/ {
             if (rect.size.width > containerView.frame.size.width) {
                 rect.origin.x = (containerView.frame.width - rect.width) / 2
             }
