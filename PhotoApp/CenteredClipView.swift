@@ -8,8 +8,7 @@
 
 import Cocoa
 
-class CenteredClipView: NSClipView
-{
+class CenteredClipView: NSClipView  {
     override func constrainBoundsRect(_ proposedBounds: NSRect) -> NSRect {
         var rect = super.constrainBoundsRect(proposedBounds)
         if let containerView = documentView /*as? NSView*/ {

@@ -35,12 +35,12 @@ class Document: NSDocument {
                 loadedImage = actuallyLoadedImage
             }
             viewController.imageView?.image = actuallyLoadedImage
-            windowController.window?.setFrame(CGRect(origin: origin(windowsize: windowsizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), size: windowsizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), display: true)
+            windowController.window?.setFrame(CGRect(origin: origin(windowsize: windowSizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), size: windowSizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), display: true)
         }
         
     }
     
-    func windowsizeXY(imageSize: CGSize, window: NSWindow?) -> CGSize {
+    func windowSizeXY(imageSize: CGSize, window: NSWindow?) -> CGSize {
         
         let toolbarHeight: CGFloat = window!.toolbarHeight()
         let displayX: CGFloat = (NSScreen.main?.visibleFrame.width)!
@@ -85,7 +85,7 @@ class Document: NSDocument {
             windowX = imageX
         } else { windowX = 300.0 }
         }
-        windowX = windowX - 1.4*toolbarHeight*imageRatio
+        windowX = -(1.45*toolbarHeight*imageRatio) + windowX
         //windowY = windowY + toolHeight
         return CGSize(width: windowX, height: windowY)
     }

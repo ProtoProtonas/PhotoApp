@@ -11,4 +11,14 @@ import Cocoa
 //FIXME: Remove NSImageView, implement drawRect:
 class CustomImageView: NSImageView {
     
+//    let rect: NSRect = NSScrollView().documentVisibleRect
+//    override var image: NSImage? {
+//        set {
+//            super.image = NSImage().draw(in: rect)
+//        }
+//        get {
+//            return super.image
+//        }
+//    }
+    
 }

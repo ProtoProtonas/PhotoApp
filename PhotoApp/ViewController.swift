@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class ViewController: NSViewController, NSToolbarDelegate {
+class ViewController: NSViewController {
     
     @IBOutlet var imageView: CustomImageView?
     @IBOutlet var scrollView: NSScrollView?

@@ -345,37 +345,17 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Font" systemMenu="font" id="aXa-aM-Jaq">
                                                 <items>
-                                                    <menuItem title="Show Fonts" keyEquivalent="t" id="Q5e-8K-NDq">
-                                                        <connections>
-                                                            <action selector="orderFrontFontPanel:" target="YLy-65-1bz" id="WHr-nq-2xA"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Bold" tag="2" keyEquivalent="b" id="GB9-OM-e27">
-                                                        <connections>
-                                                            <action selector="addFontTrait:" target="YLy-65-1bz" id="hqk-hr-sYV"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Italic" tag="1" keyEquivalent="i" id="Vjx-xi-njq">
-                                                        <connections>
-                                                            <action selector="addFontTrait:" target="YLy-65-1bz" id="IHV-OB-c03"/>
-                                                        </connections>
-                                                    </menuItem>
+                                                    <menuItem title="Show Fonts" keyEquivalent="t" id="Q5e-8K-NDq"/>
+                                                    <menuItem title="Bold" tag="2" keyEquivalent="b" id="GB9-OM-e27"/>
+                                                    <menuItem title="Italic" tag="1" keyEquivalent="i" id="Vjx-xi-njq"/>
                                                     <menuItem title="Underline" keyEquivalent="u" id="WRG-CD-K1S">
                                                         <connections>
                                                             <action selector="underline:" target="Ady-hI-5gd" id="FYS-2b-JAY"/>
                                                         </connections>
                                                     </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="5gT-KC-WSO"/>
-                                                    <menuItem title="Bigger" tag="3" keyEquivalent="+" id="Ptp-SP-VEL">
-                                                        <connections>
-                                                            <action selector="modifyFont:" target="YLy-65-1bz" id="Uc7-di-UnL"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Smaller" tag="4" keyEquivalent="-" id="i1d-Er-qST">
-                                                        <connections>
-                                                            <action selector="modifyFont:" target="YLy-65-1bz" id="HcX-Lf-eNd"/>
-                                                        </connections>
-                                                    </menuItem>
+                                                    <menuItem title="Bigger" tag="3" keyEquivalent="+" id="Ptp-SP-VEL"/>
+                                                    <menuItem title="Smaller" tag="4" keyEquivalent="-" id="i1d-Er-qST"/>
                                                     <menuItem isSeparatorItem="YES" id="kx3-Dk-x3B"/>
                                                     <menuItem title="Kern" id="jBQ-r6-VK2">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
@@ -675,7 +655,6 @@
                     </connections>
                 </application>
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PhotoApp" customModuleProvider="target"/>
-                <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="51" y="-244"/>
@@ -706,27 +685,28 @@
                     </window>
                     <connections>
                         <outlet property="applyButton" destination="h6E-gG-f5f" id="Uyh-Ut-nQa"/>
-                        <outlet property="filterChoicePopUpButton" destination="dV3-cb-2rX" id="RbJ-PK-fiy"/>
-                        <outlet property="filterView" destination="K4s-3x-kTZ" id="gRW-kw-cXN"/>
+                        <outlet property="blurFilterPopUpButton" destination="dV3-cb-2rX" id="snC-3o-yGn"/>
+                        <outlet property="blurFilterView" destination="K4s-3x-kTZ" id="rnT-ft-r1A"/>
                         <outlet property="toolbar" destination="IwL-sU-Rwo" id="ccI-ff-WRF"/>
                         <outlet property="zoomControlView" destination="0vT-0n-VJf" id="RxX-j1-cgE"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <customView id="K4s-3x-kTZ" userLabel="Filter View">
-                    <rect key="frame" x="0.0" y="0.0" width="267" height="47"/>
+                <customView id="K4s-3x-kTZ" userLabel="Blur Filter View">
+                    <rect key="frame" x="0.0" y="0.0" width="200" height="33"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dV3-cb-2rX">
-                            <rect key="frame" x="7" y="12" width="119" height="26"/>
+                            <rect key="frame" x="5" y="3" width="126" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <popUpButtonCell key="cell" type="push" title="Box Blur" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="lN0-kU-VeN" id="MSc-EX-7rF">
-                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <popUpButtonCell key="cell" type="push" title="Choose Filter..." alternateTitle="Choose Filter..." bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" refusesFirstResponder="YES" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="Oah-ZV-o1O" id="MSc-EX-7rF">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="menu"/>
-                                <menu key="menu" id="CLD-L9-0hf">
+                                <menu key="menu" title="Choose Filter..." id="CLD-L9-0hf">
                                     <items>
-                                        <menuItem title="Box Blur" state="on" id="lN0-kU-VeN"/>
+                                        <menuItem title="Choose Filter..." state="on" id="Oah-ZV-o1O"/>
+                                        <menuItem title="Box Blur" id="rZy-8g-2vb"/>
                                         <menuItem title="Disc Blur" id="Qmb-HW-o9U"/>
                                         <menuItem title="Gaussian Blur" id="njS-0v-AGh"/>
                                         <menuItem title="Masked Variable Blur" id="W2V-EV-FH8"/>
@@ -737,43 +717,37 @@
                                     </items>
                                 </menu>
                             </popUpButtonCell>
+                            <connections>
+                                <action selector="showPopoverAction:" target="B8D-0N-5wS" id="wzt-75-cX2"/>
+                            </connections>
                         </popUpButton>
-                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JeA-z2-DTK">
-                            <rect key="frame" x="131" y="15" width="55" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="0-100" drawsBackground="YES" id="5YX-yP-sh3">
-                                <font key="font" metaFont="system"/>
-                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h6E-gG-f5f">
-                            <rect key="frame" x="188" y="8" width="72" height="32"/>
+                            <rect key="frame" x="130" y="-1" width="68" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="11c-vc-x4g">
+                            <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="11c-vc-x4g">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
-                                <connections>
-                                    <action selector="filter:" target="B8D-0N-5wS" id="Kt5-AB-L8s"/>
-                                </connections>
                             </buttonCell>
+                            <connections>
+                                <action selector="blurFilter:" target="B8D-0N-5wS" id="GhD-Ne-WO1"/>
+                            </connections>
                         </button>
                     </subviews>
                 </customView>
                 <customView id="0vT-0n-VJf" userLabel="Zoom Controls">
-                    <rect key="frame" x="0.0" y="0.0" width="84" height="40"/>
+                    <rect key="frame" x="0.0" y="0.0" width="73" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <segmentedControl identifier="Zoom" toolTip="Zoom In/Out" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7N3-nI-uFE">
-                            <rect key="frame" x="7" y="8" width="70" height="24"/>
+                            <rect key="frame" x="1" y="1" width="70" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="0CK-Ce-aO9">
-                                <font key="font" metaFont="system" size="15"/>
+                                <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment toolTip="Zoom Out" image="minus" imageScaling="proportionallyUpOrDown" width="32">
+                                    <segment toolTip="Zoom Out" image="NSRemoveTemplate" imageScaling="proportionallyUpOrDown" width="32">
                                         <nil key="label"/>
                                     </segment>
-                                    <segment toolTip="Zoom In" image="plus" width="32" tag="1">
+                                    <segment toolTip="Zoom In" image="NSAddTemplate" width="32" tag="1">
                                         <nil key="label"/>
                                     </segment>
                                 </segments>
@@ -792,20 +766,20 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" focusRingType="exterior" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
+                        <rect key="frame" x="0.0" y="0.0" width="285" height="234"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="8" minMagnification="0.10000000000000001" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGs-qN-YZD">
-                                <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
+                                <rect key="frame" x="0.0" y="0.0" width="285" height="234"/>
                                 <clipView key="contentView" autoresizesSubviews="NO" copiesOnScroll="NO" id="F9A-OQ-BHa" customClass="CenteredClipView" customModule="PhotoApp" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="285" height="234"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view appearanceType="aqua" translatesAutoresizingMaskIntoConstraints="NO" id="OLg-Wv-hbR">
-                                            <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="285" height="234"/>
                                             <subviews>
                                                 <imageView autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xVH-AW-Wma" customClass="CustomImageView" customModule="PhotoApp" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="607" height="415"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="234"/>
                                                     <imageCell key="cell" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" id="1gV-Ss-4qO"/>
                                                 </imageView>
                                             </subviews>
@@ -854,11 +828,44 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="83" y="888"/>
+            <point key="canvasLocation" x="-37" y="750"/>
+        </scene>
+        <!--PopoverViewController-->
+        <scene sceneID="RAp-DT-dBf">
+            <objects>
+                <viewController title="PopoverViewController" storyboardIdentifier="PopoverViewController" id="BO3-u2-Z5h" sceneMemberID="viewController">
+                    <view key="view" id="GjQ-Yb-Dd9">
+                        <rect key="frame" x="0.0" y="0.0" width="270" height="84"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0EM-dv-xyH">
+                                <rect key="frame" x="56" y="47" width="159" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="The mighty popover itself" id="eL6-xm-Seu">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RL9-hJ-cPm">
+                                <rect key="frame" x="58" y="17" width="155" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="tAV-Ae-U9X">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="Cd9-RO-8aA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="433" y="605"/>
         </scene>
     </scenes>
     <resources>
-        <image name="minus" width="279.27273559570312" height="279.27273559570312"/>
-        <image name="plus" width="17.886463165283203" height="17.886463165283203"/>
+        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSRemoveTemplate" width="11" height="11"/>
     </resources>
 </document>
