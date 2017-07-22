@@ -24,8 +24,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	//  zoom toolbar item
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	
-    @IBOutlet var zoomControlView: NSView!
-    @IBAction func changeZoom(_ sender: NSSegmentedControl) {
+	@IBOutlet var zoomControlView: NSView!
+	@IBAction func changeZoom(_ sender: NSSegmentedControl) {
 		let whichButton = sender.selectedSegment
 		self.zoom(index: whichButton)
 	}
@@ -35,7 +35,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	
 	@IBOutlet var blurFilterView: NSView!
-    @IBOutlet weak var blurFilterPopUpButton: NSPopUpButton!
+	@IBOutlet weak var blurFilterPopUpButton: NSPopUpButton!
 	
 	var blurPopovers: [NSPopover?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, ]
 	var blurPopoverControllerNames: [String] = ["", "BoxBlurPopoverViewController", "DiscBlurPopoverViewController", "GaussianBlurPopoverViewController", "MaskedVariableBlurPopoverViewController", "MedianBlurPopoverViewController", "MotionBlurPopoverViewController", "NoiseBlurPopoverViewController", "ZoomBlurPopoverViewController"]
@@ -47,7 +47,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	@IBAction func blurFilter(_ sender: Any) {
 		//FILTRO KODAS
 		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? NSImageView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
 			let image = imageView.image {
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
@@ -55,10 +55,13 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			
 			switch(blurFilterPopUpButton.indexOfSelectedItem) {
 			case 1:
-				let filteredImage = ciImage.applyingFilter("CIBoxBlur", withInputParameters: ["inputRadius":PopoverViewController().boxBlurSlider?.doubleValue])
+				//let vari: Double? = Double(PopoverViewController().boxBlurTextField.stringValue)
+				let filteredImage = ciImage.applyingFilter("CIBoxBlur", withInputParameters: ["inputRadius":PopoverViewController().boxBlurValue])
+				NSLog("\(PopoverViewController().boxBlurValue)")
+				//CustomImageView().image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 				imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 			case 2:
-				let filteredImage = ciImage.applyingFilter("CIDiscBlur", withInputParameters: ["inputRadius":1000.0])
+				let filteredImage = ciImage.applyingFilter("CIDiscBlur", withInputParameters: ["inputRadius":10.0])
 				imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 			case 3:
 				let filteredImage = ciImage.applyingFilter("CIGaussianBlur", withInputParameters: [:])
@@ -82,27 +85,29 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 				NSLog("blurFilter function default case")
 			}
 		}
+		blurPopovers[blurFilterPopUpButton.indexOfSelectedItem] = nil
 	}
-    
-    //color effect filtru valdymas
-    @IBOutlet var colorEffectFilterView: NSView!
-    @IBOutlet weak var colorEffectPopUpButton: NSPopUpButton!
-    let colorEffectFilterNames = ["", "CIColorCrossPolynomial", "CIColorCube", "CIColorCubeWithColorSpace", "CIColorInvert", "CIColorMap", "CIColorMonochrome", "CIColorPosterize", "CIFalseColor", "CIMaskToAlpha", "CIMaximumComponent", "CIMinimumComponent", "CIPhotoEffectChrome", "CIPhotoEffectFade", "CIPhotoEffectInstant", "CIPhotoEffectMono", "CIPhotoEffectNoir", "CIPhotoEffectProcess", "CIPhotoEffectTonal", "CIPhotoEffectTransfer", "CISepiaTone", "CIVignette", "CIVignetteEffect"]
-    
-    @IBAction func colorEffectFilter(_ sender: Any) {
-        //FILTRO KODAS
-        if let view = window?.contentView?.subviews.first as? NSScrollView,
-            let imageView = view.documentView?.subviews.first as? NSImageView,
-            let image = imageView.image {
-            let colorEffectFilterName = colorEffectFilterNames[colorEffectPopUpButton.indexOfSelectedItem]
-            let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-            let ciImage = CIImage(cgImage: cgImage)
-            let ciContext = CIContext()
-            let filteredImage = ciImage.applyingFilter(colorEffectFilterName, withInputParameters: [:])
-            imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
-            
-        }
-    }
+	
+	//color effect filtru valdymas
+	@IBOutlet var colorEffectFilterView: NSView!
+	@IBOutlet weak var colorEffectPopUpButton: NSPopUpButton!
+	let colorEffectFilterNames = ["", "CIColorCrossPolynomial", "CIColorCube", "CIColorCubeWithColorSpace", "CIColorInvert", "CIColorMap", "CIColorMonochrome", "CIColorPosterize", "CIFalseColor", "CIMaskToAlpha", "CIMaximumComponent", "CIMinimumComponent", "CIPhotoEffectChrome", "CIPhotoEffectFade", "CIPhotoEffectInstant", "CIPhotoEffectMono", "CIPhotoEffectNoir", "CIPhotoEffectProcess", "CIPhotoEffectTonal", "CIPhotoEffectTransfer", "CISepiaTone", "CIVignette", "CIVignetteEffect"]
+	
+	@IBAction func colorEffectFilter(_ sender: Any) {
+		//FILTRO KODAS
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = imageView.image {
+			let colorEffectFilterName = colorEffectFilterNames[colorEffectPopUpButton.indexOfSelectedItem]
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter(colorEffectFilterName, withInputParameters: [:])
+			
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+			
+		}
+	}
 	
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	//  popover
@@ -132,14 +137,14 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		}
 	}
 	
-    override func windowDidLoad() {
-        super.windowDidLoad()
+	override func windowDidLoad() {
+		super.windowDidLoad()
 		
 		// toolbar
 		
 		self.toolbar.allowsUserCustomization = true
-        self.toolbar.autosavesConfiguration = true
-        self.toolbar.displayMode = .iconOnly
+		self.toolbar.autosavesConfiguration = true
+		self.toolbar.displayMode = .iconOnly
 		
 		// popover
 		
@@ -147,14 +152,14 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			blurPopoverControllers[x] = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: blurPopoverControllerNames[x] )) as? NSViewController
 		}
 		
-//		let frame: NSRect = self.blurPopoverViewController!.view.bounds
-//		let styleMask: NSWindow.StyleMask =  [.closable, .titled]
-//		let rect: NSRect = NSWindow.contentRect(forFrameRect: frame, styleMask: styleMask)
-//		detachedWindow = NSWindow.init(contentRect: rect, styleMask: styleMask, backing: NSWindow.BackingStoreType.buffered, defer: true)
-//		self.detachedWindow?.contentViewController = self.blurPopoverViewController
-//		self.detachedWindow?.isReleasedWhenClosed = false
+		//		let frame: NSRect = self.blurPopoverViewController!.view.bounds
+		//		let styleMask: NSWindow.StyleMask =  [.closable, .titled]
+		//		let rect: NSRect = NSWindow.contentRect(forFrameRect: frame, styleMask: styleMask)
+		//		detachedWindow = NSWindow.init(contentRect: rect, styleMask: styleMask, backing: NSWindow.BackingStoreType.buffered, defer: true)
+		//		self.detachedWindow?.contentViewController = self.blurPopoverViewController
+		//		self.detachedWindow?.isReleasedWhenClosed = false
 		
-    }
+	}
 	
 	
 	func zoom(index: Int) {
@@ -190,10 +195,10 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			assertionFailure("Invalid selection")
 		}
 		
-//		let menuItem: NSMenuItem = NSMenuItem()
-//		menuItem.submenu = menu
-//		menuItem.title = label
-//		toolbarItem.menuFormRepresentation = menuItem
+		//		let menuItem: NSMenuItem = NSMenuItem()
+		//		menuItem.submenu = menu
+		//		menuItem.title = label
+		//		toolbarItem.menuFormRepresentation = menuItem
 		
 		return toolbarItem
 	}
@@ -201,7 +206,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
 		
 		var toolbarItem: NSToolbarItem = NSToolbarItem()
-	
+		
 		if (itemIdentifier == ((ZoomToolbarItemID as NSString) as NSToolbarItem.Identifier)) {
 			// 1) Zoom toolbar item.
 			toolbarItem = customToolbarItem(itemForItemIdentifier: ZoomToolbarItemID, label: "Zoom", paletteLabel:"Zoom", toolTip: "Change your zoom level", target: self, itemContent: self.zoomControlView, action: nil, menu: nil)!
@@ -219,8 +224,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
 		
 		return [NSToolbarItem.Identifier(rawValue: ZoomToolbarItemID),
-		NSToolbarItem.Identifier(rawValue: blurFilterToolbarItemID),
-		NSToolbarItem.Identifier(rawValue: colorEffectFilterToolbarItemID)]
+		        NSToolbarItem.Identifier(rawValue: blurFilterToolbarItemID),
+		        NSToolbarItem.Identifier(rawValue: colorEffectFilterToolbarItemID)]
 	}
 	
 	func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
@@ -230,7 +235,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		         NSToolbarItem.Identifier(rawValue: colorEffectFilterToolbarItemID),
 		         NSToolbarItem.Identifier.space,
 		         NSToolbarItem.Identifier.flexibleSpace,
-				 NSToolbarItem.Identifier.showColors]
+		         NSToolbarItem.Identifier.showColors]
 	}
 	
 	func popoverShouldDetach(_ popover: NSPopover) -> Bool {

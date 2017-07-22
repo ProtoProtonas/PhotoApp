@@ -888,35 +888,39 @@
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ggr-e2-E5Y">
                                 <rect key="frame" x="20" y="49" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="9Oe-Rp-Xwd">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="50.00" drawsBackground="YES" id="9Oe-Rp-Xwd">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="getBoxBlurT:" target="6bR-bm-Tpq" id="vO5-9d-J4q"/>
+                                </connections>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U7J-YJ-wJu">
+                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="18P-le-IUd">
+                                <rect key="frame" x="70" y="50" width="157" height="19"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="IoL-bx-TQw"/>
+                                <connections>
+                                    <action selector="getBoxBlur:" target="6bR-bm-Tpq" id="QZ1-Bw-0gj"/>
+                                </connections>
+                            </slider>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nnC-UP-YaC">
                                 <rect key="frame" x="14" y="13" width="217" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="k3P-OH-Yby">
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dXQ-c0-seQ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="blurFilter:" target="GVo-ZI-fZz" id="eOq-7E-NfH"/>
+                                    <action selector="blurFilter:" target="1YW-u3-wHU" id="0IT-ig-gTe"/>
                                 </connections>
                             </button>
-                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="18P-le-IUd">
-                                <rect key="frame" x="70" y="50" width="157" height="19"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <sliderCell key="cell" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="IoL-bx-TQw"/>
-                                <connections>
-                                    <action selector="boxSlider:" target="GVo-ZI-fZz" id="eF2-Nl-zHR"/>
-                                </connections>
-                            </slider>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="boxBlurSlider" destination="18P-le-IUd" id="FzO-6s-7Wm"/>
+                        <outlet property="boxBlurTextField" destination="ggr-e2-E5Y" id="2M0-kG-gbz"/>
                     </connections>
                 </viewController>
                 <customObject id="GVo-ZI-fZz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
