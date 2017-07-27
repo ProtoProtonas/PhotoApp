@@ -8,30 +8,36 @@
 
 import Cocoa
 
-//FIXME: Remove NSImageView, implement drawRect:
-
-//class CustomImageView: NSImageView { }
-
 class CustomImageView: NSView {
     
-    var image: NSImage?
-    var imageFrameStyle: NSImageView.FrameStyle = NSImageView.FrameStyle.none
-    var imageAlignment: NSImageAlignment = NSImageAlignment.alignCenter
-    var imageScaling: NSImageScaling = NSImageScaling.scaleProportionallyDown
-    var animates: Bool = false
-    var isEditable: Bool = true
-    var allowsCutCopyPaste: Bool = true
+    var image: NSImage? {
+        didSet { needsDisplay = true }
+    }
     
-    //let secondImage = NSImage(named: NSImage.Name(rawValue: "logo"))
+//    let secondImage = NSImage(named: NSImage.Name(rawValue: "logo"))
     
     override func draw(_ dirtyRect: NSRect) {
-        image?.draw(in: dirtyRect)
-//
-//        if let secondImage = secondImage,
-//            let image = image {
-//            secondImage.draw(at: CGPoint(x: 0.0, y: 0.0), from: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height), operation: .sourceOver, fraction: 1.0)
-//        }
-    
+        var constrainedBounds = self.bounds
+        if let image = image {
+            let imageAspectRatio = image.size.width / image.size.height
+            let boundsAspectRatio = bounds.size.width / bounds.size.height
+            if imageAspectRatio > boundsAspectRatio {
+                constrainedBounds.size.height = (constrainedBounds.size.width / imageAspectRatio).rounded()
+                constrainedBounds.origin.y = ((self.bounds.size.height - (constrainedBounds.size.width / imageAspectRatio)) / 2).rounded()
+            } else {
+                constrainedBounds.size.width = (constrainedBounds.size.height * imageAspectRatio).rounded()
+                constrainedBounds.origin.x = ((self.bounds.size.width - (constrainedBounds.size.height * imageAspectRatio)) / 2).rounded()
+            }
+            image.draw(in: constrainedBounds)
+        }
+        
+//                if let secondImage = secondImage,
+//                    let image = image {
+//                    secondImage.draw(in: constrainedBounds, from: image.alignmentRect , operation: .sourceOver, fraction: 1.0)
+//                }
+        
+        
+        
     }
     
 }

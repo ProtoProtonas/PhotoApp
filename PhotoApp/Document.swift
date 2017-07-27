@@ -35,6 +35,7 @@ class Document: NSDocument {
                 loadedImage = actuallyLoadedImage
             }
             viewController.imageView?.image = actuallyLoadedImage
+            (windowController as? WindowController)?.originalImage = actuallyLoadedImage
             windowController.window?.setFrame(CGRect(origin: origin(windowsize: windowSizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), size: windowSizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), display: true)
         }
     }
@@ -83,7 +84,7 @@ class Document: NSDocument {
             windowX = imageX
         } else { windowX = 300.0 }
         }
-        windowX = -(1.45*toolbarHeight*imageRatio) + windowX
+        windowX = -(1.52*toolbarHeight*imageRatio) + windowX
         //windowY = windowY + toolHeight
         return CGSize(width: windowX, height: windowY)
     }
@@ -100,7 +101,7 @@ class Document: NSDocument {
     
     override func data(ofType typeName: String) throws -> Data {
         if let view = windowControllers.first?.window?.contentView?.subviews.first as? NSScrollView,
-            let imageView = view.documentView?.subviews.first as? NSImageView,
+            let imageView = view.documentView?.subviews.first as? CustomImageView,
             let tiffData = imageView.image?.tiffRepresentation {
             return tiffData
         }
