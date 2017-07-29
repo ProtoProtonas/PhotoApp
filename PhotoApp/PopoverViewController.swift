@@ -11,10 +11,14 @@ import Cocoa
 class PopoverViewController: NSViewController {
     
     weak var windowController: WindowController? = nil
+    var image: NSImage?
     
     //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
     // blur filters
     //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // box blur filter
     
     var boxBlurValue: Double = 0.0 {
         didSet { windowController?.updateBoxBlur(with: boxBlurValue) }
@@ -40,6 +44,7 @@ class PopoverViewController: NSViewController {
     }
     
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // disc blur filter
     
     var discBlurValue: Double = 0.0 {
         didSet { windowController?.updateDiscBlur(with: discBlurValue) }
@@ -65,6 +70,7 @@ class PopoverViewController: NSViewController {
     }
     
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //gaussian blur filter
     
     var gaussianBlurValue: Double = 0.0 {
         didSet { windowController?.updateGaussianBlur(with: gaussianBlurValue) }
@@ -76,7 +82,7 @@ class PopoverViewController: NSViewController {
         self.gaussianBlurValue = sender.doubleValue.roundTo(places: 2)
     }
     @IBOutlet weak var gaussianBlurTextField: NSTextField!
-    @IBAction func gaussianBoxBlurT(_ sender: NSTextField) {
+    @IBAction func getGaussianBlurT(_ sender: NSTextField) {
         if Double(sender.stringValue) != nil {
             if Double(sender.stringValue)! < gaussianBlurSlider.minValue {
                 gaussianBlurSlider.doubleValue = gaussianBlurSlider.minValue
@@ -89,12 +95,14 @@ class PopoverViewController: NSViewController {
         }
     }
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //median filter
     
     @IBAction func showMedianFilter(_ sender: NSButton) {
         windowController?.updateMedianFilter()
     }
     
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // motion blur filter
     
     var motionAmountValue: Double = 0.0 {
         didSet { windowController?.updateMotionBlur(with: motionAmountValue, motionAngle: motionAngleValue) }
@@ -133,6 +141,7 @@ class PopoverViewController: NSViewController {
     }
     
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // noise reduction filter
     
     var noiseLevelValue: Double = 0.0 {
         didSet { windowController?.updateNoiseReduction(with: noiseLevelValue, sharpness: noiseSharpnessValue) }
@@ -178,6 +187,7 @@ class PopoverViewController: NSViewController {
     }
     
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // zoom blur filter
     
     var xValue: CGFloat = 0.0 {
         didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xValue, y: yValue)) }
@@ -188,7 +198,6 @@ class PopoverViewController: NSViewController {
     var zoomAmountValue: Double = 0.0 {
         didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xValue, y: yValue)) }
     }
-    var image: NSImage?
     
     @IBOutlet weak var centerXSlider: NSSlider!
     @IBOutlet weak var centerYSlider: NSSlider!
@@ -245,13 +254,173 @@ class PopoverViewController: NSViewController {
         }
     }
     
+    
+    
+    
     //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
     // color effect filters
     //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
     
     
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // color control filter
     
+    var saturationValue: Double = 1.0 {
+        didSet { windowController?.updateColorControls(with: saturationValue, brightness: brightnessValue, contrast: contrastValue) }
+    }
+    var brightnessValue: Double = 0.0 {
+        didSet { windowController?.updateColorControls(with: saturationValue, brightness: brightnessValue, contrast: contrastValue) }
+    }
+    var contrastValue: Double = 1.0 {
+        didSet { windowController?.updateColorControls(with: saturationValue, brightness: brightnessValue, contrast: contrastValue) }
+    }
     
+    @IBOutlet weak var saturationSlider: NSSlider!
+    @IBOutlet weak var brightnessSlider: NSSlider!
+    @IBOutlet weak var contrastSlider: NSSlider!
+    @IBAction func getSaturation(_ sender: NSSlider) {
+        saturationTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.saturationValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getBrightness(_ sender: NSSlider) {
+        brightnessTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.brightnessValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getContrast(_ sender: NSSlider) {
+        contrastTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.contrastValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var saturationTextField: NSTextField!
+    @IBOutlet weak var brightnessTextField: NSTextField!
+    @IBOutlet weak var contrastTextField: NSTextField!
+    @IBAction func getSaturationT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < saturationSlider.minValue {
+                saturationSlider.doubleValue = saturationSlider.minValue
+            } else if Double(sender.stringValue)! > saturationSlider.maxValue {
+                saturationSlider.doubleValue = saturationSlider.maxValue
+            } else {
+                saturationSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.saturationValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getBrightnessT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < brightnessSlider.minValue {
+                brightnessSlider.doubleValue = brightnessSlider.minValue
+            } else if Double(sender.stringValue)! > brightnessSlider.maxValue {
+                brightnessSlider.doubleValue = brightnessSlider.maxValue
+            } else {
+                brightnessSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.brightnessValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getContrastT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < contrastSlider.minValue {
+                contrastSlider.doubleValue = contrastSlider.minValue
+            } else if Double(sender.stringValue)! > contrastSlider.maxValue {
+                contrastSlider.doubleValue = contrastSlider.maxValue
+            } else {
+                contrastSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.contrastValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // exposure adjustment
+    
+    var exposureValue: Double = 0.0 {
+        didSet { windowController?.updateExposureAdjust(with: exposureValue) }
+    }
+    
+    @IBOutlet weak var exposureSlider: NSSlider!
+    @IBAction func getExposureValue(_ sender: NSSlider) {
+        exposureTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.exposureValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var exposureTextField: NSTextField!
+    @IBAction func getExposureValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < exposureSlider.minValue {
+                exposureSlider.doubleValue = exposureSlider.minValue
+            } else if Double(sender.stringValue)! > exposureSlider.maxValue {
+                exposureSlider.doubleValue = exposureSlider.maxValue
+            } else {
+                exposureSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.exposureValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // gamma adjustment
+    
+    var gammaValue: Double = 0.0 {
+        didSet { windowController?.updateGammaAdjust(with: gammaValue) }
+    }
+    
+    @IBOutlet weak var gammaSlider: NSSlider!
+    @IBAction func getGammaValue(_ sender: NSSlider) {
+        gammaTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.gammaValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var gammaTextField: NSTextField!
+    @IBAction func getGammaValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < gammaSlider.minValue {
+                gammaSlider.doubleValue = gammaSlider.minValue
+            } else if Double(sender.stringValue)! > gammaSlider.maxValue {
+                gammaSlider.doubleValue = gammaSlider.maxValue
+            } else {
+                gammaSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.gammaValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // hue adjustment
+    
+    var hueValue: Double = 0.0 {
+        didSet { windowController?.updateHueAdjust(with: hueValue) }
+    }
+    
+    @IBOutlet weak var hueSlider: NSSlider!
+    @IBAction func getHueValue(_ sender: NSSlider) {
+        hueTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.hueValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var hueTextField: NSTextField!
+    @IBAction func getHueValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < hueSlider.minValue {
+                hueSlider.doubleValue = hueSlider.minValue
+            } else if Double(sender.stringValue)! > hueSlider.maxValue {
+                hueSlider.doubleValue = hueSlider.maxValue
+            } else {
+                hueSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.hueValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //linear to sRGB tone curve filter
+    
+    @IBAction func showLinearToSRGBFilter(_ sender: NSButton) {
+        windowController?.updateLinearToSRGBFilter()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //sRGB tone curve to linear filter
+    
+    @IBAction func showSRGBToLinearFilter(_ sender: NSButton) {
+        windowController?.updateSRGBToLinearFilter()
+    }
     
     
     
@@ -272,6 +441,13 @@ extension Double {
     /// Rounds the double to decimal places value
     func roundTo(places:Int) -> Double {
         let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
+extension Float {
+    /// Rounds the float to decimal places value
+    func roundTo(places:Int) -> Float {
+        let divisor = pow(10.0, Float(places))
         return (self * divisor).rounded() / divisor
     }
 }

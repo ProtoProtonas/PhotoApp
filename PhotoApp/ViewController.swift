@@ -13,8 +13,13 @@ class ViewController: NSViewController {
     @IBOutlet var imageView: CustomImageView?
     @IBOutlet var scrollView: NSScrollView?
     
+//    weak var windowController: WindowController? = nil
+//    var mouseLocationDragStart: CGPoint = .zero
+//    var mouseLocationDragFinish: CGPoint = .zero
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override var representedObject: Any? {

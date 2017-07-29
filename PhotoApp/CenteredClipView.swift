@@ -20,6 +20,8 @@ class CenteredClipView: NSClipView  {
                 rect.origin.y = (containerView.frame.height - rect.height) / 2
             }
         }
+//        NSLog("\(proposedBounds) proposed bounds")
+//        NSLog("\(rect) rect")
         return rect
     }
 }
