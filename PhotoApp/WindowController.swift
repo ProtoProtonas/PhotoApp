@@ -249,6 +249,30 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		}
 	}
 	
+	func updateVibranceAdjust(with vibrance: Double) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIVibrance", withInputParameters: ["inputAmount": vibrance])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updateWhitePointAdjust(with whitePoint: CIColor) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIWhitePointAdjust", withInputParameters: ["inputColor": whitePoint])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
 	@IBAction func showColorAdjustmentPopoverAction(_ sender: NSButton) {
 		if colorAdjustmentFilterPopUpButton.indexOfSelectedItem != 0
 		{
@@ -279,6 +303,11 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	
 	@IBOutlet var geometryAdjustmentView: NSView!
 	@IBOutlet weak var cropButton: NSButton!
+	@IBAction func crop(_ sender: NSButton) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView {
+			(view.documentView?.subviews.first as? CustomImageView)?.windowController = self
+		}
+	}
 	
 	
 	func updateCrop(with rectangle: CIVector) {
@@ -417,10 +446,10 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	
 	func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
 		return [NSToolbarItem.Identifier(rawValue: ZoomToolbarItemID),
-		        NSToolbarItem.Identifier(rawValue: geometryAdjustToolbarItemID),
-		        NSToolbarItem.Identifier(rawValue: blurFilterToolbarItemID)]
-//		        NSToolbarItem.Identifier(rawValue: colorAdjustmentFilterToolbarItemID),
-//		        NSToolbarItem.Identifier(rawValue: colorEffectFilterToolbarItemID)]
+		        NSToolbarItem.Identifier(rawValue: blurFilterToolbarItemID),
+		        NSToolbarItem.Identifier(rawValue: colorAdjustmentFilterToolbarItemID),
+		        NSToolbarItem.Identifier(rawValue: geometryAdjustToolbarItemID),]
+		//		        NSToolbarItem.Identifier(rawValue: colorEffectFilterToolbarItemID)]
 	}
 	
 	func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {

@@ -422,8 +422,104 @@ class PopoverViewController: NSViewController {
         windowController?.updateSRGBToLinearFilter()
     }
     
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //vibrance filter
     
+    var vibranceValue: Double = 0.0 {
+        didSet { windowController?.updateVibranceAdjust(with: vibranceValue) }
+    }
     
+    @IBOutlet weak var vibranceSlider: NSSlider!
+    @IBAction func getVibranceValue(_ sender: NSSlider) {
+        vibranceTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.vibranceValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var vibranceTextField: NSTextField!
+    @IBAction func getVibranceValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < vibranceSlider.minValue {
+                vibranceSlider.doubleValue = vibranceSlider.minValue
+            } else if Double(sender.stringValue)! > vibranceSlider.maxValue {
+                vibranceSlider.doubleValue = vibranceSlider.maxValue
+            } else {
+                vibranceSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.vibranceValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //white point adjust
+    
+    var whitePointRedValue: Float = 255.0 {
+        didSet { windowController?.updateWhitePointAdjust(with: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue)))
+            whitePointColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue))) }
+    }
+    var whitePointGreenValue: Float = 255.0 {
+        didSet { windowController?.updateWhitePointAdjust(with: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue)))
+            whitePointColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue))) }
+    }
+    var whitePointBlueValue: Float = 255.0 {
+        didSet { windowController?.updateWhitePointAdjust(with: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue)))
+            whitePointColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue))) }
+    }
+    
+    @IBOutlet weak var whitePointRedSlider: NSSlider!
+    @IBOutlet weak var whitePointGreenSlider: NSSlider!
+    @IBOutlet weak var whitePointBlueSlider: NSSlider!
+    @IBAction func getwhitePointRedValue(_ sender: NSSlider) {
+        whitePointRedTextField.stringValue = String(sender.integerValue)
+        self.whitePointRedValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getwhitePointGreenValue(_ sender: NSSlider) {
+        whitePointGreenTextField.stringValue = String(sender.integerValue)
+        self.whitePointGreenValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getwhitePointBlueValue(_ sender: NSSlider) {
+        whitePointBlueTextField.stringValue = String(sender.integerValue)
+        self.whitePointBlueValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    
+    @IBOutlet weak var whitePointRedTextField: NSTextField!
+    @IBOutlet weak var whitePointGreenTextField: NSTextField!
+    @IBOutlet weak var whitePointBlueTextField: NSTextField!
+    @IBOutlet weak var whitePointColorField: NSTextField!
+    @IBAction func getwhitePointRedValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < whitePointRedSlider.minValue {
+                whitePointRedSlider.doubleValue = whitePointRedSlider.minValue
+            } else if Double(sender.stringValue)! > whitePointRedSlider.maxValue {
+                whitePointRedSlider.doubleValue = whitePointRedSlider.maxValue
+            } else {
+                whitePointRedSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.whitePointRedValue = Float(sender.stringValue)! / 256
+        }
+    }
+    @IBAction func getwhitePointGreenValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < whitePointGreenSlider.minValue {
+                whitePointGreenSlider.doubleValue = whitePointGreenSlider.minValue
+            } else if Double(sender.stringValue)! > whitePointGreenSlider.maxValue {
+                whitePointGreenSlider.doubleValue = whitePointGreenSlider.maxValue
+            } else {
+                whitePointGreenSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.whitePointGreenValue = Float(sender.stringValue)!  / 256
+        }
+    }
+    @IBAction func getwhitePointBlueValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < whitePointBlueSlider.minValue {
+                whitePointBlueSlider.doubleValue = whitePointBlueSlider.minValue
+            } else if Double(sender.stringValue)! > whitePointBlueSlider.maxValue {
+                whitePointBlueSlider.doubleValue = whitePointBlueSlider.maxValue
+            } else {
+                whitePointBlueSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.whitePointBlueValue = Float(sender.stringValue)!  / 256
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

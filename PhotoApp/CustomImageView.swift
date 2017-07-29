@@ -14,7 +14,9 @@ class CustomImageView: NSView {
         didSet { needsDisplay = true }
     }
     
-    weak var windowController: WindowController?
+    weak var windowController: WindowController? = nil
+    
+    
     
     var mouseLocationDragStart: CGPoint = .zero
     var mouseLocationDragFinish: CGPoint = .zero
@@ -34,7 +36,6 @@ class CustomImageView: NSView {
         super.mouseDragged(with: event)
         theRect.size.width = event.locationInWindow.x
         theRect.size.height = event.locationInWindow.y
-        //let vector: CIVector = [mouseLocationDragStart.x, mouseLocationDragStart.y, event.locationInWindow.x, event.locationInWindow.y]
         NSLog("\(CIVector(cgRect: theRect)) dragged")
 //        self.windowController?.updateCrop(with: CIVector(cgRect: theRect))
         
@@ -44,7 +45,7 @@ class CustomImageView: NSView {
         super.mouseUp(with: event)
         self.mouseLocationDragFinish = event.locationInWindow
 //        self.windowController?.updateCrop(with: CIVector(cgRect: theRect))
-        NSLog("\(event.locationInWindow) finish")
+        NSLog("\(CIVector(cgRect: theRect)) finish")
         
     }
     
