@@ -10,6 +10,7 @@ import CoreImage
 class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate {
 	
 	var originalImage: NSImage? = nil
+//	var metalDevice = MTLCreateSystemDefaultDevice()
 	
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	//  toolbar
@@ -65,7 +66,11 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let ciImage = CIImage(cgImage: cgImage)
 			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CIDiscBlur", withInputParameters: ["inputRadius": discRadius])
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+			if let filteredImage = ciContext.createCGImage(filteredImage, from: ciImage.extent) {
+				imageView.image = NSImage(cgImage: filteredImage, size: image.size)
+			} else {
+				NSLog("Unable to do disc blur")
+			}
 		}
 	}
 	
@@ -136,6 +141,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
 			let ciContext = CIContext()
+//			let ciContext = CIContext.init(mtlDevice: self.metalDevice!, options: ["isLowPower": false])
 			let filteredImage = ciImage.applyingFilter("CIZoomBlur", withInputParameters: ["inputAmount": amount, "inputCenter": center])
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
@@ -310,21 +316,202 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	}
 	
 	
-	func updateCrop(with rectangle: CIVector) {
+	func updateCrop(with rectangle: CGRect) {
 		if let view = window?.contentView?.subviews.first as? NSScrollView,
 			let imageView = view.documentView?.subviews.first as? CustomImageView,
 			let image = originalImage {
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
 			let ciContext = CIContext()
-			let filteredImage = ciImage.applyingFilter("CICrop", withInputParameters: ["inputRectangle": rectangle])
+			let filteredImage = ciImage.applyingFilter("CICrop", withInputParameters: ["inputRectangle": CIVector(cgRect: rectangle)])
+			//}
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
 	}
 	
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-	//  
+	//  color effect filter and toolbar item
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+	
+	@IBOutlet var colorEffectFilterView: NSView!
+	@IBOutlet weak var colorEffectFilterPopUpButton: NSPopUpButton!
+	var colorEffectPopovers: [NSPopover?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
+	var colorEffectPopoverControllerNames: [String] = ["", "ColorCrossPolynomialPopoverViewController", "ColorCubePopoverViewController", "ColorCubeWithColorSpacePopoverViewController", "ColorInvertPopoverViewController", "ColorMapPopoverViewController", "ColorMonochromePopoverViewController", "ColorPosterizePopoverViewController", "FalseColorPopoverViewController", "MaskToAlphaPopoverViewController", "MaximumComponentPopoverViewController", "MinimumComponentPopoverViewController", "PhotoEffectChromePopoverViewController", "PhotoEffectFadePopoverViewController", "PhotoEffectInstantPopoverViewController", "PhotoEffectMonoPopoverViewController", "PhotoEffectNoirPopoverViewController", "PhotoEffectProcessPopoverViewController", "PhotoEffectTonalPopoverViewController", "PhotoEffectTransferPopoverViewController", "SepiaTonePopoverViewController", "VignettePopoverViewController", "VignetteEffectPopoverViewController"]
+	var colorEffectPopoverControllers: [NSViewController?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
+	
+	// labai daug funkciju
+	
+	func updateInvertColors() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIColorInvert", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updateMaskToAlpha() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIMaskToAlpha", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updateMaximumComponent() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIMaximumComponent", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updateMinimumComponent() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIMinimumComponent", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updatePhotoEffectChrome() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIPhotoEffectChrome", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updatePhotoEffectFade() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIPhotoEffectFade", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updatePhotoEffectInstant() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIPhotoEffectInstant", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updatePhotoEffectMono() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIPhotoEffectMono", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updatePhotoEffectNoir() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIPhotoEffectNoir", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updatePhotoEffectProcess() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIPhotoEffectProcess", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updatePhotoEffectTonal() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIPhotoEffectTonal", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updatePhotoEffectTransfer() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIPhotoEffectTransfer", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	
+	
+	
+	
+	
+	@IBAction func showColorEffectPopoverAction(_ sender: NSButton) {
+		if colorEffectFilterPopUpButton.indexOfSelectedItem != 0
+		{
+			self.createColorEffectPopover(popoverViewController: self.colorEffectPopoverControllers[colorEffectFilterPopUpButton.indexOfSelectedItem]!, x: colorEffectFilterPopUpButton.indexOfSelectedItem)
+			let targetButton: NSButton = sender
+			let prefEdge: NSRectEdge = NSRectEdge.maxY
+			self.colorEffectPopovers[colorEffectFilterPopUpButton.indexOfSelectedItem]?.show(relativeTo: targetButton.bounds, of: sender as NSView, preferredEdge: prefEdge)
+		}
+	}
+	
+	func createColorEffectPopover(popoverViewController: NSViewController, x: Int) {
+		if (self.colorEffectPopovers[x] == nil)
+		{
+			self.colorEffectPopovers[x] = NSPopover.init()
+			self.colorEffectPopovers[x]?.contentViewController = popoverViewController;
+			self.colorEffectPopovers[x]?.animates = true
+			self.colorEffectPopovers[x]?.appearance = NSAppearance.init(named: NSAppearance.Name.vibrantLight)
+			self.colorEffectPopovers[x]?.behavior = NSPopover.Behavior.transient
+			self.colorEffectPopovers[x]?.delegate = self
+			(self.colorEffectPopovers[x]?.contentViewController as? PopoverViewController)?.windowController = self
+		}
+	}
 	
 	@IBAction func applyFilter(_ sender: Any) {
 		if let view = window?.contentView?.subviews.first as? NSScrollView,
@@ -332,31 +519,6 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			originalImage = imageView.image
 		}
 	}
-	
-	//color effect filtru valdymas
-	@IBOutlet var colorEffectFilterView: NSView!
-	@IBOutlet weak var colorEffectPopUpButton: NSPopUpButton!
-	let colorEffectFilterNames = ["", "CIColorCrossPolynomial", "CIColorCube", "CIColorCubeWithColorSpace", "CIColorInvert", "CIColorMap", "CIColorMonochrome", "CIColorPosterize", "CIFalseColor", "CIMaskToAlpha", "CIMaximumComponent", "CIMinimumComponent", "CIPhotoEffectChrome", "CIPhotoEffectFade", "CIPhotoEffectInstant", "CIPhotoEffectMono", "CIPhotoEffectNoir", "CIPhotoEffectProcess", "CIPhotoEffectTonal", "CIPhotoEffectTransfer", "CISepiaTone", "CIVignette", "CIVignetteEffect"]
-	
-	@IBAction func colorEffectFilter(_ sender: Any) {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView,
-			let image = imageView.image {
-			let colorEffectFilterName = colorEffectFilterNames[colorEffectPopUpButton.indexOfSelectedItem]
-			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-			let ciImage = CIImage(cgImage: cgImage)
-			let ciContext = CIContext()
-			let filteredImage = ciImage.applyingFilter(colorEffectFilterName, withInputParameters: [:])
-//			let filteredImage = ciImage.applyingFilter(colorEffectFilterName, withInputParameters: ["inputGradientImage": CIImage(cgImage: ((NSImage(named: NSImage.Name(rawValue: "top")))?.cgImage(forProposedRect: nil, context: nil, hints: nil))!)])
-			
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
-			
-		}
-	}
-	
-	
-	
-	
 	
 	override func windowDidLoad() {
 		super.windowDidLoad()
@@ -375,6 +537,10 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		
 		for x in 1...13 {
 			colorAdjustmentPopoverControllers[x] = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: colorAdjustmentPopoverControllerNames[x] )) as? NSViewController
+		}
+		
+		for x in 1...22 {
+			colorEffectPopoverControllers[x] = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: colorEffectPopoverControllerNames[x] )) as? NSViewController
 		}
 	}
 	
@@ -446,10 +612,10 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	
 	func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
 		return [NSToolbarItem.Identifier(rawValue: ZoomToolbarItemID),
+		        NSToolbarItem.Identifier(rawValue: geometryAdjustToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: blurFilterToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: colorAdjustmentFilterToolbarItemID),
-		        NSToolbarItem.Identifier(rawValue: geometryAdjustToolbarItemID),]
-		//		        NSToolbarItem.Identifier(rawValue: colorEffectFilterToolbarItemID)]
+		        NSToolbarItem.Identifier(rawValue: colorEffectFilterToolbarItemID)]
 	}
 	
 	func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {

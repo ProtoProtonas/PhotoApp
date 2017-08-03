@@ -258,7 +258,7 @@ class PopoverViewController: NSViewController {
     
     
     //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
-    // color effect filters
+    // color adjustment filters
     //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
     
     
@@ -519,6 +519,94 @@ class PopoverViewController: NSViewController {
             }
             self.whitePointBlueValue = Float(sender.stringValue)!  / 256
         }
+    }
+    
+    //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
+    // color effect filters
+    //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //color invert
+    
+    @IBAction func invertColor(_ sender: NSButton) {
+        windowController?.updateInvertColors()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //mask to alpha
+    
+    @IBAction func showMaskToAlpha(_ sender: NSButton) {
+        windowController?.updateMaskToAlpha()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //maximum component
+    
+    @IBAction func showMaximumComponent(_ sender: NSButton) {
+        windowController?.updateMaximumComponent()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //minimum component
+    
+    @IBAction func showMinimumComponent(_ sender: NSButton) {
+        windowController?.updateMinimumComponent()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //photo effect chrome
+    
+    @IBAction func showPhotoEffectChrome(_ sender: NSButton) {
+        windowController?.updatePhotoEffectChrome()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //photo effect fade
+    
+    @IBAction func showPhotoEffectFade(_ sender: NSButton) {
+        windowController?.updatePhotoEffectFade()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //photo effect instant
+    
+    @IBAction func showPhotoEffectInstant(_ sender: NSButton) {
+        windowController?.updatePhotoEffectInstant()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //photo effect mono
+    
+    @IBAction func showPhotoEffectMono(_ sender: NSButton) {
+        windowController?.updatePhotoEffectMono()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //photo effect noir
+    
+    @IBAction func showPhotoEffectNoir(_ sender: NSButton) {
+        windowController?.updatePhotoEffectNoir()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //photo effect process
+    
+    @IBAction func showPhotoEffectProcess(_ sender: NSButton) {
+        windowController?.updatePhotoEffectProcess()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //photo effect tonal
+    
+    @IBAction func showPhotoEffectTonal(_ sender: NSButton) {
+        windowController?.updatePhotoEffectTonal()
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //photo effect transfer
+    
+    @IBAction func showPhotoEffectTransfer(_ sender: NSButton) {
+        windowController?.updatePhotoEffectTransfer()
     }
     
     override func viewDidLoad() {

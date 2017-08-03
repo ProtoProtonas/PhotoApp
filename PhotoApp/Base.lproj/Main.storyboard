@@ -688,8 +688,8 @@
                         <outlet property="blurFilterView" destination="K4s-3x-kTZ" id="rnT-ft-r1A"/>
                         <outlet property="colorAdjustmentFilterPopUpButton" destination="qM4-9P-QXb" id="eQj-uc-guX"/>
                         <outlet property="colorAdjustmentFilterView" destination="oxs-rb-lnQ" id="Fb1-2h-Agz"/>
+                        <outlet property="colorEffectFilterPopUpButton" destination="FH3-HI-qtF" id="b00-o4-Cla"/>
                         <outlet property="colorEffectFilterView" destination="T1a-SG-Utz" id="rKL-WG-bfE"/>
-                        <outlet property="colorEffectPopUpButton" destination="FH3-HI-qtF" id="IEx-tL-HFf"/>
                         <outlet property="cropButton" destination="0Fu-FE-YgC" id="5Zv-jj-fPU"/>
                         <outlet property="geometryAdjustmentView" destination="6pT-Rj-g2f" id="pNO-Nq-XAu"/>
                         <outlet property="toolbar" destination="IwL-sU-Rwo" id="ccI-ff-WRF"/>
@@ -788,7 +788,7 @@
                     </subviews>
                 </customView>
                 <customView id="T1a-SG-Utz" userLabel="Color Effect Filter View">
-                    <rect key="frame" x="0.0" y="0.0" width="204" height="33"/>
+                    <rect key="frame" x="0.0" y="0.0" width="127" height="33"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FH3-HI-qtF">
@@ -825,18 +825,10 @@
                                     </items>
                                 </menu>
                             </popUpButtonCell>
-                        </popUpButton>
-                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1y7-bv-tuZ">
-                            <rect key="frame" x="122" y="-1" width="81" height="32"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AZW-cL-FPP">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
                             <connections>
-                                <action selector="colorEffectFilter:" target="B8D-0N-5wS" id="ncX-QG-n05"/>
+                                <action selector="showColorEffectPopoverAction:" target="B8D-0N-5wS" id="CBp-L9-9Cu"/>
                             </connections>
-                        </button>
+                        </popUpButton>
                     </subviews>
                 </customView>
                 <customView id="6pT-Rj-g2f" userLabel="Geometry Adjust View">
@@ -850,6 +842,9 @@
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="crop:" target="B8D-0N-5wS" id="K9V-qy-Zaw"/>
+                            </connections>
                         </button>
                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ILe-nb-6fK">
                             <rect key="frame" x="60" y="-1" width="67" height="32"/>
@@ -961,7 +956,7 @@
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="18P-le-IUd">
                                 <rect key="frame" x="70" y="50" width="157" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="IoL-bx-TQw"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="50" tickMarkPosition="above" sliderType="linear" id="IoL-bx-TQw"/>
                                 <connections>
                                     <action selector="getBoxBlur:" target="6bR-bm-Tpq" id="QZ1-Bw-0gj"/>
                                 </connections>
@@ -1454,7 +1449,7 @@
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lby-0J-JWS">
                                 <rect key="frame" x="74" y="50" width="153" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="gCk-qJ-Vj2"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="20" tickMarkPosition="above" sliderType="linear" id="gCk-qJ-Vj2"/>
                                 <connections>
                                     <action selector="getZoomAmount:" target="zzN-ta-f7w" id="aDU-Wt-W6X"/>
                                 </connections>
@@ -2111,6 +2106,580 @@
                 <customObject id="2mP-eg-wlR" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="657.5" y="3551.5"/>
+        </scene>
+        <!--ColorCrossPolynomialPopoverViewController-->
+        <scene sceneID="bfR-Mc-mSD">
+            <objects>
+                <viewController title="ColorCrossPolynomialPopoverViewController" storyboardIdentifier="ColorCrossPolynomialPopoverViewController" id="oAh-R9-re9" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="in5-jB-ocx">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="NmZ-Kv-qXm" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="732"/>
+        </scene>
+        <!--ColorCubePopoverViewController-->
+        <scene sceneID="1n6-bQ-PGx">
+            <objects>
+                <viewController title="ColorCubePopoverViewController" storyboardIdentifier="ColorCubePopoverViewController" id="GMK-YA-Q87" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="2Kh-fz-yld">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="mTX-yD-LDt" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="977"/>
+        </scene>
+        <!--ColorCubeWithColorSpacePopoverViewController-->
+        <scene sceneID="tiQ-qH-0IU">
+            <objects>
+                <viewController title="ColorCubeWithColorSpacePopoverViewController" storyboardIdentifier="ColorCubeWithColorSpacePopoverViewController" id="SSp-xR-22H" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="QcN-mI-9Eg">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="v6x-i2-9Z3" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="1239"/>
+        </scene>
+        <!--ColorInvertPopoverViewController-->
+        <scene sceneID="ZGQ-dx-Wc1">
+            <objects>
+                <viewController title="ColorInvertPopoverViewController" storyboardIdentifier="ColorInvertPopoverViewController" id="Q1j-59-Ckq" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="kEw-SN-6wI">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rvd-Zl-wXl">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Myy-LM-SXh">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="CdC-yp-3px" id="0Si-2i-ksq"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Who-qo-jp0">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oxG-Fh-fBh">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="invertColor:" target="Q1j-59-Ckq" id="9kl-HB-hQO"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="CdC-yp-3px" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="964.5" y="1419.5"/>
+        </scene>
+        <!--ColorMapPopoverViewController-->
+        <scene sceneID="vcF-jv-wpd">
+            <objects>
+                <viewController title="ColorMapPopoverViewController" storyboardIdentifier="ColorMapPopoverViewController" id="uEw-22-0Lv" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="4L2-ZB-o0G">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="EPO-4h-Shb" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="1737"/>
+        </scene>
+        <!--ColorMonochromePopoverViewController-->
+        <scene sceneID="n7V-ja-R7p">
+            <objects>
+                <viewController title="ColorMonochromePopoverViewController" storyboardIdentifier="ColorMonochromePopoverViewController" id="ZrP-eG-OHy" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="MGJ-hK-KeS">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="2JR-Qf-uVs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="1988"/>
+        </scene>
+        <!--ColorPosterizePopoverViewController-->
+        <scene sceneID="7UP-pB-AVL">
+            <objects>
+                <viewController title="ColorPosterizePopoverViewController" storyboardIdentifier="ColorPosterizePopoverViewController" id="EWb-yc-Zzq" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Xw3-ke-mD0">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="6yO-bh-F65" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="2241"/>
+        </scene>
+        <!--FalseColorPopoverViewController-->
+        <scene sceneID="Ajb-JL-rVT">
+            <objects>
+                <viewController title="FalseColorPopoverViewController" storyboardIdentifier="FalseColorPopoverViewController" id="uLd-lH-YvL" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="KrS-IQ-gmV">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="sCC-Sd-LZ5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="2497"/>
+        </scene>
+        <!--MaskToAlphaPopoverViewController-->
+        <scene sceneID="OLv-bc-2rl">
+            <objects>
+                <viewController title="MaskToAlphaPopoverViewController" storyboardIdentifier="MaskToAlphaPopoverViewController" id="GqR-Ws-drV" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="MW4-5F-aIj">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ce8-Tb-wNZ">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="l4F-Vv-bXG">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="JkF-vj-hmD" id="qwt-uA-OJ7"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZAq-Yb-gAP">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="h62-PO-KXp">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showMaskToAlpha:" target="GqR-Ws-drV" id="9v2-jC-qiR"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="JkF-vj-hmD" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="2732"/>
+        </scene>
+        <!--MaximumComponentPopoverViewController-->
+        <scene sceneID="IgS-J7-Uku">
+            <objects>
+                <viewController title="MaximumComponentPopoverViewController" storyboardIdentifier="MaximumComponentPopoverViewController" id="OvT-8k-N2F" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="7yr-JR-lNC">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LoM-kb-1uS">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SuW-dq-7gF">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="fPr-PX-Xv8" id="OuV-EA-ziH"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tT4-0b-bOJ">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bfo-qb-kSY">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showMaximumComponent:" target="OvT-8k-N2F" id="AIA-hn-doZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="fPr-PX-Xv8" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="2845"/>
+        </scene>
+        <!--MinimumComponentPopoverViewController-->
+        <scene sceneID="0sW-bH-2iy">
+            <objects>
+                <viewController title="MinimumComponentPopoverViewController" storyboardIdentifier="MinimumComponentPopoverViewController" id="xg7-Fj-gdM" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="yXm-pg-yOi">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5NY-zn-ngK">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ubt-EB-yQK">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="d8K-kR-UAY" id="TwV-MD-xEs"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FI8-SU-ytK">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4M6-vn-AKy">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showMinimumComponent:" target="xg7-Fj-gdM" id="Zxf-en-ani"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="d8K-kR-UAY" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="2959"/>
+        </scene>
+        <!--PhotoEffectChromePopoverViewController-->
+        <scene sceneID="ky9-n5-HTj">
+            <objects>
+                <viewController title="PhotoEffectChromePopoverViewController" storyboardIdentifier="PhotoEffectChromePopoverViewController" id="40I-90-ciW" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="CoN-4X-Vgh">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nVb-ym-EbN">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="OJU-nU-DTe">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="xoB-Ke-4Ht" id="cpS-pQ-Gkh"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QkF-kq-8oj">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MrE-6o-4Bp">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showPhotoEffectChrome:" target="40I-90-ciW" id="Zxc-ze-Z6v"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="xoB-Ke-4Ht" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="3072"/>
+        </scene>
+        <!--PhotoEffectFadePopoverViewController-->
+        <scene sceneID="Ahe-JH-2hn">
+            <objects>
+                <viewController title="PhotoEffectFadePopoverViewController" storyboardIdentifier="PhotoEffectFadePopoverViewController" id="he8-Gf-Gcr" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="z1i-K8-YCf">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u3b-px-QQ8">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rFF-Do-mKH">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="eZk-po-Czs" id="dst-Sm-mUi"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cbi-Ve-khj">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Zey-2B-Sdv">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showPhotoEffectFade:" target="he8-Gf-Gcr" id="0XW-xy-D01"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="eZk-po-Czs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="3180"/>
+        </scene>
+        <!--PhotoEffectInstantPopoverViewController-->
+        <scene sceneID="OXX-gn-5jb">
+            <objects>
+                <viewController title="PhotoEffectInstantPopoverViewController" storyboardIdentifier="PhotoEffectInstantPopoverViewController" id="nLz-ht-PNI" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="rR7-2V-lD9">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JKl-zx-tC9">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qIl-yp-H56">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="fwG-Tl-Xnj" id="QyB-je-S86"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SHo-sc-1Yh">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="LEf-e6-3Zq">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showPhotoEffectInstant:" target="nLz-ht-PNI" id="gWO-0e-hBG"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="fwG-Tl-Xnj" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="3288"/>
+        </scene>
+        <!--PhotoEffectMonoPopoverViewController-->
+        <scene sceneID="wlJ-2n-64h">
+            <objects>
+                <viewController title="PhotoEffectMonoPopoverViewController" storyboardIdentifier="PhotoEffectMonoPopoverViewController" id="Xel-rm-xwK" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="jqy-hc-ydv">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KaY-7g-fYm">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="blq-Lr-Y7H">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="ame-2M-llb" id="VVc-C2-DRX"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g8e-zN-eCu">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gML-g5-xrp">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showPhotoEffectMono:" target="Xel-rm-xwK" id="4cz-AK-eMj"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="ame-2M-llb" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="3400"/>
+        </scene>
+        <!--PhotoEffectNoirPopoverViewController-->
+        <scene sceneID="AAI-sV-SxA">
+            <objects>
+                <viewController title="PhotoEffectNoirPopoverViewController" storyboardIdentifier="PhotoEffectNoirPopoverViewController" id="SPg-lg-tIV" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="RYl-MH-mAj">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aig-d6-hhH">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="U2N-aE-ANy">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="XyI-Xg-HUT" id="U9F-LO-gyd"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="us8-vq-tCL">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="u17-mV-izb">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showPhotoEffectNoir:" target="SPg-lg-tIV" id="mYD-zT-ShF"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="XyI-Xg-HUT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="3507"/>
+        </scene>
+        <!--PhotoEffectProcessPopoverViewController-->
+        <scene sceneID="lgJ-vG-2NR">
+            <objects>
+                <viewController title="PhotoEffectProcessPopoverViewController" storyboardIdentifier="PhotoEffectProcessPopoverViewController" id="zQZ-uu-RLQ" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="ZjD-X2-L7B">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EGi-jz-9PJ">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oKM-qp-cew">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="bgY-0R-6oD" id="5FG-C4-VBl"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7n8-hf-Emg">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6Hi-zD-2dn">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showPhotoEffectProcess:" target="zQZ-uu-RLQ" id="S9B-vu-aJQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="bgY-0R-6oD" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="3618"/>
+        </scene>
+        <!--PhotoEffectTonalPopoverViewController-->
+        <scene sceneID="9jI-96-Ffn">
+            <objects>
+                <viewController title="PhotoEffectTonalPopoverViewController" storyboardIdentifier="PhotoEffectTonalPopoverViewController" id="3c3-Uh-WXP" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="mHN-X9-Y9f">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c13-Rg-leL">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="snt-0W-BmJ">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="F6s-e7-CNc" id="nZv-3u-5PF"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CSn-ID-5qS">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="15K-36-91x">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showPhotoEffectTonal:" target="3c3-Uh-WXP" id="7S8-hg-Pg7"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="F6s-e7-CNc" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="3734"/>
+        </scene>
+        <!--PhotoEffectTransferPopoverViewController-->
+        <scene sceneID="5qU-C0-7l7">
+            <objects>
+                <viewController title="PhotoEffectTransferPopoverViewController" storyboardIdentifier="PhotoEffectTransferPopoverViewController" id="HtF-Is-InM" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="e86-TD-IFo">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="61"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VGD-Ma-AvN">
+                                <rect key="frame" x="123" y="13" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="LOq-CW-2Z2">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyFilter:" target="h7c-vO-vox" id="qNY-iT-XP4"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g1C-Zx-cXd">
+                                <rect key="frame" x="14" y="13" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="THh-RU-2KK">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showPhotoEffectTransfer:" target="HtF-Is-InM" id="O9L-sK-v3b"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="h7c-vO-vox" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="3845"/>
+        </scene>
+        <!--SepiaTonePopoverViewController-->
+        <scene sceneID="uUR-LL-Tra">
+            <objects>
+                <viewController title="SepiaTonePopoverViewController" storyboardIdentifier="SepiaTonePopoverViewController" id="Qbj-yt-ECm" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="0RR-b8-7hO">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="wvk-YF-Ns6" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="4027"/>
+        </scene>
+        <!--VignettePopoverViewController-->
+        <scene sceneID="ybM-pT-tcu">
+            <objects>
+                <viewController title="VignettePopoverViewController" storyboardIdentifier="VignettePopoverViewController" id="c8i-s8-XpJ" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="cfD-md-4dO">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="Amp-U3-yMw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="4275"/>
+        </scene>
+        <!--VignetteEffectPopoverViewController-->
+        <scene sceneID="pXs-ra-f0L">
+            <objects>
+                <viewController title="VignetteEffectPopoverViewController" storyboardIdentifier="VignetteEffectPopoverViewController" id="Jcd-fX-7IO" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Wgb-Yg-0Ea">
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="tLG-qa-SKN" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="4524"/>
         </scene>
     </scenes>
     <resources>
