@@ -127,11 +127,6 @@
                                                 <action selector="undo:" target="Ady-hI-5gd" id="M6e-cu-g7V"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Redo" keyEquivalent="Z" id="6dh-zS-Vam">
-                                            <connections>
-                                                <action selector="redo:" target="Ady-hI-5gd" id="oIA-Rs-6OD"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="WRV-NI-Exz"/>
                                         <menuItem title="Cut" keyEquivalent="x" id="uRl-iY-unG">
                                             <connections>
@@ -337,9 +332,9 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Format" id="jxT-CU-nIS">
+                            <menuItem title="Filter" id="jxT-CU-nIS" userLabel="Filter">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Format" id="GEO-Iw-cKr">
+                                <menu key="submenu" title="Filter" id="GEO-Iw-cKr">
                                     <items>
                                         <menuItem title="Font" id="Gi5-1S-RQB">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -684,14 +679,15 @@
                         </toolbar>
                     </window>
                     <connections>
+                        <outlet property="applyChangesView" destination="7hA-Js-966" id="oZu-rJ-UDS"/>
                         <outlet property="blurFilterPopUpButton" destination="dV3-cb-2rX" id="snC-3o-yGn"/>
                         <outlet property="blurFilterView" destination="K4s-3x-kTZ" id="rnT-ft-r1A"/>
                         <outlet property="colorAdjustmentFilterPopUpButton" destination="qM4-9P-QXb" id="eQj-uc-guX"/>
                         <outlet property="colorAdjustmentFilterView" destination="oxs-rb-lnQ" id="Fb1-2h-Agz"/>
                         <outlet property="colorEffectFilterPopUpButton" destination="FH3-HI-qtF" id="b00-o4-Cla"/>
                         <outlet property="colorEffectFilterView" destination="T1a-SG-Utz" id="rKL-WG-bfE"/>
-                        <outlet property="cropButton" destination="0Fu-FE-YgC" id="5Zv-jj-fPU"/>
                         <outlet property="geometryAdjustmentView" destination="6pT-Rj-g2f" id="pNO-Nq-XAu"/>
+                        <outlet property="geometryControls" destination="LMJ-7R-ctc" id="W40-5f-w2W"/>
                         <outlet property="toolbar" destination="IwL-sU-Rwo" id="ccI-ff-WRF"/>
                         <outlet property="zoomControlView" destination="0vT-0n-VJf" id="RxX-j1-cgE"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
@@ -699,19 +695,19 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <customView id="0vT-0n-VJf" userLabel="Zoom Controls">
-                    <rect key="frame" x="0.0" y="0.0" width="78" height="33"/>
+                    <rect key="frame" x="0.0" y="0.0" width="74" height="33"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <segmentedControl identifier="Zoom" toolTip="Zoom In/Out" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7N3-nI-uFE">
-                            <rect key="frame" x="4" y="4" width="70" height="24"/>
+                            <rect key="frame" x="4" y="4" width="66" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="0CK-Ce-aO9">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment toolTip="Zoom Out" image="NSRemoveTemplate" imageScaling="proportionallyUpOrDown" width="32">
+                                    <segment toolTip="Zoom Out" image="NSRemoveTemplate" imageScaling="proportionallyUpOrDown" width="30">
                                         <nil key="label"/>
                                     </segment>
-                                    <segment toolTip="Zoom In" image="NSAddTemplate" width="32" tag="1">
+                                    <segment toolTip="Zoom In" image="NSAddTemplate" width="30" tag="1">
                                         <nil key="label"/>
                                     </segment>
                                 </segments>
@@ -722,12 +718,36 @@
                         </segmentedControl>
                     </subviews>
                 </customView>
-                <customView id="K4s-3x-kTZ" userLabel="Blur Filter View">
+                <customView id="7hA-Js-966" userLabel="Apply Changes View">
                     <rect key="frame" x="0.0" y="0.0" width="78" height="33"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
+                        <segmentedControl identifier="Apply Changes" toolTip="Apply Changes" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EOI-uu-DMr">
+                            <rect key="frame" x="4" y="4" width="70" height="24"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="ee8-UO-2jm">
+                                <font key="font" metaFont="system"/>
+                                <segments>
+                                    <segment toolTip="Apply Changes" image="CheckMark" imageScaling="proportionallyUpOrDown" width="32">
+                                        <nil key="label"/>
+                                    </segment>
+                                    <segment toolTip="Revert Changes" image="CrossMark" imageScaling="proportionallyUpOrDown" width="32" tag="1">
+                                        <nil key="label"/>
+                                    </segment>
+                                </segments>
+                            </segmentedCell>
+                            <connections>
+                                <action selector="applyChanges:" target="B8D-0N-5wS" id="CtH-QJ-JyV"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                </customView>
+                <customView id="K4s-3x-kTZ" userLabel="Blur Filter View">
+                    <rect key="frame" x="0.0" y="0.0" width="76" height="33"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dV3-cb-2rX">
-                            <rect key="frame" x="5" y="3" width="69" height="26"/>
+                            <rect key="frame" x="4" y="3" width="69" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="push" title="Blur..." alternateTitle="Blur..." bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" refusesFirstResponder="YES" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="Oah-ZV-o1O" id="MSc-EX-7rF">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -738,7 +758,6 @@
                                         <menuItem title="Box Blur" id="rZy-8g-2vb"/>
                                         <menuItem title="Disc Blur" id="Qmb-HW-o9U"/>
                                         <menuItem title="Gaussian Blur" id="njS-0v-AGh"/>
-                                        <menuItem title="Masked Variable Blur" id="W2V-EV-FH8"/>
                                         <menuItem title="Median Filter" id="eOC-5m-JyV"/>
                                         <menuItem title="Motion Blur" id="0B3-E0-vWq"/>
                                         <menuItem title="Noise Reduction" id="kDe-Lf-yeZ"/>
@@ -753,11 +772,11 @@
                     </subviews>
                 </customView>
                 <customView id="oxs-rb-lnQ" userLabel="Color Adjustment Filter View">
-                    <rect key="frame" x="0.0" y="0.0" width="157" height="33"/>
+                    <rect key="frame" x="0.0" y="0.0" width="155" height="33"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qM4-9P-QXb" userLabel="Color Adjustment...">
-                            <rect key="frame" x="5" y="3" width="148" height="26"/>
+                            <rect key="frame" x="4" y="3" width="148" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="push" title="Color Adjustment..." alternateTitle="Blur..." bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" refusesFirstResponder="YES" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="YoF-Eb-6Jn" id="Ii6-eM-Yhg" userLabel="Color Adjusmtment...">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -788,11 +807,11 @@
                     </subviews>
                 </customView>
                 <customView id="T1a-SG-Utz" userLabel="Color Effect Filter View">
-                    <rect key="frame" x="0.0" y="0.0" width="127" height="33"/>
+                    <rect key="frame" x="0.0" y="0.0" width="125" height="33"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FH3-HI-qtF">
-                            <rect key="frame" x="5" y="3" width="118" height="26"/>
+                            <rect key="frame" x="4" y="3" width="118" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="push" title="Color Effect..." alternateTitle="Color Effect..." bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="d4t-4M-g6b" id="xYW-sL-B9X">
                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -832,28 +851,23 @@
                     </subviews>
                 </customView>
                 <customView id="6pT-Rj-g2f" userLabel="Geometry Adjust View">
-                    <rect key="frame" x="0.0" y="0.0" width="128" height="33"/>
+                    <rect key="frame" x="0.0" y="0.0" width="84" height="33"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
-                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Fu-FE-YgC">
-                            <rect key="frame" x="1" y="-1" width="59" height="32"/>
+                        <segmentedControl verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LMJ-7R-ctc">
+                            <rect key="frame" x="4" y="4" width="76" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="push" title="Crop" alternateTitle="Crop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7yv-dA-lFb">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="ABh-JW-cum">
                                 <font key="font" metaFont="system"/>
-                            </buttonCell>
+                                <segments>
+                                    <segment image="scissors1600" width="35"/>
+                                    <segment image="rotate-512" width="35" tag="1"/>
+                                </segments>
+                            </segmentedCell>
                             <connections>
-                                <action selector="crop:" target="B8D-0N-5wS" id="K9V-qy-Zaw"/>
+                                <action selector="initWindowControllerInstanceInCustomImageView:" target="B8D-0N-5wS" id="R68-5B-ZNm"/>
                             </connections>
-                        </button>
-                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ILe-nb-6fK">
-                            <rect key="frame" x="60" y="-1" width="67" height="32"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="push" title="Rotate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cJ6-b0-7yC">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
+                        </segmentedControl>
                     </subviews>
                 </customView>
             </objects>
@@ -929,11 +943,11 @@
             <objects>
                 <viewController title="BoxBlurPopoverViewController" storyboardIdentifier="BoxBlurPopoverViewController" id="6bR-bm-Tpq" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="viH-sV-a6s">
-                        <rect key="frame" x="0.0" y="0.0" width="245" height="107"/>
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="78"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iav-RR-yku">
-                                <rect key="frame" x="18" y="70" width="40" height="17"/>
+                                <rect key="frame" x="18" y="41" width="40" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Radius:" id="TBy-Cn-Sb4">
                                     <font key="font" metaFont="system" size="10"/>
@@ -942,7 +956,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ggr-e2-E5Y">
-                                <rect key="frame" x="20" y="49" width="44" height="22"/>
+                                <rect key="frame" x="20" y="20" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0.00" drawsBackground="YES" id="9Oe-Rp-Xwd">
                                     <font key="font" metaFont="system"/>
@@ -954,24 +968,13 @@
                                 </connections>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="18P-le-IUd">
-                                <rect key="frame" x="70" y="50" width="157" height="19"/>
+                                <rect key="frame" x="70" y="21" width="157" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="50" tickMarkPosition="above" sliderType="linear" id="IoL-bx-TQw"/>
                                 <connections>
                                     <action selector="getBoxBlur:" target="6bR-bm-Tpq" id="QZ1-Bw-0gj"/>
                                 </connections>
                             </slider>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nnC-UP-YaC">
-                                <rect key="frame" x="14" y="13" width="217" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dXQ-c0-seQ">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="applyFilter:" target="GVo-ZI-fZz" id="vDj-NV-pz9"/>
-                                </connections>
-                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -981,18 +984,18 @@
                 </viewController>
                 <customObject id="GVo-ZI-fZz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318.5" y="686.5"/>
+            <point key="canvasLocation" x="318.5" y="672"/>
         </scene>
         <!--DiscBlurPopoverViewController-->
         <scene sceneID="lV2-NN-76Y">
             <objects>
                 <viewController title="DiscBlurPopoverViewController" storyboardIdentifier="DiscBlurPopoverViewController" id="ESi-M6-7tt" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="8bA-O1-M45">
-                        <rect key="frame" x="0.0" y="0.0" width="245" height="107"/>
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="78"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RvK-Hy-fPS">
-                                <rect key="frame" x="18" y="70" width="40" height="17"/>
+                                <rect key="frame" x="18" y="41" width="40" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Radius:" id="VjL-Ts-ryW">
                                     <font key="font" metaFont="system" size="10"/>
@@ -1001,7 +1004,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="35a-m5-TwH">
-                                <rect key="frame" x="20" y="49" width="44" height="22"/>
+                                <rect key="frame" x="20" y="20" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0.00" drawsBackground="YES" id="KG6-bg-zNU">
                                     <font key="font" metaFont="system"/>
@@ -1013,24 +1016,13 @@
                                 </connections>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pcB-J5-MQ0">
-                                <rect key="frame" x="70" y="50" width="157" height="19"/>
+                                <rect key="frame" x="70" y="21" width="157" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="Io8-Ra-RxS"/>
                                 <connections>
                                     <action selector="getDiscBlur:" target="ESi-M6-7tt" id="Uy0-d9-jkt"/>
                                 </connections>
                             </slider>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a1M-80-U0S">
-                                <rect key="frame" x="14" y="13" width="217" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="s4J-L6-Z1G">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="applyFilter:" target="1YW-u3-wHU" id="qgd-6x-uoC"/>
-                                </connections>
-                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -1040,18 +1032,18 @@
                 </viewController>
                 <customObject id="1YW-u3-wHU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318.5" y="840.5"/>
+            <point key="canvasLocation" x="319" y="800"/>
         </scene>
         <!--GaussianBlurPopoverViewController-->
         <scene sceneID="q8n-x5-117">
             <objects>
                 <viewController title="GaussianBlurPopoverViewController" storyboardIdentifier="GaussianBlurPopoverViewController" id="epb-sJ-NRP" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="DsD-HS-kzn">
-                        <rect key="frame" x="0.0" y="0.0" width="245" height="100"/>
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="71"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gwz-H9-8fx">
-                                <rect key="frame" x="18" y="70" width="37" height="17"/>
+                                <rect key="frame" x="18" y="41" width="37" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sigma:" id="E7T-lO-1qF">
                                     <font key="font" metaFont="system" size="10"/>
@@ -1060,7 +1052,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hNF-a2-0ww">
-                                <rect key="frame" x="20" y="49" width="44" height="22"/>
+                                <rect key="frame" x="20" y="20" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0.00" drawsBackground="YES" id="QLI-ti-5Ij">
                                     <font key="font" metaFont="system"/>
@@ -1072,24 +1064,13 @@
                                 </connections>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FPR-C2-4ug">
-                                <rect key="frame" x="70" y="50" width="157" height="19"/>
+                                <rect key="frame" x="70" y="21" width="157" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="50" tickMarkPosition="above" sliderType="linear" id="77x-sH-sXL"/>
                                 <connections>
                                     <action selector="getGaussianBlur:" target="epb-sJ-NRP" id="xNi-K2-TSH"/>
                                 </connections>
                             </slider>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TTn-gb-2o4">
-                                <rect key="frame" x="14" y="13" width="217" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SKz-bm-9zc">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="applyFilter:" target="VWS-1e-M4z" id="2at-YE-cYp"/>
-                                </connections>
-                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -1099,48 +1080,7 @@
                 </viewController>
                 <customObject id="VWS-1e-M4z" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="319" y="991"/>
-        </scene>
-        <!--MaskedVariableBlurPopoverViewController-->
-        <scene sceneID="5Yx-aW-dvR">
-            <objects>
-                <viewController title="MaskedVariableBlurPopoverViewController" storyboardIdentifier="MaskedVariableBlurPopoverViewController" id="VUO-zZ-TWG" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="wVK-ta-zsn">
-                        <rect key="frame" x="0.0" y="0.0" width="245" height="300"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tvr-fd-K0t">
-                                <rect key="frame" x="45" y="132" width="148" height="17"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="masked variable blur" id="ZXP-2F-XUz">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gxo-OD-iIr">
-                                <rect key="frame" x="150" y="252" width="81" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="XJb-7u-SUm">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OCQ-Ga-Ext">
-                                <rect key="frame" x="20" y="259" width="96" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="OfF-KJ-Cuk">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
-                    </view>
-                </viewController>
-                <customObject id="wKA-nu-Ck4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="319" y="1243"/>
+            <point key="canvasLocation" x="319" y="930"/>
         </scene>
         <!--MedianBlurPopoverViewController-->
         <scene sceneID="8QJ-MU-z6K">
@@ -1177,18 +1117,18 @@
                 </viewController>
                 <customObject id="bIU-i2-d7L" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318.5" y="1480.5"/>
+            <point key="canvasLocation" x="319" y="1046"/>
         </scene>
         <!--MotionBlurPopoverViewController-->
         <scene sceneID="DeN-Xl-E7f">
             <objects>
                 <viewController title="MotionBlurPopoverViewController" storyboardIdentifier="MotionBlurPopoverViewController" id="4Pd-jj-dff" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="dyn-uI-gqc">
-                        <rect key="frame" x="0.0" y="0.0" width="245" height="153"/>
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="125"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eoD-rx-W6n">
-                                <rect key="frame" x="18" y="116" width="76" height="17"/>
+                                <rect key="frame" x="18" y="88" width="76" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Motion Radius:" id="Eg0-7I-KdC">
                                     <font key="font" metaFont="system" size="10"/>
@@ -1197,7 +1137,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ElG-UQ-AZe">
-                                <rect key="frame" x="18" y="70" width="71" height="17"/>
+                                <rect key="frame" x="18" y="42" width="71" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Motion Angle:" id="22Z-7E-VZb">
                                     <font key="font" metaFont="system" size="10"/>
@@ -1206,7 +1146,7 @@
                                 </textFieldCell>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oRB-4G-1OB">
-                                <rect key="frame" x="74" y="96" width="153" height="19"/>
+                                <rect key="frame" x="74" y="68" width="153" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="2hZ-Zl-xZP"/>
                                 <connections>
@@ -1214,7 +1154,7 @@
                                 </connections>
                             </slider>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PVT-04-tCE">
-                                <rect key="frame" x="20" y="95" width="44" height="22"/>
+                                <rect key="frame" x="20" y="67" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0.00" drawsBackground="YES" id="ngC-Tc-K3w">
                                     <font key="font" metaFont="system"/>
@@ -1226,7 +1166,7 @@
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3We-ib-RT4">
-                                <rect key="frame" x="20" y="49" width="44" height="22"/>
+                                <rect key="frame" x="20" y="21" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0.00" drawsBackground="YES" id="WBs-cu-itZ">
                                     <font key="font" metaFont="system"/>
@@ -1237,19 +1177,8 @@
                                     <action selector="getMotionBlurAngleT:" target="4Pd-jj-dff" id="Dme-Yi-ynR"/>
                                 </connections>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8F1-EY-PqJ">
-                                <rect key="frame" x="14" y="13" width="217" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gKe-s1-wAC">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="applyFilter:" target="Ade-ul-vsd" id="Opt-Vx-tCv"/>
-                                </connections>
-                            </button>
                             <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="32i-48-a0u">
-                                <rect key="frame" x="136" y="45" width="28" height="30"/>
+                                <rect key="frame" x="136" y="17" width="28" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" alignment="left" maxValue="6.2831849999999996" allowsTickMarkValuesOnly="YES" sliderType="circular" id="G8w-aF-Eom"/>
                                 <connections>
@@ -1267,18 +1196,18 @@
                 </viewController>
                 <customObject id="Ade-ul-vsd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318.5" y="1648.5"/>
+            <point key="canvasLocation" x="319" y="1188"/>
         </scene>
         <!--NoiseBlurPopoverViewController-->
         <scene sceneID="RzB-AH-3rc">
             <objects>
                 <viewController title="NoiseBlurPopoverViewController" storyboardIdentifier="NoiseBlurPopoverViewController" id="9V9-0j-dZq" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="bXp-U4-LxR">
-                        <rect key="frame" x="0.0" y="0.0" width="245" height="162"/>
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="124"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4qT-9p-gNr">
-                                <rect key="frame" x="18" y="125" width="63" height="17"/>
+                                <rect key="frame" x="18" y="87" width="63" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Noise Level:" id="JuU-uy-KNg">
                                     <font key="font" metaFont="system" size="10"/>
@@ -1287,7 +1216,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OXd-mT-DVN">
-                                <rect key="frame" x="18" y="79" width="63" height="17"/>
+                                <rect key="frame" x="18" y="41" width="63" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sharpness:" id="qCO-GL-BNj">
                                     <font key="font" metaFont="system" size="10"/>
@@ -1296,7 +1225,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qhi-xo-2rQ">
-                                <rect key="frame" x="20" y="104" width="44" height="22"/>
+                                <rect key="frame" x="20" y="66" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0.00" drawsBackground="YES" id="ubQ-y9-k3N">
                                     <font key="font" metaFont="system"/>
@@ -1308,7 +1237,7 @@
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f0Q-iO-v9c">
-                                <rect key="frame" x="20" y="58" width="44" height="22"/>
+                                <rect key="frame" x="20" y="20" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0.00" drawsBackground="YES" id="ECO-om-9iq">
                                     <font key="font" metaFont="system"/>
@@ -1320,7 +1249,7 @@
                                 </connections>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2vn-Cn-V71">
-                                <rect key="frame" x="74" y="105" width="153" height="19"/>
+                                <rect key="frame" x="74" y="67" width="153" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="v9O-Ea-B96"/>
                                 <connections>
@@ -1328,24 +1257,13 @@
                                 </connections>
                             </slider>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f5k-y6-gai">
-                                <rect key="frame" x="74" y="59" width="153" height="19"/>
+                                <rect key="frame" x="74" y="21" width="153" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="5" tickMarkPosition="above" sliderType="linear" id="xau-hk-iED"/>
                                 <connections>
                                     <action selector="getNoiseSharpness:" target="9V9-0j-dZq" id="gzB-Nv-aSZ"/>
                                 </connections>
                             </slider>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OYz-AB-D5m">
-                                <rect key="frame" x="14" y="22" width="217" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="38Z-6q-9JO">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="applyFilter:" target="Ade-ul-vsd" id="tZt-JG-utQ"/>
-                                </connections>
-                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -1357,18 +1275,18 @@
                 </viewController>
                 <customObject id="kZN-2r-l6K" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318.5" y="1854"/>
+            <point key="canvasLocation" x="319" y="1364"/>
         </scene>
         <!--ZoomBlurPopoverViewController-->
         <scene sceneID="yKx-Rh-9OB">
             <objects>
                 <viewController title="ZoomBlurPopoverViewController" storyboardIdentifier="ZoomBlurPopoverViewController" id="zzN-ta-f7w" customClass="PopoverViewController" customModule="PhotoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="RJ6-Rp-pM6">
-                        <rect key="frame" x="0.0" y="0.0" width="245" height="199"/>
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="170"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RgV-bj-FzR">
-                                <rect key="frame" x="18" y="162" width="14" height="17"/>
+                                <rect key="frame" x="18" y="133" width="14" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="X:" id="UKT-mp-T4s">
                                     <font key="font" metaFont="system" size="10"/>
@@ -1377,7 +1295,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="87g-nN-gGb">
-                                <rect key="frame" x="20" y="141" width="44" height="22"/>
+                                <rect key="frame" x="20" y="112" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0" drawsBackground="YES" id="WZ2-cu-Iz6">
                                     <font key="font" metaFont="system"/>
@@ -1389,7 +1307,7 @@
                                 </connections>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xaO-9j-apX">
-                                <rect key="frame" x="74" y="142" width="153" height="19"/>
+                                <rect key="frame" x="74" y="113" width="153" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="b1V-k8-0Mj"/>
                                 <connections>
@@ -1397,7 +1315,7 @@
                                 </connections>
                             </slider>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j76-up-EBC">
-                                <rect key="frame" x="18" y="116" width="14" height="17"/>
+                                <rect key="frame" x="18" y="87" width="14" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Y:" id="Vry-9A-7kf">
                                     <font key="font" metaFont="system" size="10"/>
@@ -1406,7 +1324,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jx9-vO-xKO">
-                                <rect key="frame" x="20" y="95" width="44" height="22"/>
+                                <rect key="frame" x="20" y="66" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0" drawsBackground="YES" id="0IV-oc-nTz">
                                     <font key="font" metaFont="system"/>
@@ -1418,7 +1336,7 @@
                                 </connections>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jma-dA-5BW">
-                                <rect key="frame" x="74" y="96" width="153" height="19"/>
+                                <rect key="frame" x="74" y="67" width="153" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="0Oy-zm-DMZ"/>
                                 <connections>
@@ -1426,7 +1344,7 @@
                                 </connections>
                             </slider>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yXV-CN-KlP">
-                                <rect key="frame" x="18" y="70" width="75" height="17"/>
+                                <rect key="frame" x="18" y="41" width="75" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Zoom Amount:" id="fzU-UA-BAZ">
                                     <font key="font" metaFont="system" size="10"/>
@@ -1435,7 +1353,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mz7-cG-B7a">
-                                <rect key="frame" x="20" y="49" width="44" height="22"/>
+                                <rect key="frame" x="20" y="20" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0.00" drawsBackground="YES" id="3zm-iA-gbE">
                                     <font key="font" metaFont="system"/>
@@ -1447,24 +1365,13 @@
                                 </connections>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lby-0J-JWS">
-                                <rect key="frame" x="74" y="50" width="153" height="19"/>
+                                <rect key="frame" x="74" y="21" width="153" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="20" tickMarkPosition="above" sliderType="linear" id="gCk-qJ-Vj2"/>
                                 <connections>
                                     <action selector="getZoomAmount:" target="zzN-ta-f7w" id="aDU-Wt-W6X"/>
                                 </connections>
                             </slider>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qqd-wF-WYt">
-                                <rect key="frame" x="14" y="13" width="217" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0o2-Cy-XPd">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="applyFilter:" target="kZN-2r-l6K" id="9LI-c7-cRO"/>
-                                </connections>
-                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -1478,7 +1385,7 @@
                 </viewController>
                 <customObject id="NRK-KU-GE3" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318.5" y="2098.5"/>
+            <point key="canvasLocation" x="319" y="1556"/>
         </scene>
         <!--ColorClampPopoverViewController-->
         <scene sceneID="NFk-hE-daf">
@@ -2683,7 +2590,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="CheckMark" width="500" height="500"/>
+        <image name="CrossMark" width="500" height="500"/>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
+        <image name="rotate-512" width="512" height="512"/>
+        <image name="scissors1600" width="25.600000381469727" height="25.600000381469727"/>
     </resources>
 </document>

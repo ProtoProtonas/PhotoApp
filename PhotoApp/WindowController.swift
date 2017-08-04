@@ -10,13 +10,14 @@ import CoreImage
 class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate {
 	
 	var originalImage: NSImage? = nil
-//	var metalDevice = MTLCreateSystemDefaultDevice()
+	var metalDevice = MTLCreateSystemDefaultDevice()
 	
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	//  toolbar
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	
 	let ZoomToolbarItemID = "Zoom"
+	let applyChangesToolbarItemID = "Apply Changes"
 	let blurFilterToolbarItemID = "Blur Filter"
 	let colorEffectFilterToolbarItemID = "Color Effect Filter"
 	let colorAdjustmentFilterToolbarItemID = "Color Adjustment Filter"
@@ -36,6 +37,25 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	}
 	
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+	//  apply changes toolbar item
+	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+	
+	@IBOutlet var applyChangesView: NSView!
+	@IBAction func applyChanges(_ sender: NSSegmentedControl) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView {
+			switch sender.selectedSegment {
+			case 0:
+				originalImage = imageView.image
+			case 1:
+				imageView.image = originalImage
+			default:
+				assertionFailure("Failed to apply changes")
+			}
+		}
+	}
+	
+	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	//  blur filter toolbar item and popovers
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	
@@ -43,7 +63,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	@IBOutlet weak var blurFilterPopUpButton: NSPopUpButton!
 	
 	var blurPopovers: [NSPopover?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, ]
-	var blurPopoverControllerNames: [String] = ["", "BoxBlurPopoverViewController", "DiscBlurPopoverViewController", "GaussianBlurPopoverViewController", "MaskedVariableBlurPopoverViewController", "MedianBlurPopoverViewController", "MotionBlurPopoverViewController", "NoiseBlurPopoverViewController", "ZoomBlurPopoverViewController"]
+	var blurPopoverControllerNames: [String] = ["", "BoxBlurPopoverViewController", "DiscBlurPopoverViewController", "GaussianBlurPopoverViewController", "MedianBlurPopoverViewController", "MotionBlurPopoverViewController", "NoiseBlurPopoverViewController", "ZoomBlurPopoverViewController"]
 	var blurPopoverControllers: [NSViewController?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil]
 	
 	func updateBoxBlur(with boxRadius: Double) {
@@ -140,26 +160,27 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let image = originalImage {
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
-			let ciContext = CIContext()
-//			let ciContext = CIContext.init(mtlDevice: self.metalDevice!, options: ["isLowPower": false])
+//			let ciContext = CIContext()
+			let ciContext = CIContext.init(mtlDevice: self.metalDevice!, options: ["isLowPower": false])
 			let filteredImage = ciImage.applyingFilter("CIZoomBlur", withInputParameters: ["inputAmount": amount, "inputCenter": center])
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
 	}
 	
 	@IBAction func showBlurPopoverAction(_ sender: NSButton) {
-		if blurFilterPopUpButton.indexOfSelectedItem != 0
-		{
+		if blurFilterPopUpButton.indexOfSelectedItem != 0 && blurFilterPopUpButton.indexOfSelectedItem != 4 {
 			self.createBlurPopover(popoverViewController: self.blurPopoverControllers[blurFilterPopUpButton.indexOfSelectedItem]!, x: blurFilterPopUpButton.indexOfSelectedItem)
 			let targetButton: NSButton = sender
 			let prefEdge: NSRectEdge = NSRectEdge.maxY
 			self.blurPopovers[blurFilterPopUpButton.indexOfSelectedItem]?.show(relativeTo: targetButton.bounds, of: sender as NSView, preferredEdge: prefEdge)
 		}
+		if blurFilterPopUpButton.indexOfSelectedItem == 4 {
+			self.updateMedianFilter()
+		}
 	}
 	
 	func createBlurPopover(popoverViewController: NSViewController, x: Int) {
-		if (self.blurPopovers[x] == nil)
-		{
+		if (self.blurPopovers[x] == nil) {
 			self.blurPopovers[x] = NSPopover.init()
 			self.blurPopovers[x]?.contentViewController = popoverViewController;
 			self.blurPopovers[x]?.animates = true
@@ -308,8 +329,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	
 	@IBOutlet var geometryAdjustmentView: NSView!
-	@IBOutlet weak var cropButton: NSButton!
-	@IBAction func crop(_ sender: NSButton) {
+	@IBOutlet weak var geometryControls: NSSegmentedControl!
+	@IBAction func initWindowControllerInstanceInCustomImageView(_ sender: Any) {
 		if let view = window?.contentView?.subviews.first as? NSScrollView {
 			(view.documentView?.subviews.first as? CustomImageView)?.windowController = self
 		}
@@ -324,6 +345,18 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let ciImage = CIImage(cgImage: cgImage)
 			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CICrop", withInputParameters: ["inputRectangle": CIVector(cgRect: rectangle)])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updateRotation(with angle: CGFloat) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIStraightenFilter", withInputParameters: ["inputAngle": angle])
 			//}
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
@@ -519,6 +552,9 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			originalImage = imageView.image
 		}
 	}
+    
+	
+    
 	
 	override func windowDidLoad() {
 		super.windowDidLoad()
@@ -531,7 +567,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		
 		// popover
 		
-		for x in 1...8 {
+		for x in 1...7 {
 			blurPopoverControllers[x] = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: blurPopoverControllerNames[x] )) as? NSViewController
 		}
 		
@@ -605,6 +641,9 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		} else if (itemIdentifier == ((geometryAdjustToolbarItemID as NSString) as NSToolbarItem.Identifier)) {
 			// 5) Geometry adjustment toolbar item.
 			toolbarItem = customToolbarItem(itemForItemIdentifier: geometryAdjustToolbarItemID, label: "Geometry Adjustment", paletteLabel:"Geometry Adjustment", toolTip: "Adjust the geometry of the image", target: self, itemContent: self.geometryAdjustmentView, action: nil, menu: nil)!
+		} else if (itemIdentifier == ((applyChangesToolbarItemID as NSString) as NSToolbarItem.Identifier)) {
+			// 6) Apply changes toolbar item.
+			toolbarItem = customToolbarItem(itemForItemIdentifier: applyChangesToolbarItemID, label: "Apply Changes", paletteLabel:"Apply Changes", toolTip: "Apply or discard changes done to the image", target: self, itemContent: self.applyChangesView, action: nil, menu: nil)!
 		}
 		
 		return toolbarItem
@@ -612,6 +651,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	
 	func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
 		return [NSToolbarItem.Identifier(rawValue: ZoomToolbarItemID),
+		        NSToolbarItem.Identifier(rawValue: applyChangesToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: geometryAdjustToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: blurFilterToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: colorAdjustmentFilterToolbarItemID),
@@ -620,6 +660,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	
 	func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
 		return [NSToolbarItem.Identifier(rawValue: ZoomToolbarItemID),
+		        NSToolbarItem.Identifier(rawValue: applyChangesToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: geometryAdjustToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: blurFilterToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: colorAdjustmentFilterToolbarItemID),
