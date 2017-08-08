@@ -53,7 +53,7 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var discBlurSlider: NSSlider!
     @IBAction func getDiscBlur(_ sender: NSSlider) {
         discBlurTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
-        self.discBlurValue = sender.doubleValue.roundTo(places: 2)
+        self.discBlurValue = Double(sender.floatValue.roundTo(places: 2))
     }
     @IBOutlet weak var discBlurTextField: NSTextField!
     @IBAction func getDiscBlurT(_ sender: NSTextField) {
@@ -189,56 +189,56 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // zoom blur filter
     
-    var xValue: CGFloat = 0.0 {
-        didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xValue, y: yValue)) }
+    var xZoomValue: CGFloat = 0.0 {
+        didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xZoomValue, y: yZoomValue)) }
     }
-    var yValue: CGFloat = 0.0 {
-        didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xValue, y: yValue)) }
+    var yZoomValue: CGFloat = 0.0 {
+        didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xZoomValue, y: yZoomValue)) }
     }
     var zoomAmountValue: Double = 0.0 {
-        didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xValue, y: yValue)) }
+        didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xZoomValue, y: yZoomValue)) }
     }
     
-    @IBOutlet weak var centerXSlider: NSSlider!
-    @IBOutlet weak var centerYSlider: NSSlider!
+    @IBOutlet weak var centerXZoomSlider: NSSlider!
+    @IBOutlet weak var centerYZoomSlider: NSSlider!
     @IBOutlet weak var zoomAmountSlider: NSSlider!
-    @IBAction func getXValue(_ sender: NSSlider) {
-        xValueTextField.stringValue = String(sender.integerValue)
-        self.xValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    @IBAction func getXZoomValue(_ sender: NSSlider) {
+        xZoomValueTextField.stringValue = String(sender.integerValue)
+        self.xZoomValue = CGFloat(sender.doubleValue.roundTo(places: 2))
     }
-    @IBAction func getYValue(_ sender: NSSlider) {
-        yValueTextField.stringValue = String(sender.integerValue)
-        self.yValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    @IBAction func getYZoomValue(_ sender: NSSlider) {
+        yZoomValueTextField.stringValue = String(sender.integerValue)
+        self.yZoomValue = CGFloat(sender.doubleValue.roundTo(places: 2))
     }
     @IBAction func getZoomAmount(_ sender: NSSlider) {
         zoomAmountTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
         self.zoomAmountValue = sender.doubleValue.roundTo(places: 2)
     }
-    @IBOutlet weak var xValueTextField: NSTextField!
-    @IBOutlet weak var yValueTextField: NSTextField!
+    @IBOutlet weak var xZoomValueTextField: NSTextField!
+    @IBOutlet weak var yZoomValueTextField: NSTextField!
     @IBOutlet weak var zoomAmountTextField: NSTextField!
-    @IBAction func getXValueT(_ sender: NSTextField) {
+    @IBAction func getXZoomValueT(_ sender: NSTextField) {
         if Double(sender.stringValue) != nil {
-            if Double(sender.stringValue)! < centerXSlider.minValue {
-                centerXSlider.doubleValue = centerXSlider.minValue
-            } else if Double(sender.stringValue)! > centerXSlider.maxValue {
-                centerXSlider.doubleValue = centerXSlider.maxValue
+            if Double(sender.stringValue)! < centerXZoomSlider.minValue {
+                centerXZoomSlider.doubleValue = centerXZoomSlider.minValue
+            } else if Double(sender.stringValue)! > centerXZoomSlider.maxValue {
+                centerXZoomSlider.doubleValue = centerXZoomSlider.maxValue
             } else {
-                centerXSlider.doubleValue = Double(sender.stringValue)!
+                centerXZoomSlider.doubleValue = Double(sender.stringValue)!
             }
-            self.xValue = CGFloat(Double(sender.stringValue)!)
+            self.xZoomValue = CGFloat(Double(sender.stringValue)!)
         }
     }
-    @IBAction func getYValueT(_ sender: NSTextField) {
+    @IBAction func getYZoomValueT(_ sender: NSTextField) {
         if Double(sender.stringValue) != nil {
-            if Double(sender.stringValue)! < centerYSlider.minValue {
-                centerYSlider.doubleValue = centerYSlider.minValue
-            } else if Double(sender.stringValue)! > centerYSlider.maxValue {
-                centerYSlider.doubleValue = centerYSlider.maxValue
+            if Double(sender.stringValue)! < centerYZoomSlider.minValue {
+                centerYZoomSlider.doubleValue = centerYZoomSlider.minValue
+            } else if Double(sender.stringValue)! > centerYZoomSlider.maxValue {
+                centerYZoomSlider.doubleValue = centerYZoomSlider.maxValue
             } else {
-                centerYSlider.doubleValue = Double(sender.stringValue)!
+                centerYZoomSlider.doubleValue = Double(sender.stringValue)!
             }
-            self.yValue = CGFloat(Double(sender.stringValue)!)
+            self.yZoomValue = CGFloat(Double(sender.stringValue)!)
         }
     }
     @IBAction func getZoomAmountT(_ sender: NSTextField) {
@@ -532,6 +532,129 @@ class PopoverViewController: NSViewController {
         windowController?.updateInvertColors()
     }
     
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //color monochrome
+    
+    var monochromeRedValue: Float = 255.0 {
+        didSet { windowController?.updateMonochromeAdjust(with: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue)), intensity: monochromeIntensity)
+            monochromeColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue))) }
+    }
+    var monochromeGreenValue: Float = 255.0 {
+        didSet { windowController?.updateMonochromeAdjust(with: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue)), intensity: monochromeIntensity)
+            monochromeColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue))) }
+    }
+    var monochromeBlueValue: Float = 255.0 {
+        didSet { windowController?.updateMonochromeAdjust(with: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue)), intensity: monochromeIntensity)
+            monochromeColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue))) }
+    }
+    var monochromeIntensity: Double = 0.0 {
+        didSet { windowController?.updateMonochromeAdjust(with: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue)), intensity: monochromeIntensity)
+            monochromeColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue)))
+        }
+    }
+    
+    @IBOutlet weak var monochromeRedSlider: NSSlider!
+    @IBOutlet weak var monochromeGreenSlider: NSSlider!
+    @IBOutlet weak var monochromeBlueSlider: NSSlider!
+    @IBOutlet weak var monochromeIntensitySlider: NSSlider!
+    @IBAction func getMonochromeRedValue(_ sender: NSSlider) {
+        monochromeRedTextField.stringValue = String(sender.integerValue)
+        self.monochromeRedValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getMonochromeGreenValue(_ sender: NSSlider) {
+        monochromeGreenTextField.stringValue = String(sender.integerValue)
+        self.monochromeGreenValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getMonochromeBlueValue(_ sender: NSSlider) {
+        monochromeBlueTextField.stringValue = String(sender.integerValue)
+        self.monochromeBlueValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getMonochromeIntensity(_ sender: NSSlider) {
+        monochromeIntensityTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.monochromeIntensity = sender.doubleValue
+    }
+    
+    @IBOutlet weak var monochromeRedTextField: NSTextField!
+    @IBOutlet weak var monochromeGreenTextField: NSTextField!
+    @IBOutlet weak var monochromeBlueTextField: NSTextField!
+    @IBOutlet weak var monochromeColorField: NSTextField!
+    @IBOutlet weak var monochromeIntensityTextField: NSTextField!
+    @IBAction func getMonochromeRedValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < monochromeRedSlider.minValue {
+                monochromeRedSlider.doubleValue = monochromeRedSlider.minValue
+            } else if Double(sender.stringValue)! > monochromeRedSlider.maxValue {
+                monochromeRedSlider.doubleValue = monochromeRedSlider.maxValue
+            } else {
+                monochromeRedSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.monochromeRedValue = Float(sender.stringValue)! / 256
+        }
+    }
+    @IBAction func getMonochromeGreenValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < monochromeGreenSlider.minValue {
+                monochromeGreenSlider.doubleValue = monochromeGreenSlider.minValue
+            } else if Double(sender.stringValue)! > monochromeGreenSlider.maxValue {
+                monochromeGreenSlider.doubleValue = monochromeGreenSlider.maxValue
+            } else {
+                monochromeGreenSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.monochromeGreenValue = Float(sender.stringValue)!  / 256
+        }
+    }
+    @IBAction func getMonochromeBlueValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < monochromeBlueSlider.minValue {
+                monochromeBlueSlider.doubleValue = monochromeBlueSlider.minValue
+            } else if Double(sender.stringValue)! > monochromeBlueSlider.maxValue {
+                monochromeBlueSlider.doubleValue = monochromeBlueSlider.maxValue
+            } else {
+                monochromeBlueSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.monochromeBlueValue = Float(sender.stringValue)!  / 256
+        }
+    }
+    @IBAction func getMonochromeIntensityT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < monochromeIntensitySlider.minValue {
+                monochromeIntensitySlider.doubleValue = monochromeIntensitySlider.minValue
+            } else if Double(sender.stringValue)! > monochromeIntensitySlider.maxValue {
+                monochromeIntensitySlider.doubleValue = monochromeIntensitySlider.maxValue
+            } else {
+                monochromeIntensitySlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.monochromeIntensity = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //color posterize
+    
+    var posterizeLevelValue: Double = 2.0 {
+        didSet { windowController?.updatePosterize(with: posterizeLevelValue) }
+    }
+    
+    @IBOutlet weak var posterizeLevelSlider: NSSlider!
+    @IBAction func getposterizeLevelValue(_ sender: NSSlider) {
+        posterizeLevelTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.posterizeLevelValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var posterizeLevelTextField: NSTextField!
+    @IBAction func getPosterizeLevelValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < posterizeLevelSlider.minValue {
+                posterizeLevelSlider.doubleValue = posterizeLevelSlider.minValue
+            } else if Double(sender.stringValue)! > posterizeLevelSlider.maxValue {
+                posterizeLevelSlider.doubleValue = posterizeLevelSlider.maxValue
+            } else {
+                posterizeLevelSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.posterizeLevelValue = Double(sender.stringValue)!
+        }
+    }
+    
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     //mask to alpha
     
@@ -609,13 +732,267 @@ class PopoverViewController: NSViewController {
         windowController?.updatePhotoEffectTransfer()
     }
     
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //sepia tone intensity
+    
+    var sepiaToneIntensityValue: Double = 0.0 {
+        didSet { windowController?.updateSepiaTone(with: sepiaToneIntensityValue) }
+    }
+    
+    @IBOutlet weak var sepiaToneIntensitySlider: NSSlider!
+    @IBAction func getSepiaToneIntensityValue(_ sender: NSSlider) {
+        sepiaToneIntensityTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.sepiaToneIntensityValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var sepiaToneIntensityTextField: NSTextField!
+    @IBAction func getSepiaToneIntensityValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < sepiaToneIntensitySlider.minValue {
+                sepiaToneIntensitySlider.doubleValue = sepiaToneIntensitySlider.minValue
+            } else if Double(sender.stringValue)! > sepiaToneIntensitySlider.maxValue {
+                sepiaToneIntensitySlider.doubleValue = sepiaToneIntensitySlider.maxValue
+            } else {
+                sepiaToneIntensitySlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.sepiaToneIntensityValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // vignette filter
+    
+    var vignetteIntensityValue: Double = 0.0 {
+        didSet { windowController?.updateVignette(with: vignetteRadiusValue, intensity: vignetteIntensityValue) }
+    }
+    var vignetteRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateVignette(with: vignetteRadiusValue, intensity: vignetteIntensityValue) }
+    }
+    
+    @IBOutlet weak var vignetteIntensitySlider: NSSlider!
+    @IBOutlet weak var vignetteRadiusSlider: NSSlider!
+    @IBAction func getVignetteIntensity(_ sender: NSSlider) {
+        vignetteIntensityTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.vignetteIntensityValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getVignetteRadius(_ sender: NSSlider) {
+        vignetteRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.vignetteRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var vignetteIntensityTextField: NSTextField!
+    @IBOutlet weak var vignetteRadiusTextField: NSTextField!
+    @IBAction func getVignetteIntensityT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < vignetteIntensitySlider.minValue {
+                vignetteIntensitySlider.doubleValue = vignetteIntensitySlider.minValue
+            } else if Double(sender.stringValue)! > vignetteIntensitySlider.maxValue {
+                vignetteIntensitySlider.doubleValue = vignetteIntensitySlider.maxValue
+            } else {
+                vignetteIntensitySlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.vignetteIntensityValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getVignetteRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < vignetteRadiusSlider.minValue {
+                vignetteRadiusSlider.doubleValue = vignetteRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > vignetteRadiusSlider.maxValue {
+                vignetteRadiusSlider.doubleValue = vignetteRadiusSlider.maxValue
+            } else {
+                vignetteRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.vignetteRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // vignette effect filter
+    
+    var xVignetteValue: CGFloat = 0.0 {
+        didSet { windowController?.updateVignetteEffect(with: vignetteEffectRadiusValue, intensity: vignetteEffectIntensityValue, center: CIVector(x: xVignetteValue, y: yVignetteValue)) }
+    }
+    var yVignetteValue: CGFloat = 0.0 {
+        didSet { windowController?.updateVignetteEffect(with: vignetteEffectRadiusValue, intensity: vignetteEffectIntensityValue, center: CIVector(x: xVignetteValue, y: yVignetteValue)) }
+    }
+    var vignetteEffectIntensityValue: Double = 0.0 {
+        didSet { windowController?.updateVignetteEffect(with: vignetteEffectRadiusValue, intensity: vignetteEffectIntensityValue, center: CIVector(x: xVignetteValue, y: yVignetteValue)) }
+    }
+    var vignetteEffectRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateVignetteEffect(with: vignetteEffectRadiusValue, intensity: vignetteEffectIntensityValue, center: CIVector(x: xVignetteValue, y: yVignetteValue)) }
+    }
+    
+    @IBOutlet weak var xVignetteSlider: NSSlider!
+    @IBOutlet weak var yVignetteSlider: NSSlider!
+    @IBOutlet weak var vignetteEffectIntensitySlider: NSSlider!
+    @IBOutlet weak var vignetteEffectRadiusSlider: NSSlider!
+    @IBAction func getXVignetteEffectValue(_ sender: NSSlider) {
+        xVignetteValueTextField.stringValue = String(sender.integerValue)
+        self.xVignetteValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYVignetteEffectValue(_ sender: NSSlider) {
+        yVignetteValueTextField.stringValue = String(sender.integerValue)
+        self.yVignetteValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getVignetteEffectIntensity(_ sender: NSSlider) {
+        vignetteEffectIntensityTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.vignetteEffectIntensityValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getVignetteEffectRadius(_ sender: NSSlider) {
+        vignetteEffectRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.vignetteEffectRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xVignetteValueTextField: NSTextField!
+    @IBOutlet weak var yVignetteValueTextField: NSTextField!
+    @IBOutlet weak var vignetteEffectIntensityTextField: NSTextField!
+    @IBOutlet weak var vignetteEffectRadiusTextField: NSTextField!
+    @IBAction func getXVignetteEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xVignetteSlider.minValue {
+                xVignetteSlider.doubleValue = xVignetteSlider.minValue
+            } else if Double(sender.stringValue)! > xVignetteSlider.maxValue {
+                xVignetteSlider.doubleValue = xVignetteSlider.maxValue
+            } else {
+                xVignetteSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xVignetteValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYVignetteEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yVignetteSlider.minValue {
+                yVignetteSlider.doubleValue = yVignetteSlider.minValue
+            } else if Double(sender.stringValue)! > yVignetteSlider.maxValue {
+                yVignetteSlider.doubleValue = yVignetteSlider.maxValue
+            } else {
+                yVignetteSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yVignetteValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getVignetteEffectIntensityT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < vignetteEffectIntensitySlider.minValue {
+                vignetteEffectIntensitySlider.doubleValue = vignetteEffectIntensitySlider.minValue
+            } else if Double(sender.stringValue)! > vignetteEffectIntensitySlider.maxValue {
+                vignetteEffectIntensitySlider.doubleValue = vignetteEffectIntensitySlider.maxValue
+            } else {
+                vignetteEffectIntensitySlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.vignetteEffectIntensityValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getVignetteEffectRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < vignetteEffectRadiusSlider.minValue {
+                vignetteEffectRadiusSlider.doubleValue = vignetteEffectRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > vignetteEffectRadiusSlider.maxValue {
+                vignetteEffectRadiusSlider.doubleValue = vignetteEffectRadiusSlider.maxValue
+            } else {
+                vignetteEffectRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.vignetteEffectRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
+    // sharpen filters
+    //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // sharpen luminance
+    
+    var sharpenLuminanceValue: Double = 0.0 {
+        didSet { windowController?.updateSharpenLuminance(with: sharpenLuminanceValue) }
+    }
+    
+    @IBOutlet weak var sharpenLuminanceSlider: NSSlider!
+    @IBAction func getSharpenLuminance(_ sender: NSSlider) {
+        sharpenLuminanceTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.sharpenLuminanceValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var sharpenLuminanceTextField: NSTextField!
+    @IBAction func getSharpenLuminanceT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < sharpenLuminanceSlider.minValue {
+                sharpenLuminanceSlider.doubleValue = sharpenLuminanceSlider.minValue
+            } else if Double(sender.stringValue)! > sharpenLuminanceSlider.maxValue {
+                sharpenLuminanceSlider.doubleValue = sharpenLuminanceSlider.maxValue
+            } else {
+                sharpenLuminanceSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.sharpenLuminanceValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // unsharp mask
+    
+    var unsharpMaskIntensityValue: Double = 0.0 {
+        didSet { windowController?.updateUnsharpMask(with: unsharpMaskRadiusValue, intensity: unsharpMaskIntensityValue) }
+    }
+    var unsharpMaskRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateUnsharpMask(with: unsharpMaskRadiusValue, intensity: unsharpMaskIntensityValue) }
+    }
+    
+    @IBOutlet weak var unsharpMaskIntensitySlider: NSSlider!
+    @IBOutlet weak var unsharpMaskRadiusSlider: NSSlider!
+    @IBAction func getUnsharpMaskIntensity(_ sender: NSSlider) {
+        unsharpMaskIntensityTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.unsharpMaskIntensityValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getUnsharpMaskRadius(_ sender: NSSlider) {
+        unsharpMaskRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.unsharpMaskRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var unsharpMaskIntensityTextField: NSTextField!
+    @IBOutlet weak var unsharpMaskRadiusTextField: NSTextField!
+    @IBAction func getUnsharpMaskIntensityT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < unsharpMaskIntensitySlider.minValue {
+                unsharpMaskIntensitySlider.doubleValue = unsharpMaskIntensitySlider.minValue
+            } else if Double(sender.stringValue)! > unsharpMaskIntensitySlider.maxValue {
+                unsharpMaskIntensitySlider.doubleValue = unsharpMaskIntensitySlider.maxValue
+            } else {
+                unsharpMaskIntensitySlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.unsharpMaskIntensityValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getUnsharpMaskRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < unsharpMaskRadiusSlider.minValue {
+                unsharpMaskRadiusSlider.doubleValue = unsharpMaskRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > unsharpMaskRadiusSlider.maxValue {
+                unsharpMaskRadiusSlider.doubleValue = unsharpMaskRadiusSlider.maxValue
+            } else {
+                unsharpMaskRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.unsharpMaskRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if let image = windowController?.originalImage {
-            if let centerXSlider = centerXSlider,
-                let centerYSlider = centerYSlider {
+            if let centerXSlider = centerXZoomSlider,
+                let centerYSlider = centerYZoomSlider {
                 centerXSlider.maxValue = Double(image.size.width)
                 centerYSlider.maxValue = Double(image.size.height)
+            }
+            if let xVignetteSlider = xVignetteSlider,
+                let yVignetteSlider = yVignetteSlider,
+                let vignetteEffectRadiusSlider = vignetteEffectRadiusSlider{
+                xVignetteSlider.maxValue = Double(image.size.width)
+                yVignetteSlider.maxValue = Double(image.size.height)
+                if image.size.width < image.size.height {
+                    vignetteEffectRadiusSlider.maxValue = Double(image.size.height)
+                } else {
+                    vignetteEffectRadiusSlider.maxValue = Double(image.size.width)
+                }
             }
         }
     }

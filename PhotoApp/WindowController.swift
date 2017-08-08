@@ -10,7 +10,10 @@ import CoreImage
 class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate {
 	
 	var originalImage: NSImage? = nil
-	var metalDevice = MTLCreateSystemDefaultDevice()
+	var originalCIImage: CIImage? = nil
+//	let ciContext = CIContext.init(mtlDevice: MTLCreateSystemDefaultDevice()!)
+	let ciContext = CIContext()
+//	weak var appDelegate: AppDelegate? = nil
 	
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	//  toolbar
@@ -22,6 +25,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	let colorEffectFilterToolbarItemID = "Color Effect Filter"
 	let colorAdjustmentFilterToolbarItemID = "Color Adjustment Filter"
 	let geometryAdjustToolbarItemID = "Geometry Adjustment"
+	let sharpenFilterToolbarItemID = "Sharpen Filter"
 	
 	@IBOutlet var toolbar: NSToolbar!
 	
@@ -63,18 +67,15 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	@IBOutlet weak var blurFilterPopUpButton: NSPopUpButton!
 	
 	var blurPopovers: [NSPopover?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, ]
-	var blurPopoverControllerNames: [String] = ["", "BoxBlurPopoverViewController", "DiscBlurPopoverViewController", "GaussianBlurPopoverViewController", "MedianBlurPopoverViewController", "MotionBlurPopoverViewController", "NoiseBlurPopoverViewController", "ZoomBlurPopoverViewController"]
+	var blurPopoverControllerNames: [String] = ["", "BoxBlurPopoverViewController", "DiscBlurPopoverViewController", "GaussianBlurPopoverViewController", "MotionBlurPopoverViewController", "NoiseBlurPopoverViewController", "ZoomBlurPopoverViewController"]
 	var blurPopoverControllers: [NSViewController?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil]
 	
 	func updateBoxBlur(with boxRadius: Double) {
 		if let view = window?.contentView?.subviews.first as? NSScrollView,
 			let imageView = view.documentView?.subviews.first as? CustomImageView,
-			let image = originalImage {
-			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-			let ciImage = CIImage(cgImage: cgImage)
-			let ciContext = CIContext()
-		let filteredImage = ciImage.applyingFilter("CIBoxBlur", withInputParameters: ["inputRadius": boxRadius])
-		imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+			let image = originalCIImage {
+		let filteredImage = image.applyingFilter("CIBoxBlur", withInputParameters: ["inputRadius": boxRadius])
+		imageView.ciImage = filteredImage
 		}
 	}
 	
@@ -84,13 +85,10 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let image = originalImage {
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
-			let ciContext = CIContext()
+			//			let ciContext = CIContext()
+			//Crashes with values 0..1 radar 33770007
 			let filteredImage = ciImage.applyingFilter("CIDiscBlur", withInputParameters: ["inputRadius": discRadius])
-			if let filteredImage = ciContext.createCGImage(filteredImage, from: ciImage.extent) {
-				imageView.image = NSImage(cgImage: filteredImage, size: image.size)
-			} else {
-				NSLog("Unable to do disc blur")
-			}
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
 	}
 	
@@ -100,7 +98,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let image = originalImage {
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
-			let ciContext = CIContext()
+//			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CIGaussianBlur", withInputParameters: ["inputRadius": sigma])
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
@@ -112,7 +110,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let image = originalImage {
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
-			let ciContext = CIContext()
+//			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CIMaskedVariableBlur", withInputParameters: ["inputRadius": radius])
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
@@ -124,7 +122,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let image = originalImage {
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
-			let ciContext = CIContext()
+//			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CIMedianFilter", withInputParameters: [:])
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
@@ -136,7 +134,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let image = originalImage {
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
-			let ciContext = CIContext()
+//			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CIMotionBlur", withInputParameters: ["inputRadius": motionRadius, "inputAngle": motionAngle])
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
@@ -148,7 +146,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let image = originalImage {
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
-			let ciContext = CIContext()
+//			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CINoiseReduction", withInputParameters: ["inputNoiseLevel": noiseLevel, "inputSharpness": sharpness])
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
@@ -161,20 +159,27 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			let ciImage = CIImage(cgImage: cgImage)
 //			let ciContext = CIContext()
-			let ciContext = CIContext.init(mtlDevice: self.metalDevice!, options: ["isLowPower": false])
+//			let ciContext = CIContext.init(mtlDevice: self.metalDevice!, options: ["isLowPower": false])
 			let filteredImage = ciImage.applyingFilter("CIZoomBlur", withInputParameters: ["inputAmount": amount, "inputCenter": center])
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
 	}
 	
 	@IBAction func showBlurPopoverAction(_ sender: NSButton) {
-		if blurFilterPopUpButton.indexOfSelectedItem != 0 && blurFilterPopUpButton.indexOfSelectedItem != 4 {
-			self.createBlurPopover(popoverViewController: self.blurPopoverControllers[blurFilterPopUpButton.indexOfSelectedItem]!, x: blurFilterPopUpButton.indexOfSelectedItem)
-			let targetButton: NSButton = sender
-			let prefEdge: NSRectEdge = NSRectEdge.maxY
-			self.blurPopovers[blurFilterPopUpButton.indexOfSelectedItem]?.show(relativeTo: targetButton.bounds, of: sender as NSView, preferredEdge: prefEdge)
-		}
-		if blurFilterPopUpButton.indexOfSelectedItem == 4 {
+		showBlurPopover(id: blurFilterPopUpButton.indexOfSelectedItem)
+	}
+	
+	@IBAction func showBlurPopoverActionMenu(_ sender: NSMenuItem) {
+		showBlurPopover(id: sender.tag)
+	}
+	
+	func showBlurPopover(id: Int) {
+		if id != 0 && id != 7 {
+			self.createBlurPopover(popoverViewController: self.blurPopoverControllers[id]!, x: id)
+			let prefEdge: NSRectEdge = NSRectEdge.minY
+			let targetButton = window!.standardWindowButton(.closeButton)!.superview!
+			self.blurPopovers[id]?.show(relativeTo: targetButton.bounds , of: targetButton, preferredEdge: prefEdge)
+		} else if id == 7 {
 			self.updateMedianFilter()
 		}
 	}
@@ -198,11 +203,10 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	@IBOutlet var colorAdjustmentFilterView: NSView!
 	@IBOutlet weak var colorAdjustmentFilterPopUpButton: NSPopUpButton!
 	
-	var colorAdjustmentPopovers: [NSPopover?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
-	var colorAdjustmentPopoverControllerNames: [String] = ["", "ColorClampPopoverViewController", "ColorControlsPopoverViewController", "ColorMatrixPopoverViewController", "ColorPolynomialPopoverViewController", "ExposureAdjustPopoverViewController", "GammaAdjustPopoverViewController", "HueAdjustPopoverViewController", "LinearToSRGBToneCurvePopoverViewController", "SRGBToneCurveToLinearPopoverViewController", "TemperatureAndTintPopoverViewController", "ToneCurvePopoverViewController", "VibrancePopoverViewController", "WhitePointAdjustPopoverViewController"]
-	var colorAdjustmentPopoverControllers: [NSViewController?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
-	
-	// labai daug funkciju
+	var colorAdjustmentPopovers: [NSPopover?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
+	var colorAdjustmentPopoverControllerNames: [String] = ["", "ColorControlsPopoverViewController", "ExposureAdjustPopoverViewController", "GammaAdjustPopoverViewController", "HueAdjustPopoverViewController", "", "", "TemperatureAndTintPopoverViewController", "VibrancePopoverViewController", "WhitePointAdjustPopoverViewController"]
+	var colorAdjustmentPopoverControllers: [NSViewController?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
+	let colorAdjustmentArray: [Int] = [1, 2, 3, 4, 7, 8, 9]
 	
 	func updateColorControls(with saturation: Double, brightness: Double, contrast: Double) {
 		if let view = window?.contentView?.subviews.first as? NSScrollView,
@@ -300,13 +304,27 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		}
 	}
 	
-	@IBAction func showColorAdjustmentPopoverAction(_ sender: NSButton) {
-		if colorAdjustmentFilterPopUpButton.indexOfSelectedItem != 0
-		{
-			self.createColorAdjustmentPopover(popoverViewController: self.colorAdjustmentPopoverControllers[colorAdjustmentFilterPopUpButton.indexOfSelectedItem]!, x: colorAdjustmentFilterPopUpButton.indexOfSelectedItem)
-			let targetButton: NSButton = sender
-			let prefEdge: NSRectEdge = NSRectEdge.maxY
-			self.colorAdjustmentPopovers[colorAdjustmentFilterPopUpButton.indexOfSelectedItem]?.show(relativeTo: targetButton.bounds, of: sender as NSView, preferredEdge: prefEdge)
+	@IBAction func showColorAdjustmentPopover(_ sender: NSButton) {
+		showColorAdjustmentPopover(id: colorAdjustmentFilterPopUpButton.indexOfSelectedItem)
+	}
+	
+	@IBAction func showColorAdjustmentPopoverMenu(_ sender: NSMenuItem) {
+		showColorAdjustmentPopover(id: sender.tag)
+	}
+	
+	func showColorAdjustmentPopover(id: Int) {
+		switch id {
+		case 5:
+			self.updateLinearToSRGBFilter()
+		case 6:
+			self.updateSRGBToLinearFilter()
+		default:
+			if id != 0 {
+				self.createColorAdjustmentPopover(popoverViewController: self.colorAdjustmentPopoverControllers[id]!, x: id)
+				let targetButton = window!.standardWindowButton(.closeButton)!.superview!
+				let prefEdge: NSRectEdge = NSRectEdge.minY
+				self.colorAdjustmentPopovers[id]?.show(relativeTo: targetButton.bounds, of: targetButton, preferredEdge: prefEdge)
+			}
 		}
 	}
 	
@@ -323,6 +341,71 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		}
 	}
 	
+	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+	//  sharpening
+	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+	
+	@IBOutlet var sharpenView: NSView!
+	@IBOutlet var sharpenPopUpButton: NSPopUpButton!
+	var sharpenPopovers: [NSPopover?] = [nil, nil, nil]
+	var sharpenPopoverControllers: [NSViewController?] = [nil, nil, nil]
+	var sharpenPopoverNames: [String] = ["", "SharpenLuminancePopoverViewController", "UnsharpMaskPopoverViewController"]
+	
+	// netgi dvi funkcijos
+	
+	func updateSharpenLuminance(with sharpness: Double) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CISharpenLuminance", withInputParameters: ["inputSharpness": sharpness])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updateUnsharpMask(with radius: Double, intensity: Double) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIUnsharpMask", withInputParameters: ["inputRadius": radius, "inputIntensity": intensity])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	@IBAction func showSharpenPopoverAction(_ sender: NSButton) {
+		showSharpenPopover(id: sharpenPopUpButton.indexOfSelectedItem)
+	}
+	
+	@IBAction func showSharpenPopoverActionMenu(_ sender: NSMenuItem) {
+		showSharpenPopover(id: sender.tag)
+	}
+	
+	func showSharpenPopover(id: Int) {
+		if id != 0 {
+			self.createSharpenPopover(popoverViewController: self.sharpenPopoverControllers[id]!, x: id)
+			let prefEdge: NSRectEdge = NSRectEdge.minY
+			let targetButton = window!.standardWindowButton(.closeButton)!.superview!
+			self.sharpenPopovers[id]?.show(relativeTo: targetButton.bounds , of: targetButton, preferredEdge: prefEdge)
+		}
+	}
+	
+	func createSharpenPopover(popoverViewController: NSViewController, x: Int) {
+		if (self.sharpenPopovers[x] == nil)
+		{
+			self.sharpenPopovers[x] = NSPopover.init()
+			self.sharpenPopovers[x]?.contentViewController = popoverViewController;
+			self.sharpenPopovers[x]?.animates = true
+			self.sharpenPopovers[x]?.appearance = NSAppearance.init(named: NSAppearance.Name.vibrantLight)
+			self.sharpenPopovers[x]?.behavior = NSPopover.Behavior.transient
+			self.sharpenPopovers[x]?.delegate = self
+			(self.sharpenPopovers[x]?.contentViewController as? PopoverViewController)?.windowController = self
+		}
+	}
 	
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	//  geometry adjustment
@@ -335,7 +418,19 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			(view.documentView?.subviews.first as? CustomImageView)?.windowController = self
 		}
 	}
-	
+    
+    @IBOutlet weak var geometryControlsMomentary: NSSegmentedControl!
+    @IBAction func geometryControlsMomentary(_ sender: Any) {
+        if let sender = sender as? NSSegmentedControl {
+            switch sender.selectedSegment {
+            case 0:
+                self.updateMirror()
+            default:
+                self.doNothing()
+            }
+        }
+    }
+    
 	
 	func updateCrop(with rectangle: CGRect) {
 		if let view = window?.contentView?.subviews.first as? NSScrollView,
@@ -345,7 +440,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let ciImage = CIImage(cgImage: cgImage)
 			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CICrop", withInputParameters: ["inputRectangle": CIVector(cgRect: rectangle)])
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: filteredImage.extent.size)
 		}
 	}
 	
@@ -357,7 +452,18 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let ciImage = CIImage(cgImage: cgImage)
 			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CIStraightenFilter", withInputParameters: ["inputAngle": angle])
-			//}
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updateMirror() {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingOrientation(2)
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
 	}
@@ -369,7 +475,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	@IBOutlet var colorEffectFilterView: NSView!
 	@IBOutlet weak var colorEffectFilterPopUpButton: NSPopUpButton!
 	var colorEffectPopovers: [NSPopover?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
-	var colorEffectPopoverControllerNames: [String] = ["", "ColorCrossPolynomialPopoverViewController", "ColorCubePopoverViewController", "ColorCubeWithColorSpacePopoverViewController", "ColorInvertPopoverViewController", "ColorMapPopoverViewController", "ColorMonochromePopoverViewController", "ColorPosterizePopoverViewController", "FalseColorPopoverViewController", "MaskToAlphaPopoverViewController", "MaximumComponentPopoverViewController", "MinimumComponentPopoverViewController", "PhotoEffectChromePopoverViewController", "PhotoEffectFadePopoverViewController", "PhotoEffectInstantPopoverViewController", "PhotoEffectMonoPopoverViewController", "PhotoEffectNoirPopoverViewController", "PhotoEffectProcessPopoverViewController", "PhotoEffectTonalPopoverViewController", "PhotoEffectTransferPopoverViewController", "SepiaTonePopoverViewController", "VignettePopoverViewController", "VignetteEffectPopoverViewController"]
+	var colorEffectPopoverControllerNames: [String] = ["", "", "ColorMonochromePopoverViewController", "ColorPosterizePopoverViewController", "FalseColorPopoverViewController", "", "", "", "", "", "", "", "", "", "", "", "SepiaTonePopoverViewController", "VignettePopoverViewController", "VignetteEffectPopoverViewController"]
+	var colorEffectArray: [Int] = [2, 3, 4, 16, 17, 18]
 	var colorEffectPopoverControllers: [NSViewController?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
 	
 	// labai daug funkciju
@@ -382,6 +489,30 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let ciImage = CIImage(cgImage: cgImage)
 			let ciContext = CIContext()
 			let filteredImage = ciImage.applyingFilter("CIColorInvert", withInputParameters: [:])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updateMonochromeAdjust(with color: CIColor, intensity: Double) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIColorMonochrome", withInputParameters: ["inputColor": color, "inputIntensity": intensity])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
+	
+	func updatePosterize(with levels: Double) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIColorPosterize", withInputParameters: ["inputLevels": levels])
 			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
 		}
 	}
@@ -518,18 +649,85 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		}
 	}
 	
+	func updateSepiaTone(with intensity: Double) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CISepiaTone", withInputParameters: ["inputIntensity": intensity])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
 	
+	func updateVignette(with radius: Double, intensity: Double) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIVignette", withInputParameters: ["inputIntensity": intensity, "inputRadius": radius])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
 	
-	
+	func updateVignetteEffect(with radius: Double, intensity: Double, center: CIVector) {
+		if let view = window?.contentView?.subviews.first as? NSScrollView,
+			let imageView = view.documentView?.subviews.first as? CustomImageView,
+			let image = originalImage {
+			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			let ciImage = CIImage(cgImage: cgImage)
+			let ciContext = CIContext()
+			let filteredImage = ciImage.applyingFilter("CIVignetteEffect", withInputParameters: ["inputIntensity": intensity, "inputRadius": radius, "inputCenter": center])
+			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		}
+	}
 	
 	
 	@IBAction func showColorEffectPopoverAction(_ sender: NSButton) {
-		if colorEffectFilterPopUpButton.indexOfSelectedItem != 0
-		{
-			self.createColorEffectPopover(popoverViewController: self.colorEffectPopoverControllers[colorEffectFilterPopUpButton.indexOfSelectedItem]!, x: colorEffectFilterPopUpButton.indexOfSelectedItem)
-			let targetButton: NSButton = sender
-			let prefEdge: NSRectEdge = NSRectEdge.maxY
-			self.colorEffectPopovers[colorEffectFilterPopUpButton.indexOfSelectedItem]?.show(relativeTo: targetButton.bounds, of: sender as NSView, preferredEdge: prefEdge)
+		showColorEffectPopover(id: colorEffectFilterPopUpButton.indexOfSelectedItem)
+	}
+	
+	@IBAction func showColorEffectPopoverActionMenu(_ sender: NSMenuItem) {
+		showColorEffectPopover(id: sender.tag)
+	}
+	
+	func showColorEffectPopover(id: Int) {
+		switch id {
+		case 1:
+			self.updateInvertColors()
+		case 5:
+			self.updateMaskToAlpha()
+		case 6:
+			self.updateMaximumComponent()
+		case 7:
+			self.updateMinimumComponent()
+		case 8:
+			self.updatePhotoEffectChrome()
+		case 9:
+			self.updatePhotoEffectFade()
+		case 10:
+			self.updatePhotoEffectInstant()
+		case 11:
+			self.updatePhotoEffectMono()
+		case 12:
+			self.updatePhotoEffectNoir()
+		case 13:
+			self.updatePhotoEffectProcess()
+		case 14:
+			self.updatePhotoEffectTonal()
+		case 15:
+			self.updatePhotoEffectTransfer()
+		default:
+			if id != 0
+			{
+				self.createColorEffectPopover(popoverViewController: self.colorEffectPopoverControllers[id]!, x: id)
+				let targetButton = window!.standardWindowButton(.closeButton)!.superview!
+				let prefEdge: NSRectEdge = NSRectEdge.minY
+				self.colorEffectPopovers[id]?.show(relativeTo: targetButton.bounds, of: targetButton, preferredEdge: prefEdge)
+			}
 		}
 	}
 	
@@ -546,15 +744,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		}
 	}
 	
-	@IBAction func applyFilter(_ sender: Any) {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView {
-			originalImage = imageView.image
-		}
-	}
-    
-	
-    
+	func doNothing() {}
 	
 	override func windowDidLoad() {
 		super.windowDidLoad()
@@ -567,16 +757,20 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		
 		// popover
 		
-		for x in 1...7 {
+		for x in 1...6 {
 			blurPopoverControllers[x] = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: blurPopoverControllerNames[x] )) as? NSViewController
 		}
 		
-		for x in 1...13 {
+		for x in colorAdjustmentArray {
 			colorAdjustmentPopoverControllers[x] = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: colorAdjustmentPopoverControllerNames[x] )) as? NSViewController
 		}
 		
-		for x in 1...22 {
+		for x in colorEffectArray {
 			colorEffectPopoverControllers[x] = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: colorEffectPopoverControllerNames[x] )) as? NSViewController
+		}
+		
+		for x in 1...2 {
+			sharpenPopoverControllers[x] = self.storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: sharpenPopoverNames[x] )) as? NSViewController
 		}
 	}
 	
@@ -644,6 +838,9 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		} else if (itemIdentifier == ((applyChangesToolbarItemID as NSString) as NSToolbarItem.Identifier)) {
 			// 6) Apply changes toolbar item.
 			toolbarItem = customToolbarItem(itemForItemIdentifier: applyChangesToolbarItemID, label: "Apply Changes", paletteLabel:"Apply Changes", toolTip: "Apply or discard changes done to the image", target: self, itemContent: self.applyChangesView, action: nil, menu: nil)!
+		} else if (itemIdentifier == ((sharpenFilterToolbarItemID as NSString) as NSToolbarItem.Identifier)) {
+			// 7) Sharpen filter toolbar item.
+			toolbarItem = customToolbarItem(itemForItemIdentifier: sharpenFilterToolbarItemID, label: "Sharpen", paletteLabel:"Sharpen", toolTip: "Sharpen the image", target: self, itemContent: self.sharpenView, action: nil, menu: nil)!
 		}
 		
 		return toolbarItem
@@ -654,6 +851,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		        NSToolbarItem.Identifier(rawValue: applyChangesToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: geometryAdjustToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: blurFilterToolbarItemID),
+		        NSToolbarItem.Identifier(rawValue: sharpenFilterToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: colorAdjustmentFilterToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: colorEffectFilterToolbarItemID)]
 	}
@@ -663,6 +861,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		        NSToolbarItem.Identifier(rawValue: applyChangesToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: geometryAdjustToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: blurFilterToolbarItemID),
+		        NSToolbarItem.Identifier(rawValue: sharpenFilterToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: colorAdjustmentFilterToolbarItemID),
 		        NSToolbarItem.Identifier(rawValue: colorEffectFilterToolbarItemID),
 		        NSToolbarItem.Identifier.space,

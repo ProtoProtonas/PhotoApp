@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4C035A7D1EF72FE400DE6F5F /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C035A7C1EF72FE400DE6F5F /* WindowController.swift */; };
+		4C098AAA1F399D0B000BE2E1 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC5C491F00FB5000E8EBEE /* CustomImageView.swift */; };
 		4CBCA73F1EF15A9B006DB385 /* CenteredClipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCA73E1EF15A9B006DB385 /* CenteredClipView.swift */; };
 		4CBCA7411EF15C56006DB385 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCA7401EF15C56006DB385 /* Document.swift */; };
 		4CD980D81F1ED58500D3E5BF /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD980D71F1ED58500D3E5BF /* PopoverViewController.swift */; };
-		4CFC5C4A1F00FB5000E8EBEE /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC5C491F00FB5000E8EBEE /* CustomImageView.swift */; };
 		4CFF372F1EEFBA540009E8D8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFF372E1EEFBA540009E8D8 /* AppDelegate.swift */; };
 		4CFF37311EEFBA540009E8D8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFF37301EEFBA540009E8D8 /* ViewController.swift */; };
 		4CFF37331EEFBA540009E8D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4CFF37321EEFBA540009E8D8 /* Assets.xcassets */; };
@@ -154,9 +154,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CBCA7411EF15C56006DB385 /* Document.swift in Sources */,
-				4CFC5C4A1F00FB5000E8EBEE /* CustomImageView.swift in Sources */,
 				4CD980D81F1ED58500D3E5BF /* PopoverViewController.swift in Sources */,
 				4C035A7D1EF72FE400DE6F5F /* WindowController.swift in Sources */,
+				4C098AAA1F399D0B000BE2E1 /* CustomImageView.swift in Sources */,
 				4CFF37311EEFBA540009E8D8 /* ViewController.swift in Sources */,
 				4CFF372F1EEFBA540009E8D8 /* AppDelegate.swift in Sources */,
 				4CBCA73F1EF15A9B006DB385 /* CenteredClipView.swift in Sources */,

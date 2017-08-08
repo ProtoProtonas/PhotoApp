@@ -7,10 +7,14 @@
 //
 
 import Cocoa
+import MetalKit
 
 class CustomImageView: NSView {
     
+    
     var image: NSImage? {didSet{needsDisplay = true}}
+//    var ciImage: CIImage? {didSet{needsDisplay = true}}
+    let cicontext = CIContext()
     
     weak var windowController: WindowController? = nil
     

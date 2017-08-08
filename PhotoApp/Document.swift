@@ -36,6 +36,7 @@ class Document: NSDocument {
             }
             viewController.imageView?.image = actuallyLoadedImage
             (windowController as? WindowController)?.originalImage = actuallyLoadedImage
+            (windowController as? WindowController)?.originalCIImage = CIImage(cgImage:  actuallyLoadedImage.cgImage(forProposedRect: nil, context: nil, hints: nil)!)
             windowController.window?.setFrame(CGRect(origin: origin(windowsize: windowSizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), size: windowSizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), display: true)
         }
     }
