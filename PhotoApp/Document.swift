@@ -18,7 +18,7 @@ class Document: NSDocument {
         return true
     }
     
-    var loadedImage: NSImage?
+    var loadedImage: CIImage?
     
     override func makeWindowControllers() {
         // padaro storyboard kuris atvaizduoja dokumenta
@@ -27,17 +27,18 @@ class Document: NSDocument {
         self.addWindowController(windowController)
         
         if let viewController = windowControllers.first?.contentViewController as? ViewController {
-            let actuallyLoadedImage: NSImage
+            let actuallyLoadedImage: CIImage
             if let image = loadedImage {
                 actuallyLoadedImage = image
             } else {
-                actuallyLoadedImage = NSImage(named: NSImage.Name(rawValue: "photo"))!
+                actuallyLoadedImage = CIImage(cgImage: NSImage(named: NSImage.Name(rawValue: "photo"))!.cgImage(forProposedRect: nil, context: nil, hints: nil)!)
                 loadedImage = actuallyLoadedImage
+                //CIImage(cgImage: actuallyLoadedImage.cgImage(forProposedRect: nil, context:nil, hints: nil)!)
             }
-            viewController.imageView?.image = actuallyLoadedImage
-            (windowController as? WindowController)?.originalImage = actuallyLoadedImage
-            (windowController as? WindowController)?.originalCIImage = CIImage(cgImage:  actuallyLoadedImage.cgImage(forProposedRect: nil, context: nil, hints: nil)!)
-            windowController.window?.setFrame(CGRect(origin: origin(windowsize: windowSizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), size: windowSizeXY(imageSize: actuallyLoadedImage.size, window: windowController.window)), display: true)
+            viewController.image = actuallyLoadedImage
+//            (windowController as? WindowController)?.originalImage = actuallyLoadedImage
+            (windowController as? WindowController)?.originalCIImage = actuallyLoadedImage
+            windowController.window?.setFrame(CGRect(origin: origin(windowsize: windowSizeXY(imageSize: actuallyLoadedImage.extent.size, window: windowController.window)), size: windowSizeXY(imageSize: actuallyLoadedImage.extent.size, window: windowController.window)), display: true)
         }
     }
     
@@ -110,7 +111,8 @@ class Document: NSDocument {
     }
     
     override func read(from data: Data, ofType typeName: String) throws {
-        loadedImage = NSImage(data: data)
+        loadedImage = CIImage(cgImage: (NSImage(data: data)?.cgImage(forProposedRect: nil, context: nil, hints: nil)!)!)
+        // CIImage(cgImage: actuallyLoadedImage.cgImage(forProposedRect: nil, context:nil, hints: nil)!)
     }
 }
 

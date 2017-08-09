@@ -71,97 +71,67 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	var blurPopoverControllers: [NSViewController?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil]
 	
 	func updateBoxBlur(with boxRadius: Double) {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView,
+		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-		let filteredImage = image.applyingFilter("CIBoxBlur", withInputParameters: ["inputRadius": boxRadius])
-		imageView.ciImage = filteredImage
+			let filteredImage = image.applyingFilter("CIBoxBlur", withInputParameters: ["inputRadius": boxRadius])
+			view.image = filteredImage
 		}
 	}
 	
 	func updateDiscBlur(with discRadius: Double) {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView,
-			let image = originalImage {
-			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-			let ciImage = CIImage(cgImage: cgImage)
-			//			let ciContext = CIContext()
+		if let view = window?.contentViewController as? ViewController,
+			let image = originalCIImage {
 			//Crashes with values 0..1 radar 33770007
-			let filteredImage = ciImage.applyingFilter("CIDiscBlur", withInputParameters: ["inputRadius": discRadius])
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+			let filteredImage = image.applyingFilter("CIDiscBlur", withInputParameters: ["inputRadius": discRadius])
+			view.image = filteredImage
 		}
 	}
 	
 	func updateGaussianBlur(with sigma: Double) {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView,
-			let image = originalImage {
-			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-			let ciImage = CIImage(cgImage: cgImage)
-//			let ciContext = CIContext()
-			let filteredImage = ciImage.applyingFilter("CIGaussianBlur", withInputParameters: ["inputRadius": sigma])
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		if let view = window?.contentViewController as? ViewController,
+			let image = originalCIImage {
+			let filteredImage = image.applyingFilter("CIGaussianBlur", withInputParameters: ["inputRadius": sigma])
+			view.image = filteredImage
 		}
 	}
 	
 	func updateMaskedVariableBlur(with radius: Double) {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView,
-			let image = originalImage {
-			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-			let ciImage = CIImage(cgImage: cgImage)
-//			let ciContext = CIContext()
-			let filteredImage = ciImage.applyingFilter("CIMaskedVariableBlur", withInputParameters: ["inputRadius": radius])
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		if let view = window?.contentViewController as? ViewController,
+			let image = originalCIImage {
+			let filteredImage = image.applyingFilter("CIMaskedVariableBlur", withInputParameters: ["inputRadius": radius])
+			view.image = filteredImage
 		}
 	}
 	
 	func updateMedianFilter() {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView,
-			let image = originalImage {
-			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-			let ciImage = CIImage(cgImage: cgImage)
-//			let ciContext = CIContext()
-			let filteredImage = ciImage.applyingFilter("CIMedianFilter", withInputParameters: [:])
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		if let view = window?.contentViewController as? ViewController,
+			let image = originalCIImage {
+			let filteredImage = image.applyingFilter("CIMedianFilter", withInputParameters: [:])
+			view.image = filteredImage
 		}
 	}
 	
 	func updateMotionBlur(with motionRadius: Double, motionAngle: Double) {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView,
-			let image = originalImage {
-			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-			let ciImage = CIImage(cgImage: cgImage)
-//			let ciContext = CIContext()
-			let filteredImage = ciImage.applyingFilter("CIMotionBlur", withInputParameters: ["inputRadius": motionRadius, "inputAngle": motionAngle])
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		if let view = window?.contentViewController as? ViewController,
+			let image = originalCIImage {
+			let filteredImage = image.applyingFilter("CIMotionBlur", withInputParameters: ["inputRadius": motionRadius, "inputAngle": motionAngle])
+			view.image = filteredImage
 		}
 	}
 	
 	func updateNoiseReduction(with noiseLevel: Double, sharpness: Double) {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView,
-			let image = originalImage {
-			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-			let ciImage = CIImage(cgImage: cgImage)
-//			let ciContext = CIContext()
-			let filteredImage = ciImage.applyingFilter("CINoiseReduction", withInputParameters: ["inputNoiseLevel": noiseLevel, "inputSharpness": sharpness])
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		if let view = window?.contentViewController as? ViewController,
+			let image = originalCIImage {
+			let filteredImage = image.applyingFilter("CINoiseReduction", withInputParameters: ["inputNoiseLevel": noiseLevel, "inputSharpness": sharpness])
+			view.image = filteredImage
 		}
 	}
 	
 	func updateZoomBlur(with amount: Double, center: CIVector) {
-		if let view = window?.contentView?.subviews.first as? NSScrollView,
-			let imageView = view.documentView?.subviews.first as? CustomImageView,
-			let image = originalImage {
-			let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-			let ciImage = CIImage(cgImage: cgImage)
-//			let ciContext = CIContext()
-//			let ciContext = CIContext.init(mtlDevice: self.metalDevice!, options: ["isLowPower": false])
-			let filteredImage = ciImage.applyingFilter("CIZoomBlur", withInputParameters: ["inputAmount": amount, "inputCenter": center])
-			imageView.image = NSImage(cgImage: ciContext.createCGImage(filteredImage, from: ciImage.extent)!, size: image.size)
+		if let view = window?.contentViewController as? ViewController,
+			let image = originalCIImage {
+			let filteredImage = image.applyingFilter("CIZoomBlur", withInputParameters: ["inputAmount": amount, "inputCenter": center])
+			view.image = filteredImage
 		}
 	}
 	
