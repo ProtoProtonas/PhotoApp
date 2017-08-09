@@ -932,7 +932,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="458" height="385"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <view appearanceType="aqua" translatesAutoresizingMaskIntoConstraints="NO" id="OLg-Wv-hbR">
+                                        <view appearanceType="aqua" translatesAutoresizingMaskIntoConstraints="NO" id="OLg-Wv-hbR" customClass="MTKView">
                                             <rect key="frame" x="0.0" y="0.0" width="458" height="385"/>
                                             <subviews>
                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xVH-AW-Wma" customClass="CustomImageView" customModule="PhotoApp" customModuleProvider="target">
@@ -976,6 +976,7 @@
                     </view>
                     <connections>
                         <outlet property="imageView" destination="xVH-AW-Wma" id="Huc-Ff-LgU"/>
+                        <outlet property="mtkView" destination="OLg-Wv-hbR" id="U4I-is-bhe"/>
                         <outlet property="scrollView" destination="WGs-qN-YZD" id="fqy-C5-HqM"/>
                     </connections>
                 </viewController>
