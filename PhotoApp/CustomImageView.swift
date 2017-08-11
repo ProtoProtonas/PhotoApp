@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import MetalKit
 
 class CustomImageView: NSView {
     

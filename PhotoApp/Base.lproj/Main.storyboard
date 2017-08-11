@@ -934,18 +934,6 @@
                                     <subviews>
                                         <view appearanceType="aqua" translatesAutoresizingMaskIntoConstraints="NO" id="OLg-Wv-hbR" customClass="MTKView">
                                             <rect key="frame" x="0.0" y="0.0" width="458" height="385"/>
-                                            <subviews>
-                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xVH-AW-Wma" customClass="CustomImageView" customModule="PhotoApp" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="458" height="385"/>
-                                                    <imageCell key="cell" selectable="YES" editable="YES" continuous="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" id="1gV-Ss-4qO"/>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="xVH-AW-Wma" secondAttribute="trailing" id="5BJ-bq-wtu"/>
-                                                <constraint firstItem="xVH-AW-Wma" firstAttribute="top" secondItem="OLg-Wv-hbR" secondAttribute="top" id="9AZ-lZ-2Kh"/>
-                                                <constraint firstAttribute="bottom" secondItem="xVH-AW-Wma" secondAttribute="bottom" id="K8e-fd-17h"/>
-                                                <constraint firstItem="xVH-AW-Wma" firstAttribute="leading" secondItem="OLg-Wv-hbR" secondAttribute="leading" id="SFW-ud-W5m"/>
-                                            </constraints>
                                         </view>
                                     </subviews>
                                     <constraints>
@@ -975,7 +963,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imageView" destination="xVH-AW-Wma" id="Huc-Ff-LgU"/>
                         <outlet property="mtkView" destination="OLg-Wv-hbR" id="U4I-is-bhe"/>
                         <outlet property="scrollView" destination="WGs-qN-YZD" id="fqy-C5-HqM"/>
                     </connections>

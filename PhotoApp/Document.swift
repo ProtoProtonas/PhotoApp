@@ -102,10 +102,14 @@ class Document: NSDocument {
     }
     
     override func data(ofType typeName: String) throws -> Data {
-        if let view = windowControllers.first?.window?.contentView?.subviews.first as? NSScrollView,
-            let imageView = view.documentView?.subviews.first as? CustomImageView,
-            let tiffData = imageView.image?.tiffRepresentation {
-            return tiffData
+        if let viewController = windowControllers.first?.window?.contentViewController as? ViewController,
+            let image = viewController.image {
+            let ciImageRep: NSCIImageRep = NSCIImageRep(ciImage: image)
+            let nsImage: NSImage = NSImage(size: ciImageRep.size)
+            nsImage.addRepresentation(ciImageRep)
+            if let tiffData = nsImage.tiffRepresentation {
+                return tiffData
+            }
         }
         fatalError("Unable to write data")
     }
