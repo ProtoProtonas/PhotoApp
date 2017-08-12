@@ -47,7 +47,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	@IBOutlet var applyChangesView: NSView!
 	@IBAction func applyChanges(_ sender: NSSegmentedControl) {
 		if let view = window?.contentViewController as? ViewController,
-			let image = originalCIImage {
+			let _ = originalCIImage {
 			switch sender.selectedSegment {
 			case 0:
 				originalCIImage = view.image

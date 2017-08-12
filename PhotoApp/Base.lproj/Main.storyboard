@@ -934,6 +934,17 @@
                                     <subviews>
                                         <view appearanceType="aqua" translatesAutoresizingMaskIntoConstraints="NO" id="OLg-Wv-hbR" customClass="MTKView">
                                             <rect key="frame" x="0.0" y="0.0" width="458" height="385"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="heU-60-fKk" customClass="CustomImageView" customModule="PhotoApp" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="458" height="385"/>
+                                                </customView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="heU-60-fKk" secondAttribute="bottom" id="4XH-9R-Mnr"/>
+                                                <constraint firstItem="heU-60-fKk" firstAttribute="leading" secondItem="OLg-Wv-hbR" secondAttribute="leading" id="Jrk-m9-ELF"/>
+                                                <constraint firstItem="heU-60-fKk" firstAttribute="top" secondItem="OLg-Wv-hbR" secondAttribute="top" id="R85-Ik-VV5"/>
+                                                <constraint firstAttribute="trailing" secondItem="heU-60-fKk" secondAttribute="trailing" id="jZ1-Fd-MiR"/>
+                                            </constraints>
                                         </view>
                                     </subviews>
                                     <constraints>

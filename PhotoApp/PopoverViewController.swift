@@ -977,21 +977,21 @@ class PopoverViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let image = windowController?.originalImage {
+        if let image = windowController?.originalCIImage {
             if let centerXSlider = centerXZoomSlider,
                 let centerYSlider = centerYZoomSlider {
-                centerXSlider.maxValue = Double(image.size.width)
-                centerYSlider.maxValue = Double(image.size.height)
+                centerXSlider.maxValue = Double(image.extent.size.width)
+                centerYSlider.maxValue = Double(image.extent.size.height)
             }
             if let xVignetteSlider = xVignetteSlider,
                 let yVignetteSlider = yVignetteSlider,
                 let vignetteEffectRadiusSlider = vignetteEffectRadiusSlider{
-                xVignetteSlider.maxValue = Double(image.size.width)
-                yVignetteSlider.maxValue = Double(image.size.height)
-                if image.size.width < image.size.height {
-                    vignetteEffectRadiusSlider.maxValue = Double(image.size.height)
+                xVignetteSlider.maxValue = Double(image.extent.size.width)
+                yVignetteSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    vignetteEffectRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
-                    vignetteEffectRadiusSlider.maxValue = Double(image.size.width)
+                    vignetteEffectRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
             }
         }

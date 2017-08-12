@@ -59,6 +59,8 @@ class ViewController: NSViewController, MTKViewDelegate {
             commandBuffer.commit()
             commandBuffer.waitUntilCompleted()
         }
+        
+        
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -75,6 +77,13 @@ class ViewController: NSViewController, MTKViewDelegate {
             metalView.enableSetNeedsDisplay = true
             metalView.device = metalDevice
             metalView.framebufferOnly = false
+            metalView.layer?.isOpaque = false
+        }
+        
+        if let mainView = view.subviews.first as? NSScrollView,
+            let clipView = mainView.subviews.first as? CenteredClipView,
+            let metalView = clipView.subviews.first as? MTKView {
+            (metalView.subviews.first as? CustomImageView)?.layer?.isHidden = true
         }
     }
     

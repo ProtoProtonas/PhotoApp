@@ -11,11 +11,16 @@ import Cocoa
 class CustomImageView: NSView {
     
     
-    var image: NSImage? {didSet{needsDisplay = true}}
-    var ciImage: CIImage? {didSet{needsDisplay = true}}
-    let cicontext = CIContext()
+//    var image: NSImage? {didSet{needsDisplay = true}}
+//    var ciImage: CIImage? {didSet{needsDisplay = true}}
+//    let cicontext = CIContext()
     
-    weak var windowController: WindowController? = nil
+//    weak var viewController: ViewController? = nil
+    
+    var windowController: WindowController? = nil
+    
+    var image: CIImage? = nil
+    
     
 //    var cropRect: CGRect = CGRect.zero {didSet{needsDisplay = true}}
     var mouseLocationDragStart: CGPoint = .zero
@@ -26,8 +31,13 @@ class CustomImageView: NSView {
     var initialRotationAngle: CGFloat = 0.0
     var finalRotationAngle: CGFloat = 0.0
     
+    
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
+        
+        image = (windowController?.contentViewController as! ViewController).image
+        
+        
         if let indexOfButton = windowController?.geometryControls.indexOfSelectedItem {
             switch indexOfButton {
             case 0:
@@ -38,7 +48,7 @@ class CustomImageView: NSView {
                 self.mouseLocationDragStart = transformCoordinate(from: event.locationInWindow)
                 
                 if let image = self.image {
-                    self.initialRotationAngle = pointToAngle(from: self.mouseLocationDragStart, imageSize: image.size)
+                    self.initialRotationAngle = pointToAngle(from: self.mouseLocationDragStart, imageSize: image.extent.size)
                 }
                 
             default:
@@ -49,7 +59,6 @@ class CustomImageView: NSView {
 
     override func mouseDragged(with event: NSEvent) {
         super.mouseDragged(with: event)
-        let mouseLocation = convert(event.locationInWindow, from: window?.contentView)
 //        cropRect.size = CGSize(width: mouseLocation.x - cropRect.origin.x, height: mouseLocation.y - cropRect.origin.y)
         
         if let indexOfButton = windowController?.geometryControls.selectedSegment,
@@ -57,7 +66,7 @@ class CustomImageView: NSView {
             switch indexOfButton {
 //            case 0:
             case 1:
-                finalRotationAngle = pointToAngle(from: transformCoordinate(from: event.locationInWindow), imageSize: image!.size)
+                finalRotationAngle = pointToAngle(from: transformCoordinate(from: event.locationInWindow), imageSize: image!.extent.size)
                 self.windowController?.updateRotation(with: finalRotationAngle - initialRotationAngle)
             default:
                 NSLog("mouseDragged default statement")
@@ -88,8 +97,8 @@ class CustomImageView: NSView {
             case 1:
                 self.mouseLocationDragFinish = transformCoordinate(from: event.locationInWindow)
                 
-                if let image = self.image {
-                    self.finalRotationAngle = pointToAngle(from: self.mouseLocationDragFinish, imageSize: image.size)
+                if let image = image {
+                    self.finalRotationAngle = pointToAngle(from: self.mouseLocationDragFinish, imageSize: image.extent.size)
                 }
                 self.windowController?.updateRotation(with: finalRotationAngle - initialRotationAngle)
                 windowController?.geometryControls.setSelected(false, forSegment: indexOfButton)
@@ -101,30 +110,30 @@ class CustomImageView: NSView {
 
     func transformCoordinate(from origin: CGPoint) -> CGPoint {
         var newOrigin = self.convert(origin, from: window?.contentView)
-        newOrigin.x = newOrigin.x * ((self.image?.size.width)! / (window?.contentView?.frame.size.width)!)
-        newOrigin.y = newOrigin.y * ((self.image?.size.height)! / (window?.contentView?.frame.size.height)!)
+        newOrigin.x = newOrigin.x * ((self.image?.extent.size.width)! / (window?.contentView?.frame.size.width)!)
+        newOrigin.y = newOrigin.y * ((self.image?.extent.size.height)! / (window?.contentView?.frame.size.height)!)
         
-        let imageAspectRatio = (image?.size.width)! / (image?.size.height)!
+        let imageAspectRatio = (image?.extent.size.width)! / (image?.extent.size.height)!
         let boundsAspectRatio = (window?.contentView?.frame.size.width)! / (window?.contentView?.frame.size.height)!
         var actualX: CGFloat = 0.0
         var actualY: CGFloat = 0.0
         if let image = image {
             if imageAspectRatio < boundsAspectRatio {
-                actualX = newOrigin.x * ((window?.contentView?.frame.size.width)! / ((window?.contentView?.frame.size.height)! * imageAspectRatio)) - (((image.size.height * boundsAspectRatio) - image.size.width) / 2)
+                actualX = newOrigin.x * ((window?.contentView?.frame.size.width)! / ((window?.contentView?.frame.size.height)! * imageAspectRatio)) - (((image.extent.size.height * boundsAspectRatio) - image.extent.size.width) / 2)
                 actualY = newOrigin.y
             } else {
-                actualY = newOrigin.y * ((window?.contentView?.frame.size.height)! / ((window?.contentView?.frame.size.width)! / imageAspectRatio)) - (((image.size.width / boundsAspectRatio) - image.size.height) / 2)
+                actualY = newOrigin.y * ((window?.contentView?.frame.size.height)! / ((window?.contentView?.frame.size.width)! / imageAspectRatio)) - (((image.extent.size.width / boundsAspectRatio) - image.extent.size.height) / 2)
                 actualX = newOrigin.x
             }
         }
         if let image = image {
-            if actualX > image.size.width {
-                actualX = image.size.width
+            if actualX > image.extent.size.width {
+                actualX = image.extent.size.width
             } else if actualX < 0.0 {
                 actualX = 0.0
             }
-            if actualY > image.size.height {
-                actualY = image.size.height
+            if actualY > image.extent.size.height {
+                actualY = image.extent.size.height
             } else if actualY < 0.0 {
                 actualY = 0.0
             }
@@ -159,28 +168,28 @@ class CustomImageView: NSView {
 //    let secondImage = NSImage(named: NSImage.Name(rawValue: "logo"))
 // actual imageView stuff for showing the image
     
-    override func draw(_ dirtyRect: NSRect) {
+//    override func draw(_ dirtyRect: NSRect) {
 //        NSColor.white.setFill()
 //        __NSRectFill(cropRect)
         
-        var constrainedBounds = self.bounds
-        if let image = image {
-            let imageAspectRatio = image.size.width / image.size.height
-            let boundsAspectRatio = bounds.size.width / bounds.size.height
-            if imageAspectRatio > boundsAspectRatio {
-                constrainedBounds.size.height = (constrainedBounds.size.width / imageAspectRatio).rounded()
-                constrainedBounds.origin.y = ((self.bounds.size.height - (constrainedBounds.size.width / imageAspectRatio)) / 2).rounded()
-            } else {
-                constrainedBounds.size.width = (constrainedBounds.size.height * imageAspectRatio).rounded()
-                constrainedBounds.origin.x = ((self.bounds.size.width - (constrainedBounds.size.height * imageAspectRatio)) / 2).rounded()
-            }
-            image.draw(in: constrainedBounds)
-        }
+//        var constrainedBounds = self.bounds
+//        if let image = image {
+//            let imageAspectRatio = image.size.width / image.size.height
+//            let boundsAspectRatio = bounds.size.width / bounds.size.height
+//            if imageAspectRatio > boundsAspectRatio {
+//                constrainedBounds.size.height = (constrainedBounds.size.width / imageAspectRatio).rounded()
+//                constrainedBounds.origin.y = ((self.bounds.size.height - (constrainedBounds.size.width / imageAspectRatio)) / 2).rounded()
+//            } else {
+//                constrainedBounds.size.width = (constrainedBounds.size.height * imageAspectRatio).rounded()
+//                constrainedBounds.origin.x = ((self.bounds.size.width - (constrainedBounds.size.height * imageAspectRatio)) / 2).rounded()
+//            }
+//            image.draw(in: constrainedBounds)
+//        }
         
 //                if let secondImage = secondImage,
 //                    let image = image {
 //                    secondImage.draw(in: constrainedBounds, from: image.alignmentRect , operation: .sourceOver, fraction: 1.0)
 //                }
-    }
-    
+//    }
+        
 }
