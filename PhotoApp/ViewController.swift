@@ -11,6 +11,7 @@ import MetalKit
 
 class ViewController: NSViewController, MTKViewDelegate {
     
+    //FIXME: kai updeitini paveiksliuka reikia kviesti drawableSizeWillChange / mtkView funkcija
     var image: CIImage? = nil {
         didSet { mtkView.needsDisplay = true }
     }
@@ -30,7 +31,12 @@ class ViewController: NSViewController, MTKViewDelegate {
         
         if let drawable = view.currentDrawable {
             let commandBuffer = commandQueue.makeCommandBuffer()
-            if let image = image {
+            if var image = image {
+                
+                let translateImageX = -image.extent.origin.x
+                let translateImageY = -image.extent.origin.y
+                let imageTransformTranslation = CGAffineTransform(translationX: translateImageX, y: translateImageY)
+                image = image.applying(imageTransformTranslation)
                 
                 let scale: CGFloat
                 if (CGFloat(drawable.texture.width) / CGFloat(drawable.texture.height)) > (image.extent.size.width / image.extent.size.height) {
@@ -39,21 +45,30 @@ class ViewController: NSViewController, MTKViewDelegate {
                     scale = CGFloat(drawable.texture.width) / image.extent.size.width
                 }
                 let transformScale = CGAffineTransform(scaleX: scale, y: scale)
-                var scaledImage = image.applying(transformScale)
+                var viewingImage = image.applying(transformScale)
                 
                 
-                var translationX: CGFloat = 0.0
-                var translationY: CGFloat = 0.0
+                var translationX: CGFloat
+                var translationY: CGFloat
                 if (CGFloat(drawable.texture.width) / CGFloat(drawable.texture.height)) > (image.extent.size.width / image.extent.size.height) {
-                    translationX = abs(CGFloat(drawable.texture.width) - scaledImage.extent.size.width) / 2
+                    translationX = (abs(CGFloat(drawable.texture.width) - viewingImage.extent.size.width) / 2) - viewingImage.extent.origin.x
+                    translationY = -viewingImage.extent.origin.y
                 } else {
-                    translationY = abs(CGFloat(drawable.texture.height) - scaledImage.extent.height) / 2
+                    translationY = (abs(CGFloat(drawable.texture.height) - viewingImage.extent.height) / 2) - viewingImage.extent.origin.y
+                    translationX = -viewingImage.extent.origin.x
                 }
                 let transformTranslation = CGAffineTransform(translationX: translationX, y: translationY)
-                scaledImage = scaledImage.applying(transformTranslation)
-                    
-                    
-                try! context.startTask(toRender: scaledImage, to: CIRenderDestination(mtlTexture: drawable.texture, commandBuffer: commandBuffer))
+                viewingImage = viewingImage.applying(transformTranslation)
+                
+                do {
+                    let renderDestination = CIRenderDestination(mtlTexture: drawable.texture, commandBuffer: commandBuffer)
+                    try context.startTask(toClear: renderDestination)
+                    try context.startTask(toRender: viewingImage, to: renderDestination)
+                } catch {
+                    NSLog("failed to render")
+                }
+                
+                
             }
             commandBuffer.present(drawable)
             commandBuffer.commit()
@@ -64,7 +79,7 @@ class ViewController: NSViewController, MTKViewDelegate {
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-//        NSLog("drawableSizeWillChange")
+        //        NSLog("drawableSizeWillChange")
     }
     
     override func viewDidLoad() {

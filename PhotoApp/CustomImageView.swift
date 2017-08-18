@@ -22,11 +22,10 @@ class CustomImageView: NSView {
     var image: CIImage? = nil
     
     
-//    var cropRect: CGRect = CGRect.zero {didSet{needsDisplay = true}}
+    var cropRect: CGRect = CGRect.zero {didSet{needsDisplay = true}} // nsstroke apibrezti linija
     var mouseLocationDragStart: CGPoint = .zero
     var mouseLocationDragFinish: CGPoint = .zero
     var theOrigin: CGPoint = .zero
-//    var theEndPoint: CGPoint = .zero
     var theSize: CGSize = CGSize(width: 1.0, height: 1.0)
     var initialRotationAngle: CGFloat = 0.0
     var finalRotationAngle: CGFloat = 0.0
@@ -35,13 +34,13 @@ class CustomImageView: NSView {
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         
-        image = (windowController?.contentViewController as! ViewController).image
-        
         
         if let indexOfButton = windowController?.geometryControls.indexOfSelectedItem {
+            
+            image = (windowController?.contentViewController as! ViewController).image
             switch indexOfButton {
             case 0:
-//                self.cropRect.origin = convert(event.locationInWindow, to: window?.contentView)
+                self.cropRect.origin = convert(event.locationInWindow, to: window?.contentView)
                 self.theOrigin = transformCoordinate(from: event.locationInWindow)
                 self.mouseLocationDragStart = self.theOrigin
             case 1:
@@ -55,21 +54,24 @@ class CustomImageView: NSView {
                 NSLog("mouseDown default statement")
             }
         }
+//        NSLog("\(transformCoordinate(from: event.locationInWindow))")
     }
 
     override func mouseDragged(with event: NSEvent) {
         super.mouseDragged(with: event)
+        let mouseLocation = convert(event.locationInWindow, to: window?.contentView)
 //        cropRect.size = CGSize(width: mouseLocation.x - cropRect.origin.x, height: mouseLocation.y - cropRect.origin.y)
         
         if let indexOfButton = windowController?.geometryControls.selectedSegment,
             (windowController?.geometryControls.isSelected(forSegment: indexOfButton))! {
             switch indexOfButton {
-//            case 0:
+            case 0:
+                cropRect.size = CGSize(width: mouseLocation.x - cropRect.origin.x, height: mouseLocation.y - cropRect.origin.y)
             case 1:
                 finalRotationAngle = pointToAngle(from: transformCoordinate(from: event.locationInWindow), imageSize: image!.extent.size)
                 self.windowController?.updateRotation(with: finalRotationAngle - initialRotationAngle)
             default:
-                NSLog("mouseDragged default statement")
+                let a = 4
             }
         }
     }
@@ -93,6 +95,7 @@ class CustomImageView: NSView {
                 
                 self.windowController?.updateCrop(with: CGRect(origin: self.theOrigin, size: self.theSize))
                 windowController?.geometryControls.setSelected(false, forSegment: indexOfButton)
+                cropRect = .zero
                 
             case 1:
                 self.mouseLocationDragFinish = transformCoordinate(from: event.locationInWindow)
@@ -117,6 +120,7 @@ class CustomImageView: NSView {
         let boundsAspectRatio = (window?.contentView?.frame.size.width)! / (window?.contentView?.frame.size.height)!
         var actualX: CGFloat = 0.0
         var actualY: CGFloat = 0.0
+        
         if let image = image {
             if imageAspectRatio < boundsAspectRatio {
                 actualX = newOrigin.x * ((window?.contentView?.frame.size.width)! / ((window?.contentView?.frame.size.height)! * imageAspectRatio)) - (((image.extent.size.height * boundsAspectRatio) - image.extent.size.width) / 2)
@@ -168,8 +172,13 @@ class CustomImageView: NSView {
 //    let secondImage = NSImage(named: NSImage.Name(rawValue: "logo"))
 // actual imageView stuff for showing the image
     
-//    override func draw(_ dirtyRect: NSRect) {
-//        NSColor.white.setFill()
+    override func draw(_ dirtyRect: NSRect) {
+        NSColor.systemGray.setStroke()
+//        NSColor.
+        NSBezierPath(rect: cropRect).stroke()
+        NSColor(white: 1.0, alpha: 0.3).setFill()
+        NSBezierPath(rect: cropRect).fill()
+        
 //        __NSRectFill(cropRect)
         
 //        var constrainedBounds = self.bounds
@@ -190,6 +199,6 @@ class CustomImageView: NSView {
 //                    let image = image {
 //                    secondImage.draw(in: constrainedBounds, from: image.alignmentRect , operation: .sourceOver, fraction: 1.0)
 //                }
-//    }
-        
+    }
+    
 }

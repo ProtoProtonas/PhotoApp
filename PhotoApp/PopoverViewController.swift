@@ -13,6 +13,9 @@ class PopoverViewController: NSViewController {
     weak var windowController: WindowController? = nil
     var image: NSImage?
     
+    
+    
+    
     //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
     // blur filters
     //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
@@ -20,7 +23,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // box blur filter
     
-    var boxBlurValue: Double = 0.0 {
+    var boxBlurValue: Double = 25.0 {
         didSet { windowController?.updateBoxBlur(with: boxBlurValue) }
     }
     
@@ -656,83 +659,6 @@ class PopoverViewController: NSViewController {
     }
     
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //mask to alpha
-    
-    @IBAction func showMaskToAlpha(_ sender: NSButton) {
-        windowController?.updateMaskToAlpha()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //maximum component
-    
-    @IBAction func showMaximumComponent(_ sender: NSButton) {
-        windowController?.updateMaximumComponent()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //minimum component
-    
-    @IBAction func showMinimumComponent(_ sender: NSButton) {
-        windowController?.updateMinimumComponent()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //photo effect chrome
-    
-    @IBAction func showPhotoEffectChrome(_ sender: NSButton) {
-        windowController?.updatePhotoEffectChrome()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //photo effect fade
-    
-    @IBAction func showPhotoEffectFade(_ sender: NSButton) {
-        windowController?.updatePhotoEffectFade()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //photo effect instant
-    
-    @IBAction func showPhotoEffectInstant(_ sender: NSButton) {
-        windowController?.updatePhotoEffectInstant()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //photo effect mono
-    
-    @IBAction func showPhotoEffectMono(_ sender: NSButton) {
-        windowController?.updatePhotoEffectMono()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //photo effect noir
-    
-    @IBAction func showPhotoEffectNoir(_ sender: NSButton) {
-        windowController?.updatePhotoEffectNoir()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //photo effect process
-    
-    @IBAction func showPhotoEffectProcess(_ sender: NSButton) {
-        windowController?.updatePhotoEffectProcess()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //photo effect tonal
-    
-    @IBAction func showPhotoEffectTonal(_ sender: NSButton) {
-        windowController?.updatePhotoEffectTonal()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //photo effect transfer
-    
-    @IBAction func showPhotoEffectTransfer(_ sender: NSButton) {
-        windowController?.updatePhotoEffectTransfer()
-    }
-    
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     //sepia tone intensity
     
     var sepiaToneIntensityValue: Double = 0.0 {
@@ -973,6 +899,1668 @@ class PopoverViewController: NSViewController {
     
     
     
+    //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
+    // distortion filters
+    //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // bump distortion
+    
+    var xBumpDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateBumpDistortion(with: xBumpDistortionValue, y: yBumpDistortionValue, radius: bumpDistortionRadiusValue, scale: bumpDistortionScaleValue) }
+    }
+    var yBumpDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateBumpDistortion(with: xBumpDistortionValue, y: yBumpDistortionValue, radius: bumpDistortionRadiusValue, scale: bumpDistortionScaleValue) }
+    }
+    var bumpDistortionRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateBumpDistortion(with: xBumpDistortionValue, y: yBumpDistortionValue, radius: bumpDistortionRadiusValue, scale: bumpDistortionScaleValue) }
+    }
+    var bumpDistortionScaleValue: Double = 0.0 {
+        didSet { windowController?.updateBumpDistortion(with: xBumpDistortionValue, y: yBumpDistortionValue, radius: bumpDistortionRadiusValue, scale: bumpDistortionScaleValue) }
+    }
+    
+    @IBOutlet weak var xBumpDistortionSlider: NSSlider!
+    @IBOutlet weak var yBumpDistortionSlider: NSSlider!
+    @IBOutlet weak var bumpDistortionRadiusSlider: NSSlider!
+    @IBOutlet weak var bumpDistortionScaleSlider: NSSlider!
+    @IBAction func getXBumpDistortionEffectValue(_ sender: NSSlider) {
+        xBumpDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.xBumpDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYBumpDistortionEffectValue(_ sender: NSSlider) {
+        yBumpDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.yBumpDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getBumpDistortionRadiusValue(_ sender: NSSlider) {
+        bumpDistortionRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.bumpDistortionRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getBumpDistortionScaleValue(_ sender: NSSlider) {
+        bumpDistortionScaleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.bumpDistortionScaleValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xBumpDistortionValueTextField: NSTextField!
+    @IBOutlet weak var yBumpDistortionValueTextField: NSTextField!
+    @IBOutlet weak var bumpDistortionRadiusTextField: NSTextField!
+    @IBOutlet weak var bumpDistortionScaleTextField: NSTextField!
+    @IBAction func getXbumpDistortionEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xBumpDistortionSlider.minValue {
+                    xBumpDistortionSlider.doubleValue = xBumpDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > xBumpDistortionSlider.maxValue {
+                xBumpDistortionSlider.doubleValue = xBumpDistortionSlider.maxValue
+            } else {
+                xBumpDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xBumpDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYbumpDistortionEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yBumpDistortionSlider.minValue {
+                yBumpDistortionSlider.doubleValue = yBumpDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > yBumpDistortionSlider.maxValue {
+                yBumpDistortionSlider.doubleValue = yBumpDistortionSlider.maxValue
+            } else {
+                yBumpDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yBumpDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getBumpDistortionRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < bumpDistortionRadiusSlider.minValue {
+                bumpDistortionRadiusSlider.doubleValue = bumpDistortionRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > bumpDistortionRadiusSlider.maxValue {
+                bumpDistortionRadiusSlider.doubleValue = bumpDistortionRadiusSlider.maxValue
+            } else {
+                bumpDistortionRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.bumpDistortionRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getBumpDistortionScaleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < bumpDistortionScaleSlider.minValue {
+                bumpDistortionScaleSlider.doubleValue = bumpDistortionScaleSlider.minValue
+            } else if Double(sender.stringValue)! > bumpDistortionScaleSlider.maxValue {
+                bumpDistortionScaleSlider.doubleValue = bumpDistortionScaleSlider.maxValue
+            } else {
+                bumpDistortionScaleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.bumpDistortionScaleValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // bump distortion linear
+    
+    var xBumpDistortionLinearValue: CGFloat = 0.0 {
+        didSet { windowController?.updateBumpDistortionLinear(with: xBumpDistortionLinearValue, y: yBumpDistortionLinearValue, radius: bumpDistortionLinearRadiusValue, angle: bumpDistortionLinearAngleValue, scale: bumpDistortionLinearScaleValue) }
+    }
+    var yBumpDistortionLinearValue: CGFloat = 0.0 {
+        didSet { windowController?.updateBumpDistortionLinear(with: xBumpDistortionLinearValue, y: yBumpDistortionLinearValue, radius: bumpDistortionLinearRadiusValue, angle: bumpDistortionLinearAngleValue, scale: bumpDistortionLinearScaleValue) }
+    }
+    var bumpDistortionLinearRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateBumpDistortionLinear(with: xBumpDistortionLinearValue, y: yBumpDistortionLinearValue, radius: bumpDistortionLinearRadiusValue, angle: bumpDistortionLinearAngleValue, scale: bumpDistortionLinearScaleValue) }
+    }
+    var bumpDistortionLinearScaleValue: Double = 0.0 {
+        didSet { windowController?.updateBumpDistortionLinear(with: xBumpDistortionLinearValue, y: yBumpDistortionLinearValue, radius: bumpDistortionLinearRadiusValue, angle: bumpDistortionLinearAngleValue, scale: bumpDistortionLinearScaleValue) }
+    }
+    var bumpDistortionLinearAngleValue = 0.0 {
+        didSet { windowController?.updateBumpDistortionLinear(with: xBumpDistortionLinearValue, y: yBumpDistortionLinearValue, radius: bumpDistortionLinearRadiusValue, angle: bumpDistortionLinearAngleValue, scale: bumpDistortionLinearScaleValue) }
+    }
+    
+    @IBOutlet weak var xBumpDistortionLinearSlider: NSSlider!
+    @IBOutlet weak var yBumpDistortionLinearSlider: NSSlider!
+    @IBOutlet weak var bumpDistortionLinearRadiusSlider: NSSlider!
+    @IBOutlet weak var bumpDistortionLinearScaleSlider: NSSlider!
+    @IBOutlet weak var bumpDistortionLinearAngleSlider: NSSlider!
+    @IBAction func getXBumpDistortionLinearEffectValue(_ sender: NSSlider) {
+        xBumpDistortionLinearValueTextField.stringValue = String(sender.integerValue)
+        self.xBumpDistortionLinearValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYBumpDistortionLinearEffectValue(_ sender: NSSlider) {
+        yBumpDistortionLinearValueTextField.stringValue = String(sender.integerValue)
+        self.yBumpDistortionLinearValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getBumpDistortionLinearRadiusValue(_ sender: NSSlider) {
+        bumpDistortionLinearRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.bumpDistortionLinearRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getBumpDistortionLinearScaleValue(_ sender: NSSlider) {
+        bumpDistortionLinearScaleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.bumpDistortionLinearScaleValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getBumpDistortionLinearAngleValue(_ sender: NSSlider) {
+        bumpDistortionLinearAngleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.bumpDistortionLinearAngleValue = sender.doubleValue.roundTo(places: 2) / 57.2957795131
+    }
+    @IBOutlet weak var xBumpDistortionLinearValueTextField: NSTextField!
+    @IBOutlet weak var yBumpDistortionLinearValueTextField: NSTextField!
+    @IBOutlet weak var bumpDistortionLinearRadiusTextField: NSTextField!
+    @IBOutlet weak var bumpDistortionLinearScaleTextField: NSTextField!
+    @IBOutlet weak var bumpDistortionLinearAngleTextField: NSTextField!
+    @IBAction func getXbumpDistortionLinearEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xBumpDistortionLinearSlider.minValue {
+                xBumpDistortionLinearSlider.doubleValue = xBumpDistortionLinearSlider.minValue
+            } else if Double(sender.stringValue)! > xBumpDistortionLinearSlider.maxValue {
+                xBumpDistortionLinearSlider.doubleValue = xBumpDistortionLinearSlider.maxValue
+            } else {
+                xBumpDistortionLinearSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xBumpDistortionLinearValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYbumpDistortionLinearEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yBumpDistortionLinearSlider.minValue {
+                yBumpDistortionLinearSlider.doubleValue = yBumpDistortionLinearSlider.minValue
+            } else if Double(sender.stringValue)! > yBumpDistortionLinearSlider.maxValue {
+                yBumpDistortionLinearSlider.doubleValue = yBumpDistortionLinearSlider.maxValue
+            } else {
+                yBumpDistortionLinearSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yBumpDistortionLinearValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getBumpDistortionLinearRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < bumpDistortionLinearRadiusSlider.minValue {
+                bumpDistortionLinearRadiusSlider.doubleValue = bumpDistortionLinearRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > bumpDistortionLinearRadiusSlider.maxValue {
+                bumpDistortionLinearRadiusSlider.doubleValue = bumpDistortionLinearRadiusSlider.maxValue
+            } else {
+                bumpDistortionLinearRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.bumpDistortionLinearRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getBumpDistortionLinearScaleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < bumpDistortionLinearScaleSlider.minValue {
+                bumpDistortionLinearScaleSlider.doubleValue = bumpDistortionLinearScaleSlider.minValue
+            } else if Double(sender.stringValue)! > bumpDistortionLinearScaleSlider.maxValue {
+                bumpDistortionLinearScaleSlider.doubleValue = bumpDistortionLinearScaleSlider.maxValue
+            } else {
+                bumpDistortionLinearScaleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.bumpDistortionLinearScaleValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getBumpDistortionLinearAngleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < bumpDistortionLinearAngleSlider.minValue {
+                bumpDistortionLinearAngleSlider.doubleValue = bumpDistortionLinearAngleSlider.minValue
+            } else if Double(sender.stringValue)! > bumpDistortionLinearAngleSlider.maxValue {
+                bumpDistortionLinearAngleSlider.doubleValue = bumpDistortionLinearAngleSlider.maxValue
+            } else {
+                bumpDistortionLinearAngleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.bumpDistortionLinearAngleValue = Double(sender.stringValue)! / 57.2957795131
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // circle splash distortion
+    
+    var xCircleSplashDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateCircleSplashDistortion(with: xCircleSplashDistortionValue, y: yCircleSplashDistortionValue, radius: circleSplashDistortionRadiusValue) }
+    }
+    var yCircleSplashDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateCircleSplashDistortion(with: xCircleSplashDistortionValue, y: yCircleSplashDistortionValue, radius: circleSplashDistortionRadiusValue) }
+    }
+    var circleSplashDistortionRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateCircleSplashDistortion(with: xCircleSplashDistortionValue, y: yCircleSplashDistortionValue, radius: circleSplashDistortionRadiusValue) }
+    }
+    
+    @IBOutlet weak var xCircleSplashDistortionSlider: NSSlider!
+    @IBOutlet weak var yCircleSplashDistortionSlider: NSSlider!
+    @IBOutlet weak var circleSplashDistortionRadiusSlider: NSSlider!
+    @IBAction func getXCircleSplashDistortionEffectValue(_ sender: NSSlider) {
+        xCircleSplashDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.xCircleSplashDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYCircleSplashDistortionEffectValue(_ sender: NSSlider) {
+        yCircleSplashDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.yCircleSplashDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getCircleSplashDistortionRadiusValue(_ sender: NSSlider) {
+        circleSplashDistortionRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.circleSplashDistortionRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xCircleSplashDistortionValueTextField: NSTextField!
+    @IBOutlet weak var yCircleSplashDistortionValueTextField: NSTextField!
+    @IBOutlet weak var circleSplashDistortionRadiusTextField: NSTextField!
+    @IBAction func getXCircleSplashDistortionEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xCircleSplashDistortionSlider.minValue {
+                xCircleSplashDistortionSlider.doubleValue = xCircleSplashDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > xCircleSplashDistortionSlider.maxValue {
+                xCircleSplashDistortionSlider.doubleValue = xCircleSplashDistortionSlider.maxValue
+            } else {
+                xCircleSplashDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xCircleSplashDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYCircleSplashDistortionEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yCircleSplashDistortionSlider.minValue {
+                yCircleSplashDistortionSlider.doubleValue = yCircleSplashDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > yCircleSplashDistortionSlider.maxValue {
+                yCircleSplashDistortionSlider.doubleValue = yCircleSplashDistortionSlider.maxValue
+            } else {
+                yCircleSplashDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yCircleSplashDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getCircleSplashDistortionRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < circleSplashDistortionRadiusSlider.minValue {
+                circleSplashDistortionRadiusSlider.doubleValue = circleSplashDistortionRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > circleSplashDistortionRadiusSlider.maxValue {
+                circleSplashDistortionRadiusSlider.doubleValue = circleSplashDistortionRadiusSlider.maxValue
+            } else {
+                circleSplashDistortionRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.circleSplashDistortionRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // circular wrap
+    
+    var xCircularWrapValue: CGFloat = 0.0 {
+        didSet { windowController?.updateCircularWrap(with: xCircularWrapValue, y: yCircularWrapValue, radius: circularWrapRadiusValue, angle: circularWrapAngleValue) }
+    }
+    var yCircularWrapValue: CGFloat = 0.0 {
+        didSet { windowController?.updateCircularWrap(with: xCircularWrapValue, y: yCircularWrapValue, radius: circularWrapRadiusValue, angle: circularWrapAngleValue) }
+    }
+    var circularWrapRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateCircularWrap(with: xCircularWrapValue, y: yCircularWrapValue, radius: circularWrapRadiusValue, angle: circularWrapAngleValue) }
+    }
+    var circularWrapAngleValue: Double = 0.0 {
+        didSet { windowController?.updateCircularWrap(with: xCircularWrapValue, y: yCircularWrapValue, radius: circularWrapRadiusValue, angle: circularWrapAngleValue) }
+    }
+    
+    @IBOutlet weak var xCircularWrapSlider: NSSlider!
+    @IBOutlet weak var yCircularWrapSlider: NSSlider!
+    @IBOutlet weak var circularWrapRadiusSlider: NSSlider!
+    @IBOutlet weak var circularWrapAngleSlider: NSSlider!
+    @IBAction func getXCircularWrapValue(_ sender: NSSlider) {
+        xCircularWrapValueTextField.stringValue = String(sender.integerValue)
+        self.xCircularWrapValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYCircularWrapValue(_ sender: NSSlider) {
+        yCircularWrapValueTextField.stringValue = String(sender.integerValue)
+        self.yCircularWrapValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getCircularWrapRadiusValue(_ sender: NSSlider) {
+        circularWrapRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.circularWrapRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getCircularWrapAngleValue(_ sender: NSSlider) {
+        circularWrapAngleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.circularWrapAngleValue = sender.doubleValue.roundTo(places: 2) / 57.2957795131
+    }
+    @IBOutlet weak var xCircularWrapValueTextField: NSTextField!
+    @IBOutlet weak var yCircularWrapValueTextField: NSTextField!
+    @IBOutlet weak var circularWrapRadiusTextField: NSTextField!
+    @IBOutlet weak var circularWrapAngleTextField: NSTextField!
+    @IBAction func getXCircularWrapValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xCircularWrapSlider.minValue {
+                xCircularWrapSlider.doubleValue = xCircularWrapSlider.minValue
+            } else if Double(sender.stringValue)! > xCircularWrapSlider.maxValue {
+                xCircularWrapSlider.doubleValue = xCircularWrapSlider.maxValue
+            } else {
+                xCircularWrapSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xCircularWrapValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYCircularWrapValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yCircularWrapSlider.minValue {
+                yCircularWrapSlider.doubleValue = yCircularWrapSlider.minValue
+            } else if Double(sender.stringValue)! > yCircularWrapSlider.maxValue {
+                yCircularWrapSlider.doubleValue = yCircularWrapSlider.maxValue
+            } else {
+                yCircularWrapSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yCircularWrapValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getCircularWrapRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < circularWrapRadiusSlider.minValue {
+                circularWrapRadiusSlider.doubleValue = circularWrapRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > circularWrapRadiusSlider.maxValue {
+                circularWrapRadiusSlider.doubleValue = circularWrapRadiusSlider.maxValue
+            } else {
+                circularWrapRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.circularWrapRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getCircularWrapAngleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < circularWrapAngleSlider.minValue {
+                circularWrapAngleSlider.doubleValue = circularWrapAngleSlider.minValue
+            } else if Double(sender.stringValue)! > circularWrapAngleSlider.maxValue {
+                circularWrapAngleSlider.doubleValue = circularWrapAngleSlider.maxValue
+            } else {
+                circularWrapAngleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.circularWrapAngleValue = Double(sender.stringValue)! / 57.2957795131
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // circle splash distortion
+    
+    var xGlassDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateGlassDistortion(with: xGlassDistortionValue, y: yGlassDistortionValue, scale: glassDistortionScaleValue) }
+    }
+    var yGlassDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateGlassDistortion(with: xGlassDistortionValue, y: yGlassDistortionValue, scale: glassDistortionScaleValue) }
+    }
+    var glassDistortionScaleValue: Double = 0.0 {
+        didSet { windowController?.updateGlassDistortion(with: xGlassDistortionValue, y: yGlassDistortionValue, scale: glassDistortionScaleValue) }
+    }
+    
+    @IBOutlet weak var xGlassDistortionSlider: NSSlider!
+    @IBOutlet weak var yGlassDistortionSlider: NSSlider!
+    @IBOutlet weak var glassDistortionScaleSlider: NSSlider!
+    @IBAction func getXGlassDistortionEffectValue(_ sender: NSSlider) {
+        xGlassDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.xGlassDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYGlassDistortionEffectValue(_ sender: NSSlider) {
+        yGlassDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.yGlassDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getGlassDistortionScaleValue(_ sender: NSSlider) {
+        glassDistortionScaleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.glassDistortionScaleValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xGlassDistortionValueTextField: NSTextField!
+    @IBOutlet weak var yGlassDistortionValueTextField: NSTextField!
+    @IBOutlet weak var glassDistortionScaleTextField: NSTextField!
+    @IBAction func getXGlassDistortionEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xGlassDistortionSlider.minValue {
+                xGlassDistortionSlider.doubleValue = xGlassDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > xGlassDistortionSlider.maxValue {
+                xGlassDistortionSlider.doubleValue = xGlassDistortionSlider.maxValue
+            } else {
+                xGlassDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xGlassDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYGlassDistortionEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yGlassDistortionSlider.minValue {
+                yGlassDistortionSlider.doubleValue = yGlassDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > yGlassDistortionSlider.maxValue {
+                yGlassDistortionSlider.doubleValue = yGlassDistortionSlider.maxValue
+            } else {
+                yGlassDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yGlassDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getGlassDistortionScaleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < glassDistortionScaleSlider.minValue {
+                glassDistortionScaleSlider.doubleValue = glassDistortionScaleSlider.minValue
+            } else if Double(sender.stringValue)! > glassDistortionScaleSlider.maxValue {
+                glassDistortionScaleSlider.doubleValue = glassDistortionScaleSlider.maxValue
+            } else {
+                glassDistortionScaleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.glassDistortionScaleValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // hole distortion
+    
+    var xHoleDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateHoleDistortion(with: xHoleDistortionValue, y: yHoleDistortionValue, radius: holeDistortionRadiusValue) }
+    }
+    var yHoleDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateHoleDistortion(with: xHoleDistortionValue, y: yHoleDistortionValue, radius: holeDistortionRadiusValue) }
+    }
+    var holeDistortionRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateHoleDistortion(with: xHoleDistortionValue, y: yHoleDistortionValue, radius: holeDistortionRadiusValue) }
+    }
+    
+    @IBOutlet weak var xHoleDistortionSlider: NSSlider!
+    @IBOutlet weak var yHoleDistortionSlider: NSSlider!
+    @IBOutlet weak var holeDistortionRadiusSlider: NSSlider!
+    @IBAction func getXHoleDistortionValue(_ sender: NSSlider) {
+        xHoleDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.xHoleDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYHoleDistortionValue(_ sender: NSSlider) {
+        yHoleDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.yHoleDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getHoleDistortionRadiusValue(_ sender: NSSlider) {
+        holeDistortionRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.holeDistortionRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xHoleDistortionValueTextField: NSTextField!
+    @IBOutlet weak var yHoleDistortionValueTextField: NSTextField!
+    @IBOutlet weak var holeDistortionRadiusTextField: NSTextField!
+    @IBAction func getXHoleDistortionValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xHoleDistortionSlider.minValue {
+                xHoleDistortionSlider.doubleValue = xHoleDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > xHoleDistortionSlider.maxValue {
+                xHoleDistortionSlider.doubleValue = xHoleDistortionSlider.maxValue
+            } else {
+                xHoleDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xHoleDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYHoleDistortionValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yHoleDistortionSlider.minValue {
+                yHoleDistortionSlider.doubleValue = yHoleDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > yHoleDistortionSlider.maxValue {
+                yHoleDistortionSlider.doubleValue = yHoleDistortionSlider.maxValue
+            } else {
+                yHoleDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yHoleDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getHoleDistortionRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < holeDistortionRadiusSlider.minValue {
+                holeDistortionRadiusSlider.doubleValue = holeDistortionRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > holeDistortionRadiusSlider.maxValue {
+                holeDistortionRadiusSlider.doubleValue = holeDistortionRadiusSlider.maxValue
+            } else {
+                holeDistortionRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.holeDistortionRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // light tunnel distortion
+    
+    var xLightTunnelValue: CGFloat = 0.0 {
+        didSet { windowController?.updateLightTunnel(with: xLightTunnelValue, y: yLightTunnelValue, radius: lightTunnelRadiusValue, rotation: lightTunnelRotationValue) }
+    }
+    var yLightTunnelValue: CGFloat = 0.0 {
+        didSet { windowController?.updateLightTunnel(with: xLightTunnelValue, y: yLightTunnelValue, radius: lightTunnelRadiusValue, rotation: lightTunnelRotationValue) }
+    }
+    var lightTunnelRadiusValue: Double = 1.0 {
+        didSet { windowController?.updateLightTunnel(with: xLightTunnelValue, y: yLightTunnelValue, radius: lightTunnelRadiusValue, rotation: lightTunnelRotationValue) }
+    }
+    var lightTunnelRotationValue: Double = 0.0 {
+        didSet { windowController?.updateLightTunnel(with: xLightTunnelValue, y: yLightTunnelValue, radius: lightTunnelRadiusValue, rotation: lightTunnelRotationValue) }
+    }
+    
+    @IBOutlet weak var xLightTunnelSlider: NSSlider!
+    @IBOutlet weak var yLightTunnelSlider: NSSlider!
+    @IBOutlet weak var lightTunnelRadiusSlider: NSSlider!
+    @IBOutlet weak var lightTunnelRotationSlider: NSSlider!
+    @IBAction func getXLightTunnelEffectValue(_ sender: NSSlider) {
+        xLightTunnelValueTextField.stringValue = String(sender.integerValue)
+        self.xLightTunnelValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYLightTunnelEffectValue(_ sender: NSSlider) {
+        yLightTunnelValueTextField.stringValue = String(sender.integerValue)
+        self.yLightTunnelValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getLightTunnelRadiusValue(_ sender: NSSlider) {
+        lightTunnelRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.lightTunnelRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getLightTunnelRotationValue(_ sender: NSSlider) {
+        lightTunnelRotationTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.lightTunnelRotationValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xLightTunnelValueTextField: NSTextField!
+    @IBOutlet weak var yLightTunnelValueTextField: NSTextField!
+    @IBOutlet weak var lightTunnelRadiusTextField: NSTextField!
+    @IBOutlet weak var lightTunnelRotationTextField: NSTextField!
+    @IBAction func getXLightTunnelEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xLightTunnelSlider.minValue {
+                xLightTunnelSlider.doubleValue = xLightTunnelSlider.minValue
+            } else if Double(sender.stringValue)! > xLightTunnelSlider.maxValue {
+                xLightTunnelSlider.doubleValue = xLightTunnelSlider.maxValue
+            } else {
+                xLightTunnelSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xLightTunnelValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYLightTunnelEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yLightTunnelSlider.minValue {
+                yLightTunnelSlider.doubleValue = yLightTunnelSlider.minValue
+            } else if Double(sender.stringValue)! > yLightTunnelSlider.maxValue {
+                yLightTunnelSlider.doubleValue = yLightTunnelSlider.maxValue
+            } else {
+                yLightTunnelSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yLightTunnelValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getLightTunnelRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < lightTunnelRadiusSlider.minValue {
+                lightTunnelRadiusSlider.doubleValue = lightTunnelRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > lightTunnelRadiusSlider.maxValue {
+                lightTunnelRadiusSlider.doubleValue = lightTunnelRadiusSlider.maxValue
+            } else {
+                lightTunnelRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.lightTunnelRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getlightTunnelRotationT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < lightTunnelRotationSlider.minValue {
+                lightTunnelRotationSlider.doubleValue = lightTunnelRotationSlider.minValue
+            } else if Double(sender.stringValue)! > lightTunnelRotationSlider.maxValue {
+                lightTunnelRotationSlider.doubleValue = lightTunnelRotationSlider.maxValue
+            } else {
+                lightTunnelRotationSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.lightTunnelRotationValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // pinch distortion
+    
+    var xPinchDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updatePinchDistortion(with: xPinchDistortionValue, y: yPinchDistortionValue, radius: pinchDistortionRadiusValue, scale: pinchDistortionScaleValue) }
+    }
+    var yPinchDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updatePinchDistortion(with: xPinchDistortionValue, y: yPinchDistortionValue, radius: pinchDistortionRadiusValue, scale: pinchDistortionScaleValue) }
+    }
+    var pinchDistortionRadiusValue: Double = 0.0 {
+        didSet { windowController?.updatePinchDistortion(with: xPinchDistortionValue, y: yPinchDistortionValue, radius: pinchDistortionRadiusValue, scale: pinchDistortionScaleValue) }
+    }
+    var pinchDistortionScaleValue: Double = 0.0 {
+        didSet { windowController?.updatePinchDistortion(with: xPinchDistortionValue, y: yPinchDistortionValue, radius: pinchDistortionRadiusValue, scale: pinchDistortionScaleValue) }
+    }
+    
+    @IBOutlet weak var xPinchDistortionSlider: NSSlider!
+    @IBOutlet weak var yPinchDistortionSlider: NSSlider!
+    @IBOutlet weak var pinchDistortionRadiusSlider: NSSlider!
+    @IBOutlet weak var pinchDistortionScaleSlider: NSSlider!
+    @IBAction func getXPinchDistortionValue(_ sender: NSSlider) {
+        xPinchDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.xPinchDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYPinchDistortionValue(_ sender: NSSlider) {
+        yPinchDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.yPinchDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getPinchDistortionRadiusValue(_ sender: NSSlider) {
+        pinchDistortionRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.pinchDistortionRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getPinchDistortionScaleValue(_ sender: NSSlider) {
+        pinchDistortionScaleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.pinchDistortionScaleValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xPinchDistortionValueTextField: NSTextField!
+    @IBOutlet weak var yPinchDistortionValueTextField: NSTextField!
+    @IBOutlet weak var pinchDistortionRadiusTextField: NSTextField!
+    @IBOutlet weak var pinchDistortionScaleTextField: NSTextField!
+    @IBAction func getXPinchDistortionValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xPinchDistortionSlider.minValue {
+                xPinchDistortionSlider.doubleValue = xPinchDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > xPinchDistortionSlider.maxValue {
+                xPinchDistortionSlider.doubleValue = xPinchDistortionSlider.maxValue
+            } else {
+                xPinchDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xPinchDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYPinchDistortionValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yPinchDistortionSlider.minValue {
+                yPinchDistortionSlider.doubleValue = yPinchDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > yPinchDistortionSlider.maxValue {
+                yPinchDistortionSlider.doubleValue = yPinchDistortionSlider.maxValue
+            } else {
+                yPinchDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yPinchDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getPinchDistortionRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < pinchDistortionRadiusSlider.minValue {
+                pinchDistortionRadiusSlider.doubleValue = pinchDistortionRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > pinchDistortionRadiusSlider.maxValue {
+                pinchDistortionRadiusSlider.doubleValue = pinchDistortionRadiusSlider.maxValue
+            } else {
+                pinchDistortionRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.pinchDistortionRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getPinchDistortionScaleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < pinchDistortionScaleSlider.minValue {
+                pinchDistortionScaleSlider.doubleValue = pinchDistortionScaleSlider.minValue
+            } else if Double(sender.stringValue)! > pinchDistortionScaleSlider.maxValue {
+                pinchDistortionScaleSlider.doubleValue = pinchDistortionScaleSlider.maxValue
+                pinchDistortionScaleTextField.stringValue = "2.0"
+            } else {
+                pinchDistortionScaleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            if Double(sender.stringValue)! > 2.0 {
+                self.pinchDistortionScaleValue = 2.0
+            } else {
+                self.pinchDistortionScaleValue = Double(sender.stringValue)!
+            }
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // stretch crop
+    
+    var stretchCropWidthValue: CGFloat = 0.0 {
+        didSet { windowController?.updateStretchCrop(with: stretchCropWidthValue, height: stretchCropHeightValue, cropAmount: stretchCropCropAmountValue, centerStretchAmount: stretchCropCenterStretchAmountValue) }
+    }
+    var stretchCropHeightValue: CGFloat = 0.0 {
+        didSet { windowController?.updateStretchCrop(with: stretchCropWidthValue, height: stretchCropHeightValue, cropAmount: stretchCropCropAmountValue, centerStretchAmount: stretchCropCenterStretchAmountValue) }
+    }
+    var stretchCropCropAmountValue: Double = 0.0 {
+        didSet { windowController?.updateStretchCrop(with: stretchCropWidthValue, height: stretchCropHeightValue, cropAmount: stretchCropCropAmountValue, centerStretchAmount: stretchCropCenterStretchAmountValue) }
+    }
+    var stretchCropCenterStretchAmountValue: Double = 0.0 {
+        didSet { windowController?.updateStretchCrop(with: stretchCropWidthValue, height: stretchCropHeightValue, cropAmount: stretchCropCropAmountValue, centerStretchAmount: stretchCropCenterStretchAmountValue) }
+    }
+    
+    @IBOutlet weak var stretchCropWidthSlider: NSSlider!
+    @IBOutlet weak var stretchCropHeightSlider: NSSlider!
+    @IBOutlet weak var stretchCropCropAmountSlider: NSSlider!
+    @IBOutlet weak var stretchCropCenterStretchAmountSlider: NSSlider!
+    @IBAction func getStretchCropWidthValue(_ sender: NSSlider) {
+        stretchCropWidthTextField.stringValue = String(sender.integerValue)
+        self.stretchCropWidthValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getStretchCropHeightValue(_ sender: NSSlider) {
+        stretchCropHeightTextField.stringValue = String(sender.integerValue)
+        self.stretchCropHeightValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getStretchCropCropAmountValue(_ sender: NSSlider) {
+        stretchCropCropAmountTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.stretchCropCropAmountValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getStretchCropCenterStretchAmountValue(_ sender: NSSlider) {
+        stretchCropCenterStretchAmountTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.stretchCropCenterStretchAmountValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var stretchCropWidthTextField: NSTextField!
+    @IBOutlet weak var stretchCropHeightTextField: NSTextField!
+    @IBOutlet weak var stretchCropCropAmountTextField: NSTextField!
+    @IBOutlet weak var stretchCropCenterStretchAmountTextField: NSTextField!
+    @IBAction func getStretchCropWidthValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < stretchCropWidthSlider.minValue {
+                stretchCropWidthSlider.doubleValue = stretchCropWidthSlider.minValue
+            } else if Double(sender.stringValue)! > stretchCropWidthSlider.maxValue {
+                stretchCropWidthSlider.doubleValue = stretchCropWidthSlider.maxValue
+            } else {
+                stretchCropWidthSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.stretchCropWidthValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getStretchCropHeightValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < stretchCropHeightSlider.minValue {
+                stretchCropHeightSlider.doubleValue = stretchCropHeightSlider.minValue
+            } else if Double(sender.stringValue)! > stretchCropHeightSlider.maxValue {
+                stretchCropHeightSlider.doubleValue = stretchCropHeightSlider.maxValue
+            } else {
+                stretchCropHeightSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.stretchCropHeightValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getStretchCropCropAmountValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < stretchCropCropAmountSlider.minValue {
+                stretchCropCropAmountSlider.doubleValue = stretchCropCropAmountSlider.minValue
+            } else if Double(sender.stringValue)! > stretchCropCropAmountSlider.maxValue {
+                stretchCropCropAmountSlider.doubleValue = stretchCropCropAmountSlider.maxValue
+            } else {
+                stretchCropCropAmountSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.stretchCropCropAmountValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getStretchCropCenterStretchAmountValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < stretchCropCenterStretchAmountSlider.minValue {
+                stretchCropCenterStretchAmountSlider.doubleValue = stretchCropCenterStretchAmountSlider.minValue
+            } else if Double(sender.stringValue)! > stretchCropCenterStretchAmountSlider.maxValue {
+                stretchCropCenterStretchAmountSlider.doubleValue = stretchCropCenterStretchAmountSlider.maxValue
+            } else {
+                stretchCropCenterStretchAmountSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.stretchCropCenterStretchAmountValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // torus lens distortion
+    
+    var xTorusLensDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateTorusLensDistortion(with: xTorusLensDistortionValue, y: yTorusLensDistortionValue, radius: torusLensDistortionRadiusValue, width: torusLensDistortionWidthValue, refraction: torusLensDistortionRefractionValue) }
+    }
+    var yTorusLensDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateTorusLensDistortion(with: xTorusLensDistortionValue, y: yTorusLensDistortionValue, radius: torusLensDistortionRadiusValue, width: torusLensDistortionWidthValue, refraction: torusLensDistortionRefractionValue) }
+    }
+    var torusLensDistortionRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateTorusLensDistortion(with: xTorusLensDistortionValue, y: yTorusLensDistortionValue, radius: torusLensDistortionRadiusValue, width: torusLensDistortionWidthValue, refraction: torusLensDistortionRefractionValue) }
+    }
+    var torusLensDistortionWidthValue: Double = 0.0 {
+        didSet { windowController?.updateTorusLensDistortion(with: xTorusLensDistortionValue, y: yTorusLensDistortionValue, radius: torusLensDistortionRadiusValue, width: torusLensDistortionWidthValue, refraction: torusLensDistortionRefractionValue) }
+    }
+    var torusLensDistortionRefractionValue = 0.0 {
+        didSet { windowController?.updateTorusLensDistortion(with: xTorusLensDistortionValue, y: yTorusLensDistortionValue, radius: torusLensDistortionRadiusValue, width: torusLensDistortionWidthValue, refraction: torusLensDistortionRefractionValue) }
+    }
+    
+    @IBOutlet weak var xTorusLensDistortionSlider: NSSlider!
+    @IBOutlet weak var yTorusLensDistortionSlider: NSSlider!
+    @IBOutlet weak var torusLensDistortionRadiusSlider: NSSlider!
+    @IBOutlet weak var torusLensDistortionWidthSlider: NSSlider!
+    @IBOutlet weak var torusLensDistortionRefractionSlider: NSSlider!
+    @IBAction func getXTorusLensDistortionEffectValue(_ sender: NSSlider) {
+        xTorusLensDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.xTorusLensDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYTorusLensDistortionEffectValue(_ sender: NSSlider) {
+        yTorusLensDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.yTorusLensDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getTorusLensDistortionRadiusValue(_ sender: NSSlider) {
+        torusLensDistortionRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.torusLensDistortionRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getTorusLensDistortionWidthValue(_ sender: NSSlider) {
+        torusLensDistortionWidthTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.torusLensDistortionWidthValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getTorusLensDistortionRefractionValue(_ sender: NSSlider) {
+        torusLensDistortionRefractionTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.torusLensDistortionRefractionValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xTorusLensDistortionValueTextField: NSTextField!
+    @IBOutlet weak var yTorusLensDistortionValueTextField: NSTextField!
+    @IBOutlet weak var torusLensDistortionRadiusTextField: NSTextField!
+    @IBOutlet weak var torusLensDistortionWidthTextField: NSTextField!
+    @IBOutlet weak var torusLensDistortionRefractionTextField: NSTextField!
+    @IBAction func getXTorusLensDistortionEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xTorusLensDistortionSlider.minValue {
+                xTorusLensDistortionSlider.doubleValue = xTorusLensDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > xTorusLensDistortionSlider.maxValue {
+                xTorusLensDistortionSlider.doubleValue = xTorusLensDistortionSlider.maxValue
+            } else {
+                xTorusLensDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xTorusLensDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYTorusLensDistortionEffectValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yTorusLensDistortionSlider.minValue {
+                yTorusLensDistortionSlider.doubleValue = yTorusLensDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > yTorusLensDistortionSlider.maxValue {
+                yTorusLensDistortionSlider.doubleValue = yTorusLensDistortionSlider.maxValue
+            } else {
+                yTorusLensDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yTorusLensDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getTorusLensDistortionRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < torusLensDistortionRadiusSlider.minValue {
+                torusLensDistortionRadiusSlider.doubleValue = torusLensDistortionRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > torusLensDistortionRadiusSlider.maxValue {
+                torusLensDistortionRadiusSlider.doubleValue = torusLensDistortionRadiusSlider.maxValue
+            } else {
+                torusLensDistortionRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.torusLensDistortionRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getTorusLensDistortionWidthT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < torusLensDistortionWidthSlider.minValue {
+                torusLensDistortionWidthSlider.doubleValue = torusLensDistortionWidthSlider.minValue
+            } else if Double(sender.stringValue)! > torusLensDistortionWidthSlider.maxValue {
+                torusLensDistortionWidthSlider.doubleValue = torusLensDistortionWidthSlider.maxValue
+            } else {
+                torusLensDistortionWidthSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.torusLensDistortionWidthValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getTorusLensDistortionRefractionT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < torusLensDistortionRefractionSlider.minValue {
+                torusLensDistortionRefractionSlider.doubleValue = torusLensDistortionRefractionSlider.minValue
+            } else if Double(sender.stringValue)! > torusLensDistortionRefractionSlider.maxValue {
+                torusLensDistortionRefractionSlider.doubleValue = torusLensDistortionRefractionSlider.maxValue
+            } else {
+                torusLensDistortionRefractionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.torusLensDistortionRefractionValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // twirl distortion
+    
+    var xTwirlDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateTwirlDistortion(with: xTwirlDistortionValue, y: yTwirlDistortionValue, radius: twirlDistortionRadiusValue, angle: twirlDistortionAngleValue) }
+    }
+    var yTwirlDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateTwirlDistortion(with: xTwirlDistortionValue, y: yTwirlDistortionValue, radius: twirlDistortionRadiusValue, angle: twirlDistortionAngleValue) }
+    }
+    var twirlDistortionRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateTwirlDistortion(with: xTwirlDistortionValue, y: yTwirlDistortionValue, radius: twirlDistortionRadiusValue, angle: twirlDistortionAngleValue) }
+    }
+    var twirlDistortionAngleValue: Double = 0.0 {
+        didSet { windowController?.updateTwirlDistortion(with: xTwirlDistortionValue, y: yTwirlDistortionValue, radius: twirlDistortionRadiusValue, angle: twirlDistortionAngleValue) }
+    }
+    
+    @IBOutlet weak var xTwirlDistortionSlider: NSSlider!
+    @IBOutlet weak var yTwirlDistortionSlider: NSSlider!
+    @IBOutlet weak var twirlDistortionRadiusSlider: NSSlider!
+    @IBOutlet weak var twirlDistortionAngleSlider: NSSlider!
+    @IBAction func getXTwirlDistortionValue(_ sender: NSSlider) {
+        xTwirlDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.xTwirlDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYTwirlDistortionValue(_ sender: NSSlider) {
+        yTwirlDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.yTwirlDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getTwirlDistortionRadiusValue(_ sender: NSSlider) {
+        twirlDistortionRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.twirlDistortionRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getTwirlDistortionAngleValue(_ sender: NSSlider) {
+        twirlDistortionAngleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.twirlDistortionAngleValue = sender.doubleValue.roundTo(places: 2) / 57.2957795131
+    }
+    @IBOutlet weak var xTwirlDistortionValueTextField: NSTextField!
+    @IBOutlet weak var yTwirlDistortionValueTextField: NSTextField!
+    @IBOutlet weak var twirlDistortionRadiusTextField: NSTextField!
+    @IBOutlet weak var twirlDistortionAngleTextField: NSTextField!
+    @IBAction func getXTwirlDistortionValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xTwirlDistortionSlider.minValue {
+                xTwirlDistortionSlider.doubleValue = xTwirlDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > xTwirlDistortionSlider.maxValue {
+                xTwirlDistortionSlider.doubleValue = xTwirlDistortionSlider.maxValue
+            } else {
+                xTwirlDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xTwirlDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYTwirlDistortionValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yTwirlDistortionSlider.minValue {
+                yTwirlDistortionSlider.doubleValue = yTwirlDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > yTwirlDistortionSlider.maxValue {
+                yTwirlDistortionSlider.doubleValue = yTwirlDistortionSlider.maxValue
+            } else {
+                yTwirlDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yTwirlDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getTwirlDistortionRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < twirlDistortionRadiusSlider.minValue {
+                twirlDistortionRadiusSlider.doubleValue = twirlDistortionRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > twirlDistortionRadiusSlider.maxValue {
+                twirlDistortionRadiusSlider.doubleValue = twirlDistortionRadiusSlider.maxValue
+            } else {
+                twirlDistortionRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.twirlDistortionRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getTwirlDistortionAngleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < twirlDistortionAngleSlider.minValue {
+                twirlDistortionAngleSlider.doubleValue = twirlDistortionAngleSlider.minValue
+            } else if Double(sender.stringValue)! > twirlDistortionAngleSlider.maxValue {
+                twirlDistortionAngleSlider.doubleValue = twirlDistortionAngleSlider.maxValue
+            } else {
+                twirlDistortionAngleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.twirlDistortionAngleValue = Double(sender.stringValue)! / 57.2957795131
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // vortex distortion
+    
+    var xVortexDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateVortexDistortion(with: xVortexDistortionValue, y: yVortexDistortionValue, radius: vortexDistortionRadiusValue, angle: vortexDistortionAngleValue) }
+    }
+    var yVortexDistortionValue: CGFloat = 0.0 {
+        didSet { windowController?.updateVortexDistortion(with: xVortexDistortionValue, y: yVortexDistortionValue, radius: vortexDistortionRadiusValue, angle: vortexDistortionAngleValue) }
+    }
+    var vortexDistortionRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateVortexDistortion(with: xVortexDistortionValue, y: yVortexDistortionValue, radius: vortexDistortionRadiusValue, angle: vortexDistortionAngleValue) }
+    }
+    var vortexDistortionAngleValue: Double = 0.0 {
+        didSet { windowController?.updateVortexDistortion(with: xVortexDistortionValue, y: yVortexDistortionValue, radius: vortexDistortionRadiusValue, angle: vortexDistortionAngleValue) }
+    }
+    
+    @IBOutlet weak var xVortexDistortionSlider: NSSlider!
+    @IBOutlet weak var yVortexDistortionSlider: NSSlider!
+    @IBOutlet weak var vortexDistortionRadiusSlider: NSSlider!
+    @IBOutlet weak var vortexDistortionAngleSlider: NSSlider!
+    @IBAction func getXVortexDistortionValue(_ sender: NSSlider) {
+        xVortexDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.xVortexDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYVortexDistortionValue(_ sender: NSSlider) {
+        yVortexDistortionValueTextField.stringValue = String(sender.integerValue)
+        self.yVortexDistortionValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getVortexDistortionRadiusValue(_ sender: NSSlider) {
+        vortexDistortionRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.vortexDistortionRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getVortexDistortionAngleValue(_ sender: NSSlider) {
+        vortexDistortionAngleTextField.stringValue = String(sender.integerValue)
+        self.vortexDistortionAngleValue = sender.doubleValue.roundTo(places: 2) / 57.2957795131
+    }
+    @IBOutlet weak var xVortexDistortionValueTextField: NSTextField!
+    @IBOutlet weak var yVortexDistortionValueTextField: NSTextField!
+    @IBOutlet weak var vortexDistortionRadiusTextField: NSTextField!
+    @IBOutlet weak var vortexDistortionAngleTextField: NSTextField!
+    @IBAction func getXVortexDistortionValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xVortexDistortionSlider.minValue {
+                xVortexDistortionSlider.doubleValue = xVortexDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > xVortexDistortionSlider.maxValue {
+                xVortexDistortionSlider.doubleValue = xVortexDistortionSlider.maxValue
+            } else {
+                xVortexDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xVortexDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYVortexDistortionValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yVortexDistortionSlider.minValue {
+                yVortexDistortionSlider.doubleValue = yVortexDistortionSlider.minValue
+            } else if Double(sender.stringValue)! > yVortexDistortionSlider.maxValue {
+                yVortexDistortionSlider.doubleValue = yVortexDistortionSlider.maxValue
+            } else {
+                yVortexDistortionSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yVortexDistortionValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getVortexDistortionRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < vortexDistortionRadiusSlider.minValue {
+                vortexDistortionRadiusSlider.doubleValue = vortexDistortionRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > vortexDistortionRadiusSlider.maxValue {
+                vortexDistortionRadiusSlider.doubleValue = vortexDistortionRadiusSlider.maxValue
+            } else {
+                vortexDistortionRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.vortexDistortionRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getVortexDistortionAngleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < vortexDistortionAngleSlider.minValue {
+                vortexDistortionAngleSlider.doubleValue = vortexDistortionAngleSlider.minValue
+            } else if Double(sender.stringValue)! > vortexDistortionAngleSlider.maxValue {
+                vortexDistortionAngleSlider.doubleValue = vortexDistortionAngleSlider.maxValue
+            } else {
+                vortexDistortionAngleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.vortexDistortionAngleValue = Double(sender.stringValue)! / 57.2957795131
+        }
+    }
+    
+    
+    //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
+    // stylize filters
+    //-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"-_-"
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // bloom
+    
+    var bloomRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateBloom(with: bloomRadiusValue, intensity: bloomIntensityValue) }
+    }
+    var bloomIntensityValue: Double = 0.0 {
+        didSet { windowController?.updateBloom(with: bloomRadiusValue, intensity: bloomIntensityValue) }
+    }
+    
+    @IBOutlet weak var bloomRadiusSlider: NSSlider!
+    @IBOutlet weak var bloomIntensitySlider: NSSlider!
+    @IBAction func getBloomRadius(_ sender: NSSlider) {
+        bloomRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.bloomRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getBloomIntensity(_ sender: NSSlider) {
+        bloomIntensityTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.bloomIntensityValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var bloomRadiusTextField: NSTextField!
+    @IBOutlet weak var bloomIntensityTextField: NSTextField!
+    @IBAction func getBloomRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < bloomRadiusSlider.minValue {
+                bloomRadiusSlider.doubleValue = bloomRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > bloomRadiusSlider.maxValue {
+                bloomRadiusSlider.doubleValue = bloomRadiusSlider.maxValue
+            } else {
+                bloomRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.bloomRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getBloomIntensityT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < bloomIntensitySlider.minValue {
+                bloomIntensitySlider.doubleValue = bloomIntensitySlider.minValue
+            } else if Double(sender.stringValue)! > bloomIntensitySlider.maxValue {
+                bloomIntensitySlider.doubleValue = bloomIntensitySlider.maxValue
+            } else {
+                bloomIntensitySlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.bloomIntensityValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // crystallize
+    
+    var xCrystallizeValue: CGFloat = 0.0 {
+        didSet { windowController?.updateCrystallize(with: xCrystallizeValue, y: yCrystallizeValue, radius: crystallizeRadiusValue) }
+    }
+    var yCrystallizeValue: CGFloat = 0.0 {
+        didSet { windowController?.updateCrystallize(with: xCrystallizeValue, y: yCrystallizeValue, radius: crystallizeRadiusValue) }
+    }
+    var crystallizeRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateCrystallize(with: xCrystallizeValue, y: yCrystallizeValue, radius: crystallizeRadiusValue) }
+    }
+    
+    @IBOutlet weak var xCrystallizeSlider: NSSlider!
+    @IBOutlet weak var yCrystallizeSlider: NSSlider!
+    @IBOutlet weak var crystallizeRadiusSlider: NSSlider!
+    @IBAction func getXCrystallizeValue(_ sender: NSSlider) {
+        xCrystallizeValueTextField.stringValue = String(sender.integerValue)
+        self.xCrystallizeValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYCrystallizeValue(_ sender: NSSlider) {
+        yCrystallizeValueTextField.stringValue = String(sender.integerValue)
+        self.yCrystallizeValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getCrystallizeRadiusValue(_ sender: NSSlider) {
+        crystallizeRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.crystallizeRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xCrystallizeValueTextField: NSTextField!
+    @IBOutlet weak var yCrystallizeValueTextField: NSTextField!
+    @IBOutlet weak var crystallizeRadiusTextField: NSTextField!
+    @IBAction func getXCrystallizeValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xCrystallizeSlider.minValue {
+                xCrystallizeSlider.doubleValue = xCrystallizeSlider.minValue
+            } else if Double(sender.stringValue)! > xCrystallizeSlider.maxValue {
+                xCrystallizeSlider.doubleValue = xCrystallizeSlider.maxValue
+            } else {
+                xCrystallizeSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xCrystallizeValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYCrystallizeValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yCrystallizeSlider.minValue {
+                yCrystallizeSlider.doubleValue = yCrystallizeSlider.minValue
+            } else if Double(sender.stringValue)! > yCrystallizeSlider.maxValue {
+                yCrystallizeSlider.doubleValue = yCrystallizeSlider.maxValue
+            } else {
+                yCrystallizeSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yCrystallizeValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getCrystallizeRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < crystallizeRadiusSlider.minValue {
+                crystallizeRadiusSlider.doubleValue = crystallizeRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > crystallizeRadiusSlider.maxValue {
+                crystallizeRadiusSlider.doubleValue = crystallizeRadiusSlider.maxValue
+            } else {
+                crystallizeRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.crystallizeRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // edges
+    
+    var edgesIntensityValue: Double = 0.0 {
+        didSet { windowController?.updateEdges(with: edgesIntensityValue) }
+    }
+    
+    @IBOutlet weak var edgesIntensitySlider: NSSlider!
+    @IBAction func getEdgesIntensityValue(_ sender: NSSlider) {
+        edgesIntensityTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.edgesIntensityValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var edgesIntensityTextField: NSTextField!
+    @IBAction func getEdgesIntensityValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < edgesIntensitySlider.minValue {
+                edgesIntensitySlider.doubleValue = edgesIntensitySlider.minValue
+            } else if Double(sender.stringValue)! > edgesIntensitySlider.maxValue {
+                edgesIntensitySlider.doubleValue = edgesIntensitySlider.maxValue
+            } else {
+                edgesIntensitySlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.edgesIntensityValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // edge work
+    
+    var edgeWorkRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateEdgeWork(with: edgeWorkRadiusValue) }
+    }
+    
+    @IBOutlet weak var edgeWorkRadiusSlider: NSSlider!
+    @IBAction func getEdgeWorkRadiusValue(_ sender: NSSlider) {
+        edgeWorkRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.edgeWorkRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var edgeWorkRadiusTextField: NSTextField!
+    @IBAction func getEdgeWorkRadiusValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < edgeWorkRadiusSlider.minValue {
+                edgeWorkRadiusSlider.doubleValue = edgeWorkRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > edgeWorkRadiusSlider.maxValue {
+                edgeWorkRadiusSlider.doubleValue = edgeWorkRadiusSlider.maxValue
+            } else {
+                edgeWorkRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.edgeWorkRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // gloom
+    
+    var gloomRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateGloom(with: gloomRadiusValue, intensity: shadowValue) }
+    }
+    var gloomIntensityValue: Double = 0.0 {
+        didSet { windowController?.updateGloom(with: gloomRadiusValue, intensity: gloomIntensityValue) }
+    }
+    
+    @IBOutlet weak var gloomRadiusSlider: NSSlider!
+    @IBOutlet weak var gloomIntensitySlider: NSSlider!
+    @IBAction func getGloomRadius(_ sender: NSSlider) {
+        gloomRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.gloomRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getGloomIntensity(_ sender: NSSlider) {
+        gloomIntensityTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.gloomIntensityValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var gloomRadiusTextField: NSTextField!
+    @IBOutlet weak var gloomIntensityTextField: NSTextField!
+    @IBAction func getGloomRadiusT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < gloomRadiusSlider.minValue {
+                gloomRadiusSlider.doubleValue = gloomRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > gloomRadiusSlider.maxValue {
+                gloomRadiusSlider.doubleValue = gloomRadiusSlider.maxValue
+            } else {
+                gloomRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.gloomRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getGloomIntensityT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < gloomIntensitySlider.minValue {
+                gloomIntensitySlider.doubleValue = gloomIntensitySlider.minValue
+            } else if Double(sender.stringValue)! > gloomIntensitySlider.maxValue {
+                gloomIntensitySlider.doubleValue = gloomIntensitySlider.maxValue
+            } else {
+                gloomIntensitySlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.gloomIntensityValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // height field from mask
+    
+    var heightFieldFromMaskRadiusValue: Double = 0.0 {
+        didSet { windowController?.updateHeightFieldFromMask(with: heightFieldFromMaskRadiusValue) }
+    }
+    
+    @IBOutlet weak var heightFieldFromMaskRadiusSlider: NSSlider!
+    @IBAction func getHeightFieldFromMaskRadiusValue(_ sender: NSSlider) {
+        heightFieldFromMaskRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.heightFieldFromMaskRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var heightFieldFromMaskRadiusTextField: NSTextField!
+    @IBAction func getHeightFieldFromMaskRadiusValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < heightFieldFromMaskRadiusSlider.minValue {
+                heightFieldFromMaskRadiusSlider.doubleValue = heightFieldFromMaskRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > heightFieldFromMaskRadiusSlider.maxValue {
+                heightFieldFromMaskRadiusSlider.doubleValue = heightFieldFromMaskRadiusSlider.maxValue
+            } else {
+                heightFieldFromMaskRadiusSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.heightFieldFromMaskRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // hexagonal pixellate
+    
+    var xHexagonalPixellateValue: CGFloat = 0.0 {
+        didSet { windowController?.updateHexagonalPixellate(with: xHexagonalPixellateValue, y: yHexagonalPixellateValue, scale: hexagonalPixellateScaleValue) }
+    }
+    var yHexagonalPixellateValue: CGFloat = 0.0 {
+        didSet { windowController?.updateHexagonalPixellate(with: xHexagonalPixellateValue, y: yHexagonalPixellateValue, scale: hexagonalPixellateScaleValue) }
+    }
+    var hexagonalPixellateScaleValue: Double = 20.0 {
+        didSet { windowController?.updateHexagonalPixellate(with: xHexagonalPixellateValue, y: yHexagonalPixellateValue, scale: hexagonalPixellateScaleValue) }
+    }
+    
+    @IBOutlet weak var xHexagonalPixellateSlider: NSSlider!
+    @IBOutlet weak var yHexagonalPixellateSlider: NSSlider!
+    @IBOutlet weak var hexagonalPixellateScaleSlider: NSSlider!
+    @IBAction func getXHexagonalPixellateValue(_ sender: NSSlider) {
+        xHexagonalPixellateValueTextField.stringValue = String(sender.integerValue)
+        self.xHexagonalPixellateValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYHexagonalPixellateValue(_ sender: NSSlider) {
+        yHexagonalPixellateValueTextField.stringValue = String(sender.integerValue)
+        self.yHexagonalPixellateValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getHexagonalPixellateScaleValue(_ sender: NSSlider) {
+        hexagonalPixellateScaleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.hexagonalPixellateScaleValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xHexagonalPixellateValueTextField: NSTextField!
+    @IBOutlet weak var yHexagonalPixellateValueTextField: NSTextField!
+    @IBOutlet weak var hexagonalPixellateScaleTextField: NSTextField!
+    @IBAction func getXHexagonalPixellateValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xHexagonalPixellateSlider.minValue {
+                xHexagonalPixellateSlider.doubleValue = xHexagonalPixellateSlider.minValue
+            } else if Double(sender.stringValue)! > xHexagonalPixellateSlider.maxValue {
+                xHexagonalPixellateSlider.doubleValue = xHexagonalPixellateSlider.maxValue
+            } else {
+                xHexagonalPixellateSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xHexagonalPixellateValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYHexagonalPixellateValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yHexagonalPixellateSlider.minValue {
+                yHexagonalPixellateSlider.doubleValue = yHexagonalPixellateSlider.minValue
+            } else if Double(sender.stringValue)! > yHexagonalPixellateSlider.maxValue {
+                yHexagonalPixellateSlider.doubleValue = yHexagonalPixellateSlider.maxValue
+            } else {
+                yHexagonalPixellateSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yHexagonalPixellateValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getHexagonalPixellateScaleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < hexagonalPixellateScaleSlider.minValue {
+                hexagonalPixellateScaleSlider.doubleValue = hexagonalPixellateScaleSlider.minValue
+            } else if Double(sender.stringValue)! > hexagonalPixellateScaleSlider.maxValue {
+                hexagonalPixellateScaleSlider.doubleValue = hexagonalPixellateScaleSlider.maxValue
+            } else {
+                hexagonalPixellateScaleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.hexagonalPixellateScaleValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // highlight/shadow adjust
+    
+    var highlightValue: Double = 0.0 {
+        didSet { windowController?.updateHighlightShadow(with: highlightValue, shadow: shadowValue) }
+    }
+    var shadowValue: Double = 0.0 {
+        didSet { windowController?.updateHighlightShadow(with: highlightValue, shadow: shadowValue) }
+    }
+    
+    @IBOutlet weak var highlightSlider: NSSlider!
+    @IBOutlet weak var shadowSlider: NSSlider!
+    @IBAction func getHighlight(_ sender: NSSlider) {
+        highlightTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.highlightValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getShadow(_ sender: NSSlider) {
+        shadowTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.shadowValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var highlightTextField: NSTextField!
+    @IBOutlet weak var shadowTextField: NSTextField!
+    @IBAction func getHighlightT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < highlightSlider.minValue {
+                highlightSlider.doubleValue = highlightSlider.minValue
+            } else if Double(sender.stringValue)! > highlightSlider.maxValue {
+                highlightSlider.doubleValue = highlightSlider.maxValue
+            } else {
+                highlightSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.highlightValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getShadowT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < shadowSlider.minValue {
+                shadowSlider.doubleValue = shadowSlider.minValue
+            } else if Double(sender.stringValue)! > shadowSlider.maxValue {
+                shadowSlider.doubleValue = shadowSlider.maxValue
+            } else {
+                shadowSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.shadowValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // line overlay
+    
+    var lineOverlayNRNoiseLevelValue: Double = 0.0 {
+        didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
+    }
+    var lineOverlayNRSharpnessValue: Double = 0.0 {
+        didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
+    }
+    var lineOverlayEdgeIntensityValue: Double = 0.0 {
+        didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
+    }
+    var lineOverlayThresholdValue: Double = 0.0 {
+        didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
+    }
+    var lineOverlayContrastValue = 0.0 {
+        didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
+    }
+    
+    @IBOutlet weak var lineOverlayNRNoiseSlider: NSSlider!
+    @IBOutlet weak var lineOverlayNRSharpnessSlider: NSSlider!
+    @IBOutlet weak var lineOverlayEdgeIntensitySlider: NSSlider!
+    @IBOutlet weak var lineOverlayThresholdSlider: NSSlider!
+    @IBOutlet weak var lineOverlayContrastSlider: NSSlider!
+    @IBAction func getLineOverlayNRNoise(_ sender: NSSlider) {
+        lineOverlayNRNoiseLevelValueTextField.stringValue = String(sender.doubleValue)
+        self.lineOverlayNRNoiseLevelValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getLineOverlayNRSharpness(_ sender: NSSlider) {
+        lineOverlayNRSharpnessValueTextField.stringValue = String(sender.doubleValue)
+        self.lineOverlayNRSharpnessValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getLineOverlayEdgeIntensity(_ sender: NSSlider) {
+        lineOverlayEdgeIntensityTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.lineOverlayEdgeIntensityValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getLineOverlayThreshold(_ sender: NSSlider) {
+        lineOverlayThresholdTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.lineOverlayThresholdValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBAction func getlineOverlayContrast(_ sender: NSSlider) {
+        lineOverlayContrastTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.lineOverlayContrastValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var lineOverlayNRNoiseLevelValueTextField: NSTextField!
+    @IBOutlet weak var lineOverlayNRSharpnessValueTextField: NSTextField!
+    @IBOutlet weak var lineOverlayEdgeIntensityTextField: NSTextField!
+    @IBOutlet weak var lineOverlayThresholdTextField: NSTextField!
+    @IBOutlet weak var lineOverlayContrastTextField: NSTextField!
+    @IBAction func getLineOverlayNRNoiseT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < lineOverlayNRNoiseSlider.minValue {
+                lineOverlayNRNoiseSlider.doubleValue = lineOverlayNRNoiseSlider.minValue
+            } else if Double(sender.stringValue)! > lineOverlayNRNoiseSlider.maxValue {
+                lineOverlayNRNoiseSlider.doubleValue = lineOverlayNRNoiseSlider.maxValue
+            } else {
+                lineOverlayNRNoiseSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.lineOverlayNRNoiseLevelValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getLineOverlayNRSharpnessT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < lineOverlayNRSharpnessSlider.minValue {
+                lineOverlayNRSharpnessSlider.doubleValue = lineOverlayNRSharpnessSlider.minValue
+            } else if Double(sender.stringValue)! > lineOverlayNRSharpnessSlider.maxValue {
+                lineOverlayNRSharpnessSlider.doubleValue = lineOverlayNRSharpnessSlider.maxValue
+            } else {
+                lineOverlayNRSharpnessSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.lineOverlayNRSharpnessValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getLineOverlayEdgeIntensityT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < lineOverlayEdgeIntensitySlider.minValue {
+                lineOverlayEdgeIntensitySlider.doubleValue = lineOverlayEdgeIntensitySlider.minValue
+            } else if Double(sender.stringValue)! > lineOverlayEdgeIntensitySlider.maxValue {
+                lineOverlayEdgeIntensitySlider.doubleValue = lineOverlayEdgeIntensitySlider.maxValue
+            } else {
+                lineOverlayEdgeIntensitySlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.lineOverlayEdgeIntensityValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getLineOverlayThresholdT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < lineOverlayThresholdSlider.minValue {
+                lineOverlayThresholdSlider.doubleValue = lineOverlayThresholdSlider.minValue
+            } else if Double(sender.stringValue)! > lineOverlayThresholdSlider.maxValue {
+                lineOverlayThresholdSlider.doubleValue = lineOverlayThresholdSlider.maxValue
+            } else {
+                lineOverlayThresholdSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.lineOverlayThresholdValue = Double(sender.stringValue)!
+        }
+    }
+    @IBAction func getlineOverlayContrastT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < lineOverlayContrastSlider.minValue {
+                lineOverlayContrastSlider.doubleValue = lineOverlayContrastSlider.minValue
+            } else if Double(sender.stringValue)! > lineOverlayContrastSlider.maxValue {
+                lineOverlayContrastSlider.doubleValue = lineOverlayContrastSlider.maxValue
+            } else {
+                lineOverlayContrastSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.lineOverlayContrastValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // pixellate
+    
+    var xPixellateValue: CGFloat = 0.0 {
+        didSet { windowController?.updatePixellate(with: xPixellateValue, y: yPixellateValue, scale: pixellateScaleValue) }
+    }
+    var yPixellateValue: CGFloat = 0.0 {
+        didSet { windowController?.updatePixellate(with: xPixellateValue, y: yPixellateValue, scale: pixellateScaleValue) }
+    }
+    var pixellateScaleValue: Double = 20.0 {
+        didSet { windowController?.updatePixellate(with: xPixellateValue, y: yPixellateValue, scale: pixellateScaleValue) }
+    }
+    
+    @IBOutlet weak var xPixellateSlider: NSSlider!
+    @IBOutlet weak var yPixellateSlider: NSSlider!
+    @IBOutlet weak var pixellateScaleSlider: NSSlider!
+    @IBAction func getXPixellateValue(_ sender: NSSlider) {
+        xPixellateValueTextField.stringValue = String(sender.integerValue)
+        self.xPixellateValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYPixellateValue(_ sender: NSSlider) {
+        yPixellateValueTextField.stringValue = String(sender.integerValue)
+        self.yPixellateValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getPixellateScaleValue(_ sender: NSSlider) {
+        pixellateScaleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.pixellateScaleValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xPixellateValueTextField: NSTextField!
+    @IBOutlet weak var yPixellateValueTextField: NSTextField!
+    @IBOutlet weak var pixellateScaleTextField: NSTextField!
+    @IBAction func getXPixellateValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xPixellateSlider.minValue {
+                xPixellateSlider.doubleValue = xPixellateSlider.minValue
+            } else if Double(sender.stringValue)! > xPixellateSlider.maxValue {
+                xPixellateSlider.doubleValue = xPixellateSlider.maxValue
+            } else {
+                xPixellateSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xPixellateValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYPixellateValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yPixellateSlider.minValue {
+                yPixellateSlider.doubleValue = yPixellateSlider.minValue
+            } else if Double(sender.stringValue)! > yPixellateSlider.maxValue {
+                yPixellateSlider.doubleValue = yPixellateSlider.maxValue
+            } else {
+                yPixellateSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yPixellateValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getPixellateScaleT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < pixellateScaleSlider.minValue {
+                pixellateScaleSlider.doubleValue = pixellateScaleSlider.minValue
+            } else if Double(sender.stringValue)! > pixellateScaleSlider.maxValue {
+                pixellateScaleSlider.doubleValue = pixellateScaleSlider.maxValue
+            } else {
+                pixellateScaleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.pixellateScaleValue = Double(sender.stringValue)!
+        }
+    }
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    // pointillize
+    
+    var xPointillizeValue: CGFloat = 0.0 {
+        didSet { windowController?.updatePointillize(with: xPointillizeValue, y: yPointillizeValue, radius: pointillizeRadiusValue) }
+    }
+    var yPointillizeValue: CGFloat = 0.0 {
+        didSet { windowController?.updatePointillize(with: xPointillizeValue, y: yPointillizeValue, radius: pointillizeRadiusValue) }
+    }
+    var pointillizeRadiusValue: Double = 20.0 {
+        didSet { windowController?.updatePointillize(with: xPointillizeValue, y: yPointillizeValue, radius: pointillizeRadiusValue) }
+    }
+    
+    @IBOutlet weak var xPointillizeSlider: NSSlider!
+    @IBOutlet weak var yPointillizeSlider: NSSlider!
+    @IBOutlet weak var pointillizeScaleSlider: NSSlider!
+    @IBAction func getXPointillizeValue(_ sender: NSSlider) {
+        xPointillizeValueTextField.stringValue = String(sender.integerValue)
+        self.xPointillizeValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getYPointillizeValue(_ sender: NSSlider) {
+        yPointillizeValueTextField.stringValue = String(sender.integerValue)
+        self.yPointillizeValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getPointillizeRadiusValue(_ sender: NSSlider) {
+        pointillizeScaleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.pointillizeRadiusValue = sender.doubleValue.roundTo(places: 2)
+    }
+    @IBOutlet weak var xPointillizeValueTextField: NSTextField!
+    @IBOutlet weak var yPointillizeValueTextField: NSTextField!
+    @IBOutlet weak var pointillizeScaleTextField: NSTextField!
+    @IBAction func getXPointillizeValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < xPointillizeSlider.minValue {
+                xPointillizeSlider.doubleValue = xPointillizeSlider.minValue
+            } else if Double(sender.stringValue)! > xPointillizeSlider.maxValue {
+                xPointillizeSlider.doubleValue = xPointillizeSlider.maxValue
+            } else {
+                xPointillizeSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.xPointillizeValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getYPointillizeValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < yPointillizeSlider.minValue {
+                yPointillizeSlider.doubleValue = yPointillizeSlider.minValue
+            } else if Double(sender.stringValue)! > yPointillizeSlider.maxValue {
+                yPointillizeSlider.doubleValue = yPointillizeSlider.maxValue
+            } else {
+                yPointillizeSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.yPointillizeValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getPointillizeRadiusValueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < pointillizeScaleSlider.minValue {
+                pointillizeScaleSlider.doubleValue = pointillizeScaleSlider.minValue
+            } else if Double(sender.stringValue)! > pointillizeScaleSlider.maxValue {
+                pointillizeScaleSlider.doubleValue = pointillizeScaleSlider.maxValue
+            } else {
+                pointillizeScaleSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.pointillizeRadiusValue = Double(sender.stringValue)!
+        }
+    }
+    
     
     
     override func viewDidLoad() {
@@ -983,6 +2571,7 @@ class PopoverViewController: NSViewController {
                 centerXSlider.maxValue = Double(image.extent.size.width)
                 centerYSlider.maxValue = Double(image.extent.size.height)
             }
+            
             if let xVignetteSlider = xVignetteSlider,
                 let yVignetteSlider = yVignetteSlider,
                 let vignetteEffectRadiusSlider = vignetteEffectRadiusSlider{
@@ -994,6 +2583,189 @@ class PopoverViewController: NSViewController {
                     vignetteEffectRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
             }
+            
+            if let xBumpDistortionSlider = xBumpDistortionSlider,
+                let yBumpDistortionSlider = yBumpDistortionSlider,
+                let bumpDistortionRadiusSlider = bumpDistortionRadiusSlider {
+                xBumpDistortionSlider.maxValue = Double(image.extent.size.width)
+                yBumpDistortionSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    bumpDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
+                } else {
+                    bumpDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
+                }
+            }
+            
+            if let xBumpDistortionLinearSlider = xBumpDistortionLinearSlider,
+                let yBumpDistortionLinearSlider = yBumpDistortionLinearSlider,
+                let bumpDistortionLinearRadiusSlider = bumpDistortionLinearRadiusSlider {
+                xBumpDistortionLinearSlider.maxValue = Double(image.extent.size.width)
+                yBumpDistortionLinearSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    bumpDistortionLinearRadiusSlider.maxValue = Double(image.extent.size.height)
+                } else {
+                    bumpDistortionLinearRadiusSlider.maxValue = Double(image.extent.size.width)
+                }
+            }
+            
+            if let xCircleSplashDistortionSlider = xCircleSplashDistortionSlider,
+                let yCircleSplashDistortionSlider = yCircleSplashDistortionSlider,
+                let circleSplashDistortionRadiusSlider = circleSplashDistortionRadiusSlider {
+                xCircleSplashDistortionSlider.maxValue = Double(image.extent.size.width)
+                yCircleSplashDistortionSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    circleSplashDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
+                } else {
+                    circleSplashDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
+                }
+            }
+            
+            if let xCircularWrapSlider = xCircularWrapSlider,
+                let yCircularWrapSlider = yCircularWrapSlider,
+                let circularWrapRadiusSlider = circularWrapRadiusSlider {
+                xCircularWrapSlider.maxValue = Double(image.extent.size.width)
+                yCircularWrapSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    circularWrapRadiusSlider.maxValue = 0.5 * Double(image.extent.size.height)
+                } else {
+                    circularWrapRadiusSlider.maxValue = 0.5 * Double(image.extent.size.width)
+                }
+            }
+            
+            if let xGlassDistortionSlider = xGlassDistortionSlider,
+                let yGlassDistortionSlider = yGlassDistortionSlider {
+                xGlassDistortionSlider.maxValue = Double(image.extent.size.width)
+                yGlassDistortionSlider.maxValue = Double(image.extent.size.height)
+            }
+            
+            if let xHoleDistortionSlider = xHoleDistortionSlider,
+                let yHoleDistortionSlider = yHoleDistortionSlider,
+                let holeDistortionRadiusSlider = holeDistortionRadiusSlider {
+                xHoleDistortionSlider.maxValue = Double(image.extent.size.width)
+                yHoleDistortionSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    holeDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
+                } else {
+                    holeDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
+                }
+            }
+            
+            if let xLightTunnelSlider = xLightTunnelSlider,
+                let yLightTunnelSlider = yLightTunnelSlider,
+                let lightTunnelRadiusSlider = lightTunnelRadiusSlider {
+                xLightTunnelSlider.maxValue = Double(image.extent.size.width)
+                yLightTunnelSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    lightTunnelRadiusSlider.maxValue = Double(image.extent.size.height)
+                } else {
+                    lightTunnelRadiusSlider.maxValue = Double(image.extent.size.width)
+                }
+            }
+            
+            if let xPinchDistortionSlider = xPinchDistortionSlider,
+                let yPinchDistortionSlider = yPinchDistortionSlider,
+                let pinchDistortionRadiusSlider = pinchDistortionRadiusSlider {
+                xPinchDistortionSlider.maxValue = Double(image.extent.size.width)
+                yPinchDistortionSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    pinchDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
+                } else {
+                    pinchDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
+                }
+            }
+            
+            if let stretchCropWidthSlider = stretchCropWidthSlider,
+                let stretchCropHeightSlider = stretchCropHeightSlider {
+                stretchCropWidthSlider.maxValue = Double(image.extent.size.width)
+                stretchCropHeightSlider.maxValue = Double(image.extent.size.height)
+            }
+            
+            if let xTorusLensDistortionSlider = xTorusLensDistortionSlider,
+                let yTorusLensDistortionSlider = yTorusLensDistortionSlider,
+                let torusLensDistortionRadiusSlider = torusLensDistortionRadiusSlider,
+                let torusLensDistortionWidthSlider = torusLensDistortionWidthSlider {
+                xTorusLensDistortionSlider.maxValue = Double(image.extent.size.width)
+                yTorusLensDistortionSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    torusLensDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
+                } else {
+                    torusLensDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
+                }
+                torusLensDistortionWidthSlider.maxValue = torusLensDistortionRadiusSlider.maxValue / 2
+            }
+            
+            if let xTwirlDistortionSlider = xTwirlDistortionSlider,
+                let yTwirlDistortionSlider = yTwirlDistortionSlider,
+                let twirlDistortionRadiusSlider = twirlDistortionRadiusSlider {
+                xTwirlDistortionSlider.maxValue = Double(image.extent.size.width)
+                yTwirlDistortionSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    twirlDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
+                } else {
+                    twirlDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
+                }
+            }
+            
+            if let xVortexDistortionSlider = xVortexDistortionSlider,
+                let yVortexDistortionSlider = yVortexDistortionSlider,
+                let vortexDistortionRadiusSlider = vortexDistortionRadiusSlider {
+                xVortexDistortionSlider.maxValue = Double(image.extent.size.width)
+                yVortexDistortionSlider.maxValue = Double(image.extent.size.height)
+                if image.extent.size.width < image.extent.size.height {
+                    vortexDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
+                } else {
+                    vortexDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
+                }
+            }
+            
+            if let xCrystallizeSlider = xCrystallizeSlider,
+                let yCrystallizeSlider = yCrystallizeSlider,
+                let crystallizeRadiusSlider = crystallizeRadiusSlider {
+                xCrystallizeSlider.maxValue = Double(image.extent.size.width) / 100
+                yCrystallizeSlider.maxValue = Double(image.extent.size.height) / 100
+                if image.extent.size.width < image.extent.size.height {
+                    crystallizeRadiusSlider.maxValue = Double(image.extent.size.height) / 10
+                } else {
+                    crystallizeRadiusSlider.maxValue = Double(image.extent.size.width) / 10
+                }
+            }
+            
+            if let xHexagonalPixellateSlider = xHexagonalPixellateSlider,
+                let yHexagonalPixellateSlider = yHexagonalPixellateSlider,
+                let hexagonalPixellateScaleSlider = hexagonalPixellateScaleSlider {
+                xHexagonalPixellateSlider.maxValue = Double(image.extent.size.width) / 20
+                yHexagonalPixellateSlider.maxValue = Double(image.extent.size.height) / 20
+                if image.extent.size.width < image.extent.size.height {
+                    hexagonalPixellateScaleSlider.maxValue = Double(image.extent.size.height) / 10
+                } else {
+                    hexagonalPixellateScaleSlider.maxValue = Double(image.extent.size.width) / 10
+                }
+            }
+            
+            if let xPixellateSlider = xPixellateSlider,
+                let yPixellateSlider = yPixellateSlider,
+                let pixellateScaleSlider = pixellateScaleSlider {
+                xPixellateSlider.maxValue = Double(image.extent.size.width) / 20
+                yPixellateSlider.maxValue = Double(image.extent.size.height) / 20
+                if image.extent.size.width < image.extent.size.height {
+                    pixellateScaleSlider.maxValue = Double(image.extent.size.height) / 10
+                } else {
+                    pixellateScaleSlider.maxValue = Double(image.extent.size.width) / 10
+                }
+            }
+            
+            if let xPointillizeSlider = xPointillizeSlider,
+                let yPointillizeSlider = yPointillizeSlider,
+                let pointillizeScaleSlider = pointillizeScaleSlider {
+                xPointillizeSlider.maxValue = Double(image.extent.size.width) / 20
+                yPointillizeSlider.maxValue = Double(image.extent.size.height) / 20
+                if image.extent.size.width < image.extent.size.height {
+                    pointillizeScaleSlider.maxValue = Double(image.extent.size.height) / 10
+                } else {
+                    pointillizeScaleSlider.maxValue = Double(image.extent.size.width) / 10
+                }
+            }
+            
         }
     }
 }
