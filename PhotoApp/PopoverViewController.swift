@@ -11,7 +11,7 @@ import Cocoa
 class PopoverViewController: NSViewController {
     
     weak var windowController: WindowController? = nil
-    var image: NSImage?
+    var image: CIImage?
     
     
     
@@ -23,7 +23,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // box blur filter
     
-    var boxBlurValue: Double = 25.0 {
+    var boxBlurValue: Double = 10.0 {
         didSet { windowController?.updateBoxBlur(with: boxBlurValue) }
     }
     
@@ -49,7 +49,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // disc blur filter
     
-    var discBlurValue: Double = 0.0 {
+    var discBlurValue: Double = 10.0 {
         didSet { windowController?.updateDiscBlur(with: discBlurValue) }
     }
     
@@ -75,7 +75,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     //gaussian blur filter
     
-    var gaussianBlurValue: Double = 0.0 {
+    var gaussianBlurValue: Double = 10.0 {
         didSet { windowController?.updateGaussianBlur(with: gaussianBlurValue) }
     }
     
@@ -117,8 +117,8 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var motionBlurAngleSlider: NSSlider!
     @IBOutlet weak var motionBlurAmountSlider: NSSlider!
     @IBAction func getMotionBlurAngle(_ sender: NSSlider) {
-        motionBlurAngleTextField.stringValue = String((sender.doubleValue * 57.2957795131).roundTo(places: 2))
-        self.motionAngleValue = sender.doubleValue.roundTo(places: 2)
+        motionBlurAngleTextField.stringValue = String((sender.doubleValue).roundTo(places: 2))
+        self.motionAngleValue = sender.doubleValue.roundTo(places: 2) / 57.2957795131
     }
     @IBAction func getMotionBlurAmount(_ sender: NSSlider) {
         motionBlurAmountTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
@@ -127,8 +127,8 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var motionBlurAngleTextField: NSTextField!
     @IBOutlet weak var motionBlurAmountTextField: NSTextField!
     @IBAction func getMotionBlurAngleT(_ sender: NSTextField) {
-        motionBlurAngleSlider.doubleValue = (Double(sender.stringValue)! / 57.2957795131)
-        self.motionAngleValue = Double(sender.stringValue)!
+        motionBlurAngleSlider.doubleValue = Double(sender.stringValue)!
+        self.motionAngleValue = Double(sender.stringValue)! / 57.2957795131
     }
     @IBAction func getMotionBlurAmountT(_ sender: NSTextField) {
         if Double(sender.stringValue) != nil {
@@ -198,7 +198,7 @@ class PopoverViewController: NSViewController {
     var yZoomValue: CGFloat = 0.0 {
         didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xZoomValue, y: yZoomValue)) }
     }
-    var zoomAmountValue: Double = 0.0 {
+    var zoomAmountValue: Double = 10.0 {
         didSet { windowController?.updateZoomBlur(with: zoomAmountValue, center: CIVector(x: xZoomValue, y: yZoomValue)) }
     }
     
@@ -268,13 +268,13 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // color control filter
     
-    var saturationValue: Double = 1.0 {
+    var saturationValue: Double = 2.0 {
         didSet { windowController?.updateColorControls(with: saturationValue, brightness: brightnessValue, contrast: contrastValue) }
     }
-    var brightnessValue: Double = 0.0 {
+    var brightnessValue: Double = 0.25 {
         didSet { windowController?.updateColorControls(with: saturationValue, brightness: brightnessValue, contrast: contrastValue) }
     }
-    var contrastValue: Double = 1.0 {
+    var contrastValue: Double = 1.5 {
         didSet { windowController?.updateColorControls(with: saturationValue, brightness: brightnessValue, contrast: contrastValue) }
     }
     
@@ -336,7 +336,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // exposure adjustment
     
-    var exposureValue: Double = 0.0 {
+    var exposureValue: Double = 1.0 {
         didSet { windowController?.updateExposureAdjust(with: exposureValue) }
     }
     
@@ -362,7 +362,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // gamma adjustment
     
-    var gammaValue: Double = 0.0 {
+    var gammaValue: Double = 0.5 {
         didSet { windowController?.updateGammaAdjust(with: gammaValue) }
     }
     
@@ -388,14 +388,14 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // hue adjustment
     
-    var hueValue: Double = 0.0 {
+    var hueValue: Double = 1.57079633 {
         didSet { windowController?.updateHueAdjust(with: hueValue) }
     }
     
     @IBOutlet weak var hueSlider: NSSlider!
     @IBAction func getHueValue(_ sender: NSSlider) {
         hueTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
-        self.hueValue = sender.doubleValue.roundTo(places: 2)
+        self.hueValue = sender.doubleValue.roundTo(places: 2) / 57.2957795131
     }
     @IBOutlet weak var hueTextField: NSTextField!
     @IBAction func getHueValueT(_ sender: NSTextField) {
@@ -407,28 +407,61 @@ class PopoverViewController: NSViewController {
             } else {
                 hueSlider.doubleValue = Double(sender.stringValue)!
             }
-            self.hueValue = Double(sender.stringValue)!
+            self.hueValue = Double(sender.stringValue)! / 57.2957795131
         }
     }
     
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //linear to sRGB tone curve filter
+    // temperature and tint
     
-    @IBAction func showLinearToSRGBFilter(_ sender: NSButton) {
-        windowController?.updateLinearToSRGBFilter()
+    var TnTTemperatureValue: CGFloat = 0.0 {
+        didSet { windowController?.updateTemperatureAndTint(with: TnTTemperatureValue, tint: TnTTintValue) }
+    }
+    var TnTTintValue: CGFloat = 0.0 {
+        didSet { windowController?.updateTemperatureAndTint(with: TnTTemperatureValue, tint: TnTTintValue) }
     }
     
-    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    //sRGB tone curve to linear filter
-    
-    @IBAction func showSRGBToLinearFilter(_ sender: NSButton) {
-        windowController?.updateSRGBToLinearFilter()
+    @IBOutlet weak var TnTTemperatureSlider: NSSlider!
+    @IBOutlet weak var TnTTintSlider: NSSlider!
+    @IBAction func getTnTTemperature(_ sender: NSSlider) {
+        TnTTemperatureTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.TnTTemperatureValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBAction func getTnTTint(_ sender: NSSlider) {
+        TnTTintTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        self.TnTTintValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+    }
+    @IBOutlet weak var TnTTemperatureTextField: NSTextField!
+    @IBOutlet weak var TnTTintTextField: NSTextField!
+    @IBAction func getTnTTemperatureT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < TnTTemperatureSlider.minValue {
+                TnTTemperatureSlider.doubleValue = TnTTemperatureSlider.minValue
+            } else if Double(sender.stringValue)! > TnTTemperatureSlider.maxValue {
+                TnTTemperatureSlider.doubleValue = TnTTemperatureSlider.maxValue
+            } else {
+                TnTTemperatureSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.TnTTemperatureValue = CGFloat(Double(sender.stringValue)!)
+        }
+    }
+    @IBAction func getTnTTintT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < TnTTintSlider.minValue {
+                TnTTintSlider.doubleValue = TnTTintSlider.minValue
+            } else if Double(sender.stringValue)! > TnTTintSlider.maxValue {
+                TnTTintSlider.doubleValue = TnTTintSlider.maxValue
+            } else {
+                TnTTintSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.TnTTintValue = CGFloat(Double(sender.stringValue)!)
+        }
     }
     
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     //vibrance filter
     
-    var vibranceValue: Double = 0.0 {
+    var vibranceValue: Double = 0.5 {
         didSet { windowController?.updateVibranceAdjust(with: vibranceValue) }
     }
     
@@ -462,7 +495,7 @@ class PopoverViewController: NSViewController {
         didSet { windowController?.updateWhitePointAdjust(with: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue)))
             whitePointColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue))) }
     }
-    var whitePointBlueValue: Float = 255.0 {
+    var whitePointBlueValue: Float = 200.0 {
         didSet { windowController?.updateWhitePointAdjust(with: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue)))
             whitePointColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(whitePointRedValue), green: CGFloat(whitePointGreenValue), blue: CGFloat(whitePointBlueValue))) }
     }
@@ -539,7 +572,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     //color monochrome
     
-    var monochromeRedValue: Float = 255.0 {
+    var monochromeRedValue: Float = 200.0 {
         didSet { windowController?.updateMonochromeAdjust(with: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue)), intensity: monochromeIntensity)
             monochromeColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue))) }
     }
@@ -551,7 +584,7 @@ class PopoverViewController: NSViewController {
         didSet { windowController?.updateMonochromeAdjust(with: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue)), intensity: monochromeIntensity)
             monochromeColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue))) }
     }
-    var monochromeIntensity: Double = 0.0 {
+    var monochromeIntensity: Double = 1.0 {
         didSet { windowController?.updateMonochromeAdjust(with: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue)), intensity: monochromeIntensity)
             monochromeColorField.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(monochromeRedValue), green: CGFloat(monochromeGreenValue), blue: CGFloat(monochromeBlueValue)))
         }
@@ -659,6 +692,154 @@ class PopoverViewController: NSViewController {
     }
     
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    //false color
+    
+    var falseColor0RedValue: Float = 0.0 / 256 {
+        didSet { windowController?.updateFalseColor(with: CIColor(red: CGFloat(falseColor0RedValue), green: CGFloat(falseColor0GreenValue), blue: CGFloat(falseColor0BlueValue)), color1: CIColor(red: CGFloat(falseColor1RedValue), green: CGFloat(falseColor1GreenValue), blue: CGFloat(falseColor1BlueValue)))
+            falseColor0Field.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(falseColor0RedValue), green: CGFloat(falseColor0GreenValue), blue: CGFloat(falseColor0BlueValue)))
+        }
+    }
+    var falseColor0GreenValue: Float = 0.0 / 256 {
+        didSet { windowController?.updateFalseColor(with: CIColor(red: CGFloat(falseColor0RedValue), green: CGFloat(falseColor0GreenValue), blue: CGFloat(falseColor0BlueValue)), color1: CIColor(red: CGFloat(falseColor1RedValue), green: CGFloat(falseColor1GreenValue), blue: CGFloat(falseColor1BlueValue)))
+            falseColor0Field.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(falseColor0RedValue), green: CGFloat(falseColor0GreenValue), blue: CGFloat(falseColor0BlueValue)))
+        }
+    }
+    var falseColor0BlueValue: Float = 100.0 / 256 {
+        didSet { windowController?.updateFalseColor(with: CIColor(red: CGFloat(falseColor0RedValue), green: CGFloat(falseColor0GreenValue), blue: CGFloat(falseColor0BlueValue)), color1: CIColor(red: CGFloat(falseColor1RedValue), green: CGFloat(falseColor1GreenValue), blue: CGFloat(falseColor1BlueValue)))
+            falseColor0Field.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(falseColor0RedValue), green: CGFloat(falseColor0GreenValue), blue: CGFloat(falseColor0BlueValue)))
+        }
+    }
+    var falseColor1RedValue: Float = 255.0 / 256 {
+        didSet { windowController?.updateFalseColor(with: CIColor(red: CGFloat(falseColor0RedValue), green: CGFloat(falseColor0GreenValue), blue: CGFloat(falseColor0BlueValue)), color1: CIColor(red: CGFloat(falseColor1RedValue), green: CGFloat(falseColor1GreenValue), blue: CGFloat(falseColor1BlueValue)))
+            falseColor1Field.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(falseColor1RedValue), green: CGFloat(falseColor1GreenValue), blue: CGFloat(falseColor1BlueValue)))
+        }
+    }
+    var falseColor1GreenValue: Float = 200.0 / 256 {
+        didSet { windowController?.updateFalseColor(with: CIColor(red: CGFloat(falseColor0RedValue), green: CGFloat(falseColor0GreenValue), blue: CGFloat(falseColor0BlueValue)), color1: CIColor(red: CGFloat(falseColor1RedValue), green: CGFloat(falseColor1GreenValue), blue: CGFloat(falseColor1BlueValue)))
+            falseColor1Field.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(falseColor1RedValue), green: CGFloat(falseColor1GreenValue), blue: CGFloat(falseColor1BlueValue)))
+        }
+    }
+    var falseColor1BlueValue: Float = 255.0 / 256 {
+        didSet { windowController?.updateFalseColor(with: CIColor(red: CGFloat(falseColor0RedValue), green: CGFloat(falseColor0GreenValue), blue: CGFloat(falseColor0BlueValue)), color1: CIColor(red: CGFloat(falseColor1RedValue), green: CGFloat(falseColor1GreenValue), blue: CGFloat(falseColor1BlueValue)))
+            falseColor1Field.backgroundColor = NSColor(ciColor: CIColor(red: CGFloat(falseColor1RedValue), green: CGFloat(falseColor1GreenValue), blue: CGFloat(falseColor1BlueValue)))
+        }
+    }
+    
+    
+    @IBOutlet weak var falseColor0RedSlider: NSSlider!
+    @IBOutlet weak var falseColor0GreenSlider: NSSlider!
+    @IBOutlet weak var falseColor0BlueSlider: NSSlider!
+    @IBOutlet weak var falseColor1RedSlider: NSSlider!
+    @IBOutlet weak var falseColor1GreenSlider: NSSlider!
+    @IBOutlet weak var falseColor1BlueSlider: NSSlider!
+    @IBAction func getFalseColor0Red(_ sender: NSSlider) {
+        falseColor0RedTextField.stringValue = String(sender.integerValue)
+        self.falseColor0RedValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getFalseColor0Green(_ sender: NSSlider) {
+        falseColor0GreenTextField.stringValue = String(sender.integerValue)
+        self.falseColor0GreenValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getFalseColor0Blue(_ sender: NSSlider) {
+        falseColor0BlueTextField.stringValue = String(sender.integerValue)
+        self.falseColor0BlueValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getFalseColor1Red(_ sender: NSSlider) {
+        falseColor1RedTextField.stringValue = String(sender.integerValue)
+        self.falseColor1RedValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getFalseColor1Green(_ sender: NSSlider) {
+        falseColor1GreenTextField.stringValue = String(sender.integerValue)
+        self.falseColor1GreenValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    @IBAction func getFalseColor1Blue(_ sender: NSSlider) {
+        falseColor1BlueTextField.stringValue = String(sender.integerValue)
+        self.falseColor1BlueValue = sender.floatValue.roundTo(places: 2) / 256
+    }
+    
+    @IBOutlet weak var falseColor0RedTextField: NSTextField!
+    @IBOutlet weak var falseColor0GreenTextField: NSTextField!
+    @IBOutlet weak var falseColor0BlueTextField: NSTextField!
+    @IBOutlet weak var falseColor0Field: NSTextField!
+    @IBOutlet weak var falseColor1RedTextField: NSTextField!
+    @IBOutlet weak var falseColor1GreenTextField: NSTextField!
+    @IBOutlet weak var falseColor1BlueTextField: NSTextField!
+    @IBOutlet weak var falseColor1Field: NSTextField!
+    @IBAction func getFalseColor0RedT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < falseColor0RedSlider.minValue {
+                falseColor0RedSlider.doubleValue = falseColor0RedSlider.minValue
+            } else if Double(sender.stringValue)! > falseColor0RedSlider.maxValue {
+                falseColor0RedSlider.doubleValue = falseColor0RedSlider.maxValue
+            } else {
+                falseColor0RedSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.falseColor0RedValue = Float(sender.stringValue)! / 256
+        }
+    }
+    @IBAction func getFalseColor0GreenT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < falseColor0GreenSlider.minValue {
+                falseColor0GreenSlider.doubleValue = falseColor0GreenSlider.minValue
+            } else if Double(sender.stringValue)! > falseColor0GreenSlider.maxValue {
+                falseColor0GreenSlider.doubleValue = falseColor0GreenSlider.maxValue
+            } else {
+                falseColor0GreenSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.falseColor0GreenValue = Float(sender.stringValue)! / 256
+        }
+    }
+    @IBAction func getFalseColor0BlueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < falseColor0BlueSlider.minValue {
+                falseColor0BlueSlider.doubleValue = falseColor0BlueSlider.minValue
+            } else if Double(sender.stringValue)! > falseColor0BlueSlider.maxValue {
+                falseColor0BlueSlider.doubleValue = falseColor0BlueSlider.maxValue
+            } else {
+                falseColor0BlueSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.falseColor0BlueValue = Float(sender.stringValue)! / 256
+        }
+    }
+    @IBAction func getFalseColor1RedT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < falseColor1RedSlider.minValue {
+                falseColor1RedSlider.doubleValue = falseColor1RedSlider.minValue
+            } else if Double(sender.stringValue)! > falseColor1RedSlider.maxValue {
+                falseColor1RedSlider.doubleValue = falseColor1RedSlider.maxValue
+            } else {
+                falseColor1RedSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.falseColor1RedValue = Float(sender.stringValue)! / 256
+        }
+    }
+    @IBAction func getFalseColor1GreenT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < falseColor1GreenSlider.minValue {
+                falseColor1GreenSlider.doubleValue = falseColor1GreenSlider.minValue
+            } else if Double(sender.stringValue)! > falseColor1GreenSlider.maxValue {
+                falseColor1GreenSlider.doubleValue = falseColor1GreenSlider.maxValue
+            } else {
+                falseColor1GreenSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.falseColor1GreenValue = Float(sender.stringValue)! / 256
+        }
+    }
+    @IBAction func getFalseColor1BlueT(_ sender: NSTextField) {
+        if Double(sender.stringValue) != nil {
+            if Double(sender.stringValue)! < falseColor1BlueSlider.minValue {
+                falseColor1BlueSlider.doubleValue = falseColor1BlueSlider.minValue
+            } else if Double(sender.stringValue)! > falseColor1BlueSlider.maxValue {
+                falseColor1BlueSlider.doubleValue = falseColor1BlueSlider.maxValue
+            } else {
+                falseColor1BlueSlider.doubleValue = Double(sender.stringValue)!
+            }
+            self.falseColor1BlueValue = Float(sender.stringValue)! / 256
+        }
+    }
+    
+    
+    //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     //sepia tone intensity
     
     var sepiaToneIntensityValue: Double = 0.0 {
@@ -740,7 +921,7 @@ class PopoverViewController: NSViewController {
     var yVignetteValue: CGFloat = 0.0 {
         didSet { windowController?.updateVignetteEffect(with: vignetteEffectRadiusValue, intensity: vignetteEffectIntensityValue, center: CIVector(x: xVignetteValue, y: yVignetteValue)) }
     }
-    var vignetteEffectIntensityValue: Double = 0.0 {
+    var vignetteEffectIntensityValue: Double = 0.7 {
         didSet { windowController?.updateVignetteEffect(with: vignetteEffectRadiusValue, intensity: vignetteEffectIntensityValue, center: CIVector(x: xVignetteValue, y: yVignetteValue)) }
     }
     var vignetteEffectRadiusValue: Double = 0.0 {
@@ -764,7 +945,7 @@ class PopoverViewController: NSViewController {
         self.vignetteEffectIntensityValue = sender.doubleValue.roundTo(places: 2)
     }
     @IBAction func getVignetteEffectRadius(_ sender: NSSlider) {
-        vignetteEffectRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        vignetteEffectRadiusTextField.stringValue = String(sender.integerValue)
         self.vignetteEffectRadiusValue = sender.doubleValue.roundTo(places: 2)
     }
     @IBOutlet weak var xVignetteValueTextField: NSTextField!
@@ -827,7 +1008,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // sharpen luminance
     
-    var sharpenLuminanceValue: Double = 0.0 {
+    var sharpenLuminanceValue: Double = 0.5 {
         didSet { windowController?.updateSharpenLuminance(with: sharpenLuminanceValue) }
     }
     
@@ -853,10 +1034,10 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // unsharp mask
     
-    var unsharpMaskIntensityValue: Double = 0.0 {
+    var unsharpMaskIntensityValue: Double = 0.5 {
         didSet { windowController?.updateUnsharpMask(with: unsharpMaskRadiusValue, intensity: unsharpMaskIntensityValue) }
     }
-    var unsharpMaskRadiusValue: Double = 0.0 {
+    var unsharpMaskRadiusValue: Double = 0.5 {
         didSet { windowController?.updateUnsharpMask(with: unsharpMaskRadiusValue, intensity: unsharpMaskIntensityValue) }
     }
     
@@ -915,7 +1096,7 @@ class PopoverViewController: NSViewController {
     var bumpDistortionRadiusValue: Double = 0.0 {
         didSet { windowController?.updateBumpDistortion(with: xBumpDistortionValue, y: yBumpDistortionValue, radius: bumpDistortionRadiusValue, scale: bumpDistortionScaleValue) }
     }
-    var bumpDistortionScaleValue: Double = 0.0 {
+    var bumpDistortionScaleValue: Double = 2.0 {
         didSet { windowController?.updateBumpDistortion(with: xBumpDistortionValue, y: yBumpDistortionValue, radius: bumpDistortionRadiusValue, scale: bumpDistortionScaleValue) }
     }
     
@@ -1004,7 +1185,7 @@ class PopoverViewController: NSViewController {
     var bumpDistortionLinearRadiusValue: Double = 0.0 {
         didSet { windowController?.updateBumpDistortionLinear(with: xBumpDistortionLinearValue, y: yBumpDistortionLinearValue, radius: bumpDistortionLinearRadiusValue, angle: bumpDistortionLinearAngleValue, scale: bumpDistortionLinearScaleValue) }
     }
-    var bumpDistortionLinearScaleValue: Double = 0.0 {
+    var bumpDistortionLinearScaleValue: Double = 2.0 {
         didSet { windowController?.updateBumpDistortionLinear(with: xBumpDistortionLinearValue, y: yBumpDistortionLinearValue, radius: bumpDistortionLinearRadiusValue, angle: bumpDistortionLinearAngleValue, scale: bumpDistortionLinearScaleValue) }
     }
     var bumpDistortionLinearAngleValue = 0.0 {
@@ -1268,7 +1449,7 @@ class PopoverViewController: NSViewController {
     var yGlassDistortionValue: CGFloat = 0.0 {
         didSet { windowController?.updateGlassDistortion(with: xGlassDistortionValue, y: yGlassDistortionValue, scale: glassDistortionScaleValue) }
     }
-    var glassDistortionScaleValue: Double = 0.0 {
+    var glassDistortionScaleValue: Double = 75.0 {
         didSet { windowController?.updateGlassDistortion(with: xGlassDistortionValue, y: yGlassDistortionValue, scale: glassDistortionScaleValue) }
     }
     
@@ -1407,7 +1588,7 @@ class PopoverViewController: NSViewController {
     var lightTunnelRadiusValue: Double = 1.0 {
         didSet { windowController?.updateLightTunnel(with: xLightTunnelValue, y: yLightTunnelValue, radius: lightTunnelRadiusValue, rotation: lightTunnelRotationValue) }
     }
-    var lightTunnelRotationValue: Double = 0.0 {
+    var lightTunnelRotationValue: Double = 10.0 {
         didSet { windowController?.updateLightTunnel(with: xLightTunnelValue, y: yLightTunnelValue, radius: lightTunnelRadiusValue, rotation: lightTunnelRotationValue) }
     }
     
@@ -1496,7 +1677,7 @@ class PopoverViewController: NSViewController {
     var pinchDistortionRadiusValue: Double = 0.0 {
         didSet { windowController?.updatePinchDistortion(with: xPinchDistortionValue, y: yPinchDistortionValue, radius: pinchDistortionRadiusValue, scale: pinchDistortionScaleValue) }
     }
-    var pinchDistortionScaleValue: Double = 0.0 {
+    var pinchDistortionScaleValue: Double = 0.8 {
         didSet { windowController?.updatePinchDistortion(with: xPinchDistortionValue, y: yPinchDistortionValue, radius: pinchDistortionRadiusValue, scale: pinchDistortionScaleValue) }
     }
     
@@ -1587,7 +1768,7 @@ class PopoverViewController: NSViewController {
     var stretchCropHeightValue: CGFloat = 0.0 {
         didSet { windowController?.updateStretchCrop(with: stretchCropWidthValue, height: stretchCropHeightValue, cropAmount: stretchCropCropAmountValue, centerStretchAmount: stretchCropCenterStretchAmountValue) }
     }
-    var stretchCropCropAmountValue: Double = 0.0 {
+    var stretchCropCropAmountValue: Double = 0.4 {
         didSet { windowController?.updateStretchCrop(with: stretchCropWidthValue, height: stretchCropHeightValue, cropAmount: stretchCropCropAmountValue, centerStretchAmount: stretchCropCenterStretchAmountValue) }
     }
     var stretchCropCenterStretchAmountValue: Double = 0.0 {
@@ -1682,7 +1863,7 @@ class PopoverViewController: NSViewController {
     var torusLensDistortionWidthValue: Double = 0.0 {
         didSet { windowController?.updateTorusLensDistortion(with: xTorusLensDistortionValue, y: yTorusLensDistortionValue, radius: torusLensDistortionRadiusValue, width: torusLensDistortionWidthValue, refraction: torusLensDistortionRefractionValue) }
     }
-    var torusLensDistortionRefractionValue = 0.0 {
+    var torusLensDistortionRefractionValue = 2.0 {
         didSet { windowController?.updateTorusLensDistortion(with: xTorusLensDistortionValue, y: yTorusLensDistortionValue, radius: torusLensDistortionRadiusValue, width: torusLensDistortionWidthValue, refraction: torusLensDistortionRefractionValue) }
     }
     
@@ -1789,7 +1970,7 @@ class PopoverViewController: NSViewController {
     var twirlDistortionRadiusValue: Double = 0.0 {
         didSet { windowController?.updateTwirlDistortion(with: xTwirlDistortionValue, y: yTwirlDistortionValue, radius: twirlDistortionRadiusValue, angle: twirlDistortionAngleValue) }
     }
-    var twirlDistortionAngleValue: Double = 0.0 {
+    var twirlDistortionAngleValue: Double = 3.14159265 {
         didSet { windowController?.updateTwirlDistortion(with: xTwirlDistortionValue, y: yTwirlDistortionValue, radius: twirlDistortionRadiusValue, angle: twirlDistortionAngleValue) }
     }
     
@@ -1878,7 +2059,7 @@ class PopoverViewController: NSViewController {
     var vortexDistortionRadiusValue: Double = 0.0 {
         didSet { windowController?.updateVortexDistortion(with: xVortexDistortionValue, y: yVortexDistortionValue, radius: vortexDistortionRadiusValue, angle: vortexDistortionAngleValue) }
     }
-    var vortexDistortionAngleValue: Double = 0.0 {
+    var vortexDistortionAngleValue: Double = 31.4159265 * 2 {
         didSet { windowController?.updateVortexDistortion(with: xVortexDistortionValue, y: yVortexDistortionValue, radius: vortexDistortionRadiusValue, angle: vortexDistortionAngleValue) }
     }
     
@@ -1963,10 +2144,10 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // bloom
     
-    var bloomRadiusValue: Double = 0.0 {
+    var bloomRadiusValue: Double = 20.0 {
         didSet { windowController?.updateBloom(with: bloomRadiusValue, intensity: bloomIntensityValue) }
     }
-    var bloomIntensityValue: Double = 0.0 {
+    var bloomIntensityValue: Double = 0.5 {
         didSet { windowController?.updateBloom(with: bloomRadiusValue, intensity: bloomIntensityValue) }
     }
     
@@ -2025,15 +2206,15 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var crystallizeRadiusSlider: NSSlider!
     @IBAction func getXCrystallizeValue(_ sender: NSSlider) {
         xCrystallizeValueTextField.stringValue = String(sender.integerValue)
-        self.xCrystallizeValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+        self.xCrystallizeValue = CGFloat(sender.doubleValue)
     }
     @IBAction func getYCrystallizeValue(_ sender: NSSlider) {
         yCrystallizeValueTextField.stringValue = String(sender.integerValue)
-        self.yCrystallizeValue = CGFloat(sender.doubleValue.roundTo(places: 2))
+        self.yCrystallizeValue = CGFloat(sender.doubleValue)
     }
     @IBAction func getCrystallizeRadiusValue(_ sender: NSSlider) {
         crystallizeRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
-        self.crystallizeRadiusValue = sender.doubleValue.roundTo(places: 2)
+        self.crystallizeRadiusValue = sender.doubleValue
     }
     @IBOutlet weak var xCrystallizeValueTextField: NSTextField!
     @IBOutlet weak var yCrystallizeValueTextField: NSTextField!
@@ -2078,7 +2259,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // edges
     
-    var edgesIntensityValue: Double = 0.0 {
+    var edgesIntensityValue: Double = 10.0 {
         didSet { windowController?.updateEdges(with: edgesIntensityValue) }
     }
     
@@ -2104,7 +2285,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // edge work
     
-    var edgeWorkRadiusValue: Double = 0.0 {
+    var edgeWorkRadiusValue: Double = 2.0 {
         didSet { windowController?.updateEdgeWork(with: edgeWorkRadiusValue) }
     }
     
@@ -2130,10 +2311,10 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // gloom
     
-    var gloomRadiusValue: Double = 0.0 {
-        didSet { windowController?.updateGloom(with: gloomRadiusValue, intensity: shadowValue) }
+    var gloomRadiusValue: Double = 25.0 {
+        didSet { windowController?.updateGloom(with: gloomRadiusValue, intensity: gloomIntensityValue) }
     }
-    var gloomIntensityValue: Double = 0.0 {
+    var gloomIntensityValue: Double = 0.5 {
         didSet { windowController?.updateGloom(with: gloomRadiusValue, intensity: gloomIntensityValue) }
     }
     
@@ -2177,7 +2358,7 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // height field from mask
     
-    var heightFieldFromMaskRadiusValue: Double = 0.0 {
+    var heightFieldFromMaskRadiusValue: Double = 25.0 {
         didSet { windowController?.updateHeightFieldFromMask(with: heightFieldFromMaskRadiusValue) }
     }
     
@@ -2271,10 +2452,10 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // highlight/shadow adjust
     
-    var highlightValue: Double = 0.0 {
+    var highlightValue: Double = 0.5 {
         didSet { windowController?.updateHighlightShadow(with: highlightValue, shadow: shadowValue) }
     }
-    var shadowValue: Double = 0.0 {
+    var shadowValue: Double = -0.3 {
         didSet { windowController?.updateHighlightShadow(with: highlightValue, shadow: shadowValue) }
     }
     
@@ -2318,19 +2499,19 @@ class PopoverViewController: NSViewController {
     //-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     // line overlay
     
-    var lineOverlayNRNoiseLevelValue: Double = 0.0 {
+    var lineOverlayNRNoiseLevelValue: Double = 0.01 {
         didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
     }
-    var lineOverlayNRSharpnessValue: Double = 0.0 {
+    var lineOverlayNRSharpnessValue: Double = 3.0 {
         didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
     }
-    var lineOverlayEdgeIntensityValue: Double = 0.0 {
+    var lineOverlayEdgeIntensityValue: Double = 2.0 {
         didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
     }
-    var lineOverlayThresholdValue: Double = 0.0 {
+    var lineOverlayThresholdValue: Double = 1.5 {
         didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
     }
-    var lineOverlayContrastValue = 0.0 {
+    var lineOverlayContrastValue = 0.25 {
         didSet { windowController?.updateLineOverlay(with: lineOverlayNRNoiseLevelValue, NRSharpness: lineOverlayNRSharpnessValue, edgeIntensity: lineOverlayEdgeIntensityValue, threshold: lineOverlayThresholdValue, contrast: lineOverlayContrastValue) }
     }
     
@@ -2508,7 +2689,7 @@ class PopoverViewController: NSViewController {
     
     @IBOutlet weak var xPointillizeSlider: NSSlider!
     @IBOutlet weak var yPointillizeSlider: NSSlider!
-    @IBOutlet weak var pointillizeScaleSlider: NSSlider!
+    @IBOutlet weak var pointillizeRadiusSlider: NSSlider!
     @IBAction func getXPointillizeValue(_ sender: NSSlider) {
         xPointillizeValueTextField.stringValue = String(sender.integerValue)
         self.xPointillizeValue = CGFloat(sender.doubleValue.roundTo(places: 2))
@@ -2518,12 +2699,12 @@ class PopoverViewController: NSViewController {
         self.yPointillizeValue = CGFloat(sender.doubleValue.roundTo(places: 2))
     }
     @IBAction func getPointillizeRadiusValue(_ sender: NSSlider) {
-        pointillizeScaleTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        pointillizeRadiusTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
         self.pointillizeRadiusValue = sender.doubleValue.roundTo(places: 2)
     }
     @IBOutlet weak var xPointillizeValueTextField: NSTextField!
     @IBOutlet weak var yPointillizeValueTextField: NSTextField!
-    @IBOutlet weak var pointillizeScaleTextField: NSTextField!
+    @IBOutlet weak var pointillizeRadiusTextField: NSTextField!
     @IBAction func getXPointillizeValueT(_ sender: NSTextField) {
         if Double(sender.stringValue) != nil {
             if Double(sender.stringValue)! < xPointillizeSlider.minValue {
@@ -2550,12 +2731,12 @@ class PopoverViewController: NSViewController {
     }
     @IBAction func getPointillizeRadiusValueT(_ sender: NSTextField) {
         if Double(sender.stringValue) != nil {
-            if Double(sender.stringValue)! < pointillizeScaleSlider.minValue {
-                pointillizeScaleSlider.doubleValue = pointillizeScaleSlider.minValue
-            } else if Double(sender.stringValue)! > pointillizeScaleSlider.maxValue {
-                pointillizeScaleSlider.doubleValue = pointillizeScaleSlider.maxValue
+            if Double(sender.stringValue)! < pointillizeRadiusSlider.minValue {
+                pointillizeRadiusSlider.doubleValue = pointillizeRadiusSlider.minValue
+            } else if Double(sender.stringValue)! > pointillizeRadiusSlider.maxValue {
+                pointillizeRadiusSlider.doubleValue = pointillizeRadiusSlider.maxValue
             } else {
-                pointillizeScaleSlider.doubleValue = Double(sender.stringValue)!
+                pointillizeRadiusSlider.doubleValue = Double(sender.stringValue)!
             }
             self.pointillizeRadiusValue = Double(sender.stringValue)!
         }
@@ -2566,204 +2747,413 @@ class PopoverViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let image = windowController?.originalCIImage {
+            
+            self.image = image
+            
             if let centerXSlider = centerXZoomSlider,
-                let centerYSlider = centerYZoomSlider {
+                let centerYSlider = centerYZoomSlider,
+                let xZoomValueTextField = xZoomValueTextField,
+                let yZoomValueTextField = yZoomValueTextField {
                 centerXSlider.maxValue = Double(image.extent.size.width)
                 centerYSlider.maxValue = Double(image.extent.size.height)
+                centerXSlider.doubleValue = Double(image.extent.size.width / 2)
+                centerYSlider.doubleValue = Double(image.extent.size.height / 2)
+                xZoomValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                yZoomValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                xZoomValue = image.extent.size.width / 2
+                yZoomValue = image.extent.size.height / 2
+            }
+            
+            if let falseColor0Field = falseColor0Field,
+                let falseColor1Field = falseColor1Field {
+                falseColor0Field.backgroundColor = NSColor(ciColor: CIColor(red: 0.0, green: 0.0, blue: 100 / 256))
+                falseColor1Field.backgroundColor = NSColor(ciColor: CIColor(red: 255 / 256, green: 200 / 256, blue: 255 / 256))
             }
             
             if let xVignetteSlider = xVignetteSlider,
                 let yVignetteSlider = yVignetteSlider,
-                let vignetteEffectRadiusSlider = vignetteEffectRadiusSlider{
+                let xVignetteValueTextField = xVignetteValueTextField,
+                let yVignetteValueTextField = yVignetteValueTextField,
+                let vignetteEffectRadiusSlider = vignetteEffectRadiusSlider {
                 xVignetteSlider.maxValue = Double(image.extent.size.width)
+                xVignetteSlider.doubleValue = Double(image.extent.size.width) / 2
+                xVignetteValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
                 yVignetteSlider.maxValue = Double(image.extent.size.height)
+                yVignetteSlider.doubleValue = Double(image.extent.size.height) / 2
+                yVignetteValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
                 if image.extent.size.width < image.extent.size.height {
                     vignetteEffectRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     vignetteEffectRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
+                xVignetteValue = image.extent.size.width / 2
+                yVignetteValue = image.extent.size.height / 2
+                vignetteEffectRadiusValue = Double(image.extent.size.width / 8).roundTo(places: 0)
+                vignetteEffectRadiusSlider.doubleValue = Double(image.extent.size.width) / 8
+                vignetteEffectRadiusTextField.stringValue = String(Double(image.extent.size.width) / 8)
             }
             
             if let xBumpDistortionSlider = xBumpDistortionSlider,
                 let yBumpDistortionSlider = yBumpDistortionSlider,
-                let bumpDistortionRadiusSlider = bumpDistortionRadiusSlider {
+                let bumpDistortionRadiusSlider = bumpDistortionRadiusSlider,
+                let xBumpDistortionValueTextField = xBumpDistortionValueTextField,
+                let yBumpDistortionValueTextField = yBumpDistortionValueTextField,
+                let bumpDistortionRadiusTextField = bumpDistortionRadiusTextField {
                 xBumpDistortionSlider.maxValue = Double(image.extent.size.width)
+                xBumpDistortionSlider.doubleValue = Double(image.extent.size.width / 2)
+                xBumpDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xBumpDistortionValue = image.extent.size.width / 2
                 yBumpDistortionSlider.maxValue = Double(image.extent.size.height)
+                yBumpDistortionSlider.doubleValue = Double(image.extent.size.height) / 2
+                yBumpDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yBumpDistortionValue = image.extent.size.height / 2
                 if image.extent.size.width < image.extent.size.height {
                     bumpDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     bumpDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
+                bumpDistortionRadiusSlider.doubleValue = Double(image.extent.size.width / 8)
+                bumpDistortionRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                bumpDistortionRadiusValue = Double(image.extent.size.width / 8)
             }
             
             if let xBumpDistortionLinearSlider = xBumpDistortionLinearSlider,
                 let yBumpDistortionLinearSlider = yBumpDistortionLinearSlider,
-                let bumpDistortionLinearRadiusSlider = bumpDistortionLinearRadiusSlider {
+                let bumpDistortionLinearRadiusSlider = bumpDistortionLinearRadiusSlider,
+                let xBumpDistortionLinearValueTextField = xBumpDistortionLinearValueTextField,
+                let yBumpDistortionLinearValueTextField = yBumpDistortionLinearValueTextField,
+                let bumpDistortionLinearRadiusTextField = bumpDistortionLinearRadiusTextField {
                 xBumpDistortionLinearSlider.maxValue = Double(image.extent.size.width)
+                xBumpDistortionLinearSlider.doubleValue = Double(image.extent.size.width / 2)
+                xBumpDistortionLinearValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xBumpDistortionLinearValue = image.extent.size.width / 2
                 yBumpDistortionLinearSlider.maxValue = Double(image.extent.size.height)
+                yBumpDistortionLinearSlider.doubleValue = Double(image.extent.size.height) / 2
+                yBumpDistortionLinearValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yBumpDistortionLinearValue = image.extent.size.height / 2
                 if image.extent.size.width < image.extent.size.height {
                     bumpDistortionLinearRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     bumpDistortionLinearRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
+                bumpDistortionLinearRadiusSlider.doubleValue = Double(image.extent.size.width / 8)
+                bumpDistortionLinearRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                bumpDistortionLinearRadiusValue = Double(image.extent.size.width / 8)
             }
             
             if let xCircleSplashDistortionSlider = xCircleSplashDistortionSlider,
                 let yCircleSplashDistortionSlider = yCircleSplashDistortionSlider,
-                let circleSplashDistortionRadiusSlider = circleSplashDistortionRadiusSlider {
+                let xCircleSplashDistortionValueTextField = xCircleSplashDistortionValueTextField,
+                let yCircleSplashDistortionValueTextField = yCircleSplashDistortionValueTextField,
+                let circleSplashDistortionRadiusSlider = circleSplashDistortionRadiusSlider,
+                let circleSplashDistortionRadiusTextField = circleSplashDistortionRadiusTextField {
                 xCircleSplashDistortionSlider.maxValue = Double(image.extent.size.width)
+                xCircleSplashDistortionSlider.doubleValue = Double(image.extent.size.width / 2)
+                xCircleSplashDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xCircleSplashDistortionValue = image.extent.size.width / 2
                 yCircleSplashDistortionSlider.maxValue = Double(image.extent.size.height)
+                yCircleSplashDistortionSlider.doubleValue = Double(image.extent.size.height / 2)
+                yCircleSplashDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yCircleSplashDistortionValue = image.extent.size.height / 2
                 if image.extent.size.width < image.extent.size.height {
                     circleSplashDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     circleSplashDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
+                circleSplashDistortionRadiusSlider.doubleValue = Double(image.extent.size.width / 8)
+                circleSplashDistortionRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                circleSplashDistortionRadiusValue = Double(image.extent.size.width / 8)
             }
             
             if let xCircularWrapSlider = xCircularWrapSlider,
                 let yCircularWrapSlider = yCircularWrapSlider,
-                let circularWrapRadiusSlider = circularWrapRadiusSlider {
+                let xCircularWrapValueTextField = xCircularWrapValueTextField,
+                let yCircularWrapValueTextField = yCircularWrapValueTextField,
+                let circularWrapRadiusSlider = circularWrapRadiusSlider,
+                let circularWrapRadiusTextField = circularWrapRadiusTextField {
                 xCircularWrapSlider.maxValue = Double(image.extent.size.width)
+                xCircularWrapSlider.doubleValue = Double(image.extent.size.width / 2)
+                xCircularWrapValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xCircularWrapValue = image.extent.size.width / 2
                 yCircularWrapSlider.maxValue = Double(image.extent.size.height)
+                yCircularWrapSlider.doubleValue = Double(image.extent.size.height / 2)
+                yCircularWrapValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yCircularWrapValue = image.extent.size.height / 2
                 if image.extent.size.width < image.extent.size.height {
                     circularWrapRadiusSlider.maxValue = 0.5 * Double(image.extent.size.height)
                 } else {
                     circularWrapRadiusSlider.maxValue = 0.5 * Double(image.extent.size.width)
                 }
+                circularWrapRadiusSlider.doubleValue = Double(image.extent.size.width / 8)
+                circularWrapRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                circularWrapRadiusValue = Double(image.extent.size.width / 8)
             }
             
             if let xGlassDistortionSlider = xGlassDistortionSlider,
                 let yGlassDistortionSlider = yGlassDistortionSlider {
-                xGlassDistortionSlider.maxValue = Double(image.extent.size.width)
-                yGlassDistortionSlider.maxValue = Double(image.extent.size.height)
+                xGlassDistortionSlider.maxValue = Double(image.extent.size.width / 10)
+                yGlassDistortionSlider.maxValue = Double(image.extent.size.height / 10)
             }
             
             if let xHoleDistortionSlider = xHoleDistortionSlider,
                 let yHoleDistortionSlider = yHoleDistortionSlider,
-                let holeDistortionRadiusSlider = holeDistortionRadiusSlider {
+                let holeDistortionRadiusSlider = holeDistortionRadiusSlider,
+                let xHoleDistortionValueTextField = xHoleDistortionValueTextField,
+                let yHoleDistortionValueTextField = yHoleDistortionValueTextField,
+                let holeDistortionRadiusTextField = holeDistortionRadiusTextField {
                 xHoleDistortionSlider.maxValue = Double(image.extent.size.width)
+                xHoleDistortionSlider.doubleValue = Double(image.extent.size.width / 2)
+                xHoleDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xHoleDistortionValue = image.extent.size.width / 2
                 yHoleDistortionSlider.maxValue = Double(image.extent.size.height)
+                yHoleDistortionSlider.doubleValue = Double(image.extent.size.height / 2)
+                yHoleDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yHoleDistortionValue = image.extent.size.height / 2
                 if image.extent.size.width < image.extent.size.height {
                     holeDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     holeDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
+                holeDistortionRadiusSlider.doubleValue = Double(image.extent.size.width / 8)
+                holeDistortionRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                holeDistortionRadiusValue = Double(image.extent.size.width / 8)
             }
             
             if let xLightTunnelSlider = xLightTunnelSlider,
                 let yLightTunnelSlider = yLightTunnelSlider,
-                let lightTunnelRadiusSlider = lightTunnelRadiusSlider {
+                let lightTunnelRadiusSlider = lightTunnelRadiusSlider,
+                let xLightTunnelValueTextField = xLightTunnelValueTextField,
+                let yLightTunnelValueTextField = yLightTunnelValueTextField,
+                let lightTunnelRadiusTextField = lightTunnelRadiusTextField {
                 xLightTunnelSlider.maxValue = Double(image.extent.size.width)
+                xLightTunnelSlider.doubleValue = Double(image.extent.size.width / 2)
+                xLightTunnelValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xLightTunnelValue = image.extent.size.width / 2
                 yLightTunnelSlider.maxValue = Double(image.extent.size.height)
+                yLightTunnelSlider.doubleValue = Double(image.extent.size.height / 2)
+                yLightTunnelValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yLightTunnelValue = image.extent.size.height / 2
                 if image.extent.size.width < image.extent.size.height {
                     lightTunnelRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     lightTunnelRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
+                lightTunnelRadiusSlider.doubleValue = Double(image.extent.size.width / 8)
+                lightTunnelRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                lightTunnelRadiusValue = Double(image.extent.size.width / 8)
             }
             
             if let xPinchDistortionSlider = xPinchDistortionSlider,
                 let yPinchDistortionSlider = yPinchDistortionSlider,
-                let pinchDistortionRadiusSlider = pinchDistortionRadiusSlider {
+                let pinchDistortionRadiusSlider = pinchDistortionRadiusSlider,
+                let xPinchDistortionValueTextField = xPinchDistortionValueTextField,
+                let yPinchDistortionValueTextField = yPinchDistortionValueTextField,
+                let pinchDistortionRadiusTextField = pinchDistortionRadiusTextField {
                 xPinchDistortionSlider.maxValue = Double(image.extent.size.width)
+                xPinchDistortionSlider.doubleValue = Double(image.extent.size.width / 2)
+                xPinchDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xPinchDistortionValue = image.extent.size.width / 2
                 yPinchDistortionSlider.maxValue = Double(image.extent.size.height)
+                yPinchDistortionSlider.doubleValue = Double(image.extent.size.height / 2)
+                yPinchDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yPinchDistortionValue = image.extent.size.height / 2
                 if image.extent.size.width < image.extent.size.height {
                     pinchDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     pinchDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
+                pinchDistortionRadiusSlider.doubleValue = Double(image.extent.size.width / 8)
+                pinchDistortionRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                pinchDistortionRadiusValue = Double(image.extent.size.width / 8)
             }
             
             if let stretchCropWidthSlider = stretchCropWidthSlider,
-                let stretchCropHeightSlider = stretchCropHeightSlider {
-                stretchCropWidthSlider.maxValue = Double(image.extent.size.width)
-                stretchCropHeightSlider.maxValue = Double(image.extent.size.height)
+                let stretchCropHeightSlider = stretchCropHeightSlider,
+                let stretchCropWidthTextField = stretchCropWidthTextField,
+                let stretchCropHeightTextField = stretchCropHeightTextField {
+                stretchCropWidthSlider.maxValue = Double(image.extent.size.width * 2)
+                stretchCropWidthSlider.doubleValue = Double(image.extent.size.width * 1.5)
+                stretchCropWidthTextField.stringValue = String(describing: Int(image.extent.size.width * 1.5))
+                stretchCropWidthValue = image.extent.size.width * 1.5
+                stretchCropHeightSlider.maxValue = Double(image.extent.size.height * 2)
+                stretchCropHeightSlider.doubleValue = Double(image.extent.size.height)
+                stretchCropHeightTextField.stringValue = String(describing: Int(image.extent.size.height))
+                stretchCropHeightValue = image.extent.size.height
             }
             
             if let xTorusLensDistortionSlider = xTorusLensDistortionSlider,
+                let xTorusLensDistortionValueTextField = xTorusLensDistortionValueTextField,
                 let yTorusLensDistortionSlider = yTorusLensDistortionSlider,
+                let yTorusLensDistortionValueTextField = yTorusLensDistortionValueTextField,
                 let torusLensDistortionRadiusSlider = torusLensDistortionRadiusSlider,
-                let torusLensDistortionWidthSlider = torusLensDistortionWidthSlider {
+                let torusLensDistortionRadiusTextField = torusLensDistortionRadiusTextField,
+                let torusLensDistortionWidthSlider = torusLensDistortionWidthSlider,
+                let torusLensDistortionWidthTextField = torusLensDistortionWidthTextField {
                 xTorusLensDistortionSlider.maxValue = Double(image.extent.size.width)
+                xTorusLensDistortionSlider.doubleValue = Double(image.extent.size.width / 2)
+                xTorusLensDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xTorusLensDistortionValue = image.extent.size.width / 2
                 yTorusLensDistortionSlider.maxValue = Double(image.extent.size.height)
+                yTorusLensDistortionSlider.doubleValue = Double(image.extent.size.height / 2)
+                yTorusLensDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yTorusLensDistortionValue = image.extent.size.height / 2
+                
                 if image.extent.size.width < image.extent.size.height {
                     torusLensDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     torusLensDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
-                torusLensDistortionWidthSlider.maxValue = torusLensDistortionRadiusSlider.maxValue / 2
+                torusLensDistortionRadiusSlider.doubleValue = Double(image.extent.size.width / 4)
+                torusLensDistortionRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 4))
+                torusLensDistortionRadiusValue = Double(image.extent.size.width / 4)
+                torusLensDistortionWidthSlider.maxValue = torusLensDistortionRadiusSlider.maxValue
+                torusLensDistortionWidthSlider.doubleValue = Double(image.extent.size.width / 8)
+                torusLensDistortionWidthTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                torusLensDistortionWidthValue = Double(image.extent.size.width / 8)
             }
             
             if let xTwirlDistortionSlider = xTwirlDistortionSlider,
+                let xTwirlDistortionValueTextField = xTwirlDistortionValueTextField,
                 let yTwirlDistortionSlider = yTwirlDistortionSlider,
-                let twirlDistortionRadiusSlider = twirlDistortionRadiusSlider {
+                let yTwirlDistortionValueTextField = yTwirlDistortionValueTextField,
+                let twirlDistortionRadiusSlider = twirlDistortionRadiusSlider,
+                let twirlDistortionRadiusTextField = twirlDistortionRadiusTextField {
                 xTwirlDistortionSlider.maxValue = Double(image.extent.size.width)
+                xTwirlDistortionSlider.doubleValue = Double(image.extent.size.width / 2)
+                xTwirlDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xTwirlDistortionValue = image.extent.size.width / 2
                 yTwirlDistortionSlider.maxValue = Double(image.extent.size.height)
+                yTwirlDistortionSlider.doubleValue = Double(image.extent.size.height / 2)
+                yTwirlDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yTwirlDistortionValue = image.extent.size.height / 2
                 if image.extent.size.width < image.extent.size.height {
                     twirlDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     twirlDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
+                twirlDistortionRadiusSlider.doubleValue = Double(image.extent.size.width / 8)
+                twirlDistortionRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                twirlDistortionRadiusValue = Double(image.extent.size.width / 8)
             }
             
             if let xVortexDistortionSlider = xVortexDistortionSlider,
+                let xVortexDistortionValueTextField = xVortexDistortionValueTextField,
                 let yVortexDistortionSlider = yVortexDistortionSlider,
-                let vortexDistortionRadiusSlider = vortexDistortionRadiusSlider {
+                let yVortexDistortionValueTextField = yVortexDistortionValueTextField,
+                let vortexDistortionRadiusSlider = vortexDistortionRadiusSlider,
+                let vortexDistortionRadiusTextField = vortexDistortionRadiusTextField {
                 xVortexDistortionSlider.maxValue = Double(image.extent.size.width)
+                xVortexDistortionSlider.doubleValue = Double(image.extent.size.width / 2)
+                xVortexDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.width / 2))
+                xVortexDistortionValue = image.extent.size.width / 2
                 yVortexDistortionSlider.maxValue = Double(image.extent.size.height)
+                yVortexDistortionSlider.doubleValue = Double(image.extent.size.height / 2)
+                yVortexDistortionValueTextField.stringValue = String(describing: Int(image.extent.size.height / 2))
+                yVortexDistortionValue = image.extent.size.height / 2
                 if image.extent.size.width < image.extent.size.height {
                     vortexDistortionRadiusSlider.maxValue = Double(image.extent.size.height)
                 } else {
                     vortexDistortionRadiusSlider.maxValue = Double(image.extent.size.width)
                 }
+                vortexDistortionRadiusSlider.doubleValue = Double(image.extent.size.width / 8)
+                vortexDistortionRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 8))
+                vortexDistortionRadiusValue = Double(image.extent.size.width / 8)
             }
             
             if let xCrystallizeSlider = xCrystallizeSlider,
+                let xCrystallizeValueTextField = xCrystallizeValueTextField,
                 let yCrystallizeSlider = yCrystallizeSlider,
-                let crystallizeRadiusSlider = crystallizeRadiusSlider {
+                let yCrystallizeValueTextField = yCrystallizeValueTextField,
+                let crystallizeRadiusSlider = crystallizeRadiusSlider,
+                let crystallizeRadiusTextField = crystallizeRadiusTextField {
                 xCrystallizeSlider.maxValue = Double(image.extent.size.width) / 100
+                xCrystallizeSlider.doubleValue = Double(image.extent.size.width / 200)
+                xCrystallizeValueTextField.stringValue = String(describing: Int(image.extent.size.width / 200))
+                xCrystallizeValue = image.extent.size.width / 200
                 yCrystallizeSlider.maxValue = Double(image.extent.size.height) / 100
+                yCrystallizeSlider.doubleValue = Double(image.extent.size.height / 200)
+                yCrystallizeValueTextField.stringValue = String(describing: Int(image.extent.size.height / 200))
+                yCrystallizeValue = image.extent.size.height / 200
                 if image.extent.size.width < image.extent.size.height {
                     crystallizeRadiusSlider.maxValue = Double(image.extent.size.height) / 10
                 } else {
                     crystallizeRadiusSlider.maxValue = Double(image.extent.size.width) / 10
                 }
+                crystallizeRadiusSlider.doubleValue = Double(image.extent.size.width / 80)
+                crystallizeRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 80))
+                crystallizeRadiusValue = Double(image.extent.size.width / 80)
             }
             
             if let xHexagonalPixellateSlider = xHexagonalPixellateSlider,
+                let xHexagonalPixellateValueTextField = xHexagonalPixellateValueTextField,
                 let yHexagonalPixellateSlider = yHexagonalPixellateSlider,
-                let hexagonalPixellateScaleSlider = hexagonalPixellateScaleSlider {
-                xHexagonalPixellateSlider.maxValue = Double(image.extent.size.width) / 20
-                yHexagonalPixellateSlider.maxValue = Double(image.extent.size.height) / 20
+                let yHexagonalPixellateValueTextField = yHexagonalPixellateValueTextField,
+                let hexagonalPixellateScaleSlider = hexagonalPixellateScaleSlider,
+                let hexagonalPixellateScaleTextField = hexagonalPixellateScaleTextField {
+                xHexagonalPixellateSlider.maxValue = Double(image.extent.size.width) / 100
+                xHexagonalPixellateSlider.doubleValue = Double(image.extent.size.width / 200)
+                xHexagonalPixellateValueTextField.stringValue = String(describing: Int(image.extent.size.width / 200))
+                xHexagonalPixellateValue = image.extent.size.width / 200
+                yHexagonalPixellateSlider.maxValue = Double(image.extent.size.height) / 100
+                yHexagonalPixellateSlider.doubleValue = Double(image.extent.size.height / 200)
+                yHexagonalPixellateValueTextField.stringValue = String(describing: Int(image.extent.size.height / 200))
+                yHexagonalPixellateValue = image.extent.size.height / 200
                 if image.extent.size.width < image.extent.size.height {
                     hexagonalPixellateScaleSlider.maxValue = Double(image.extent.size.height) / 10
                 } else {
                     hexagonalPixellateScaleSlider.maxValue = Double(image.extent.size.width) / 10
                 }
+                hexagonalPixellateScaleSlider.doubleValue = Double(image.extent.size.width / 80)
+                hexagonalPixellateScaleTextField.stringValue = String(describing: Int(image.extent.size.width / 80))
+                hexagonalPixellateScaleValue = Double(image.extent.size.width / 80)
             }
             
             if let xPixellateSlider = xPixellateSlider,
+                let xPixellateValueTextField = xPixellateValueTextField,
                 let yPixellateSlider = yPixellateSlider,
-                let pixellateScaleSlider = pixellateScaleSlider {
-                xPixellateSlider.maxValue = Double(image.extent.size.width) / 20
-                yPixellateSlider.maxValue = Double(image.extent.size.height) / 20
+                let yPixellateValueTextField = yPixellateValueTextField,
+                let pixellateScaleSlider = pixellateScaleSlider,
+                let pixellateScaleTextField = pixellateScaleTextField {
+                xPixellateSlider.maxValue = Double(image.extent.size.width) / 100
+                xPixellateSlider.doubleValue = Double(image.extent.size.width / 200)
+                xPixellateValueTextField.stringValue = String(describing: Int(image.extent.size.width / 200))
+                xPixellateValue = image.extent.size.width / 200
+                yPixellateSlider.maxValue = Double(image.extent.size.height) / 100
+                yPixellateSlider.doubleValue = Double(image.extent.size.height / 200)
+                yPixellateValueTextField.stringValue = String(describing: Int(image.extent.size.height / 200))
+                yPixellateValue = image.extent.size.height / 200
                 if image.extent.size.width < image.extent.size.height {
                     pixellateScaleSlider.maxValue = Double(image.extent.size.height) / 10
                 } else {
                     pixellateScaleSlider.maxValue = Double(image.extent.size.width) / 10
                 }
+                pixellateScaleSlider.doubleValue = Double(image.extent.size.width / 80)
+                pixellateScaleTextField.stringValue = String(describing: Int(image.extent.size.width / 80))
+                pixellateScaleValue = Double(image.extent.size.width / 80)
             }
             
             if let xPointillizeSlider = xPointillizeSlider,
+                let xPointillizeValueTextField = xPointillizeValueTextField,
                 let yPointillizeSlider = yPointillizeSlider,
-                let pointillizeScaleSlider = pointillizeScaleSlider {
-                xPointillizeSlider.maxValue = Double(image.extent.size.width) / 20
-                yPointillizeSlider.maxValue = Double(image.extent.size.height) / 20
+                let yPointillizeValueTextField = yPointillizeValueTextField,
+                let pointillizeRadiusSlider = pointillizeRadiusSlider,
+                let pointillizeRadiusTextField = pointillizeRadiusTextField {
+                xPointillizeSlider.maxValue = Double(image.extent.size.width) / 100
+                xPointillizeSlider.doubleValue = Double(image.extent.size.width / 200)
+                xPointillizeValueTextField.stringValue = String(describing: Int(image.extent.size.width / 200))
+                xPointillizeValue = image.extent.size.width / 200
+                yPointillizeSlider.maxValue = Double(image.extent.size.height) / 100
+                yPointillizeSlider.doubleValue = Double(image.extent.size.height / 200)
+                yPointillizeValueTextField.stringValue = String(describing: Int(image.extent.size.height / 200))
+                yPointillizeValue = image.extent.size.height / 200
                 if image.extent.size.width < image.extent.size.height {
-                    pointillizeScaleSlider.maxValue = Double(image.extent.size.height) / 10
+                    pointillizeRadiusSlider.maxValue = Double(image.extent.size.height) / 10
                 } else {
-                    pointillizeScaleSlider.maxValue = Double(image.extent.size.width) / 10
+                    pointillizeRadiusSlider.maxValue = Double(image.extent.size.width) / 10
                 }
+                pointillizeRadiusSlider.doubleValue = Double(image.extent.size.width / 80)
+                pointillizeRadiusTextField.stringValue = String(describing: Int(image.extent.size.width / 80))
+                pointillizeRadiusValue = Double(image.extent.size.width / 80)
             }
             
         }

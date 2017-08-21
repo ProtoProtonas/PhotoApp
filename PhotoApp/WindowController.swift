@@ -11,9 +11,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	
 	var originalImage: NSImage? = nil
 	var originalCIImage: CIImage? = nil
-//	let ciContext = CIContext.init(mtlDevice: MTLCreateSystemDefaultDevice()!)
 	let ciContext = CIContext()
-//	weak var appDelegate: AppDelegate? = nil
 	
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	//  toolbar
@@ -97,17 +95,11 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	var blurPopoverControllerNames: [String] = ["", "BoxBlurPopoverViewController", "DiscBlurPopoverViewController", "GaussianBlurPopoverViewController", "MotionBlurPopoverViewController", "NoiseBlurPopoverViewController", "ZoomBlurPopoverViewController"]
 	var blurPopoverControllers: [NSViewController?] = [nil, nil, nil, nil, nil, nil, nil, nil, nil]
 	
-	
-//	enum blurFuncs {
-//		case updateBoxBlur
-//	}
-	
-//	var blurFuncArray: [Any] = []
-	
 	func updateBoxBlur(with boxRadius: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIBoxBlur", withInputParameters: ["inputRadius": boxRadius])
+			var filteredImage = image.applyingFilter("CIBoxBlur", withInputParameters: ["inputRadius": boxRadius])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -117,7 +109,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
 			//Crashes with values 0..1 radar 33770007
-			let filteredImage = image.applyingFilter("CIDiscBlur", withInputParameters: ["inputRadius": discRadius])
+			var filteredImage = image.applyingFilter("CIDiscBlur", withInputParameters: ["inputRadius": discRadius])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -126,7 +119,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateGaussianBlur(with sigma: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIGaussianBlur", withInputParameters: ["inputRadius": sigma])
+			var filteredImage = image.applyingFilter("CIGaussianBlur", withInputParameters: ["inputRadius": sigma])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -135,7 +129,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateMaskedVariableBlur(with radius: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIMaskedVariableBlur", withInputParameters: ["inputRadius": radius])
+			var filteredImage = image.applyingFilter("CIMaskedVariableBlur", withInputParameters: ["inputRadius": radius])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -144,7 +139,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateMedianFilter() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIMedianFilter", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIMedianFilter", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -153,7 +149,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateMotionBlur(with motionRadius: Double, motionAngle: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIMotionBlur", withInputParameters: ["inputRadius": motionRadius, "inputAngle": motionAngle])
+			var filteredImage = image.applyingFilter("CIMotionBlur", withInputParameters: ["inputRadius": motionRadius, "inputAngle": motionAngle])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -162,7 +159,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateNoiseReduction(with noiseLevel: Double, sharpness: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CINoiseReduction", withInputParameters: ["inputNoiseLevel": noiseLevel, "inputSharpness": sharpness])
+			var filteredImage = image.applyingFilter("CINoiseReduction", withInputParameters: ["inputNoiseLevel": noiseLevel, "inputSharpness": sharpness])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -192,7 +190,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let prefEdge: NSRectEdge = NSRectEdge.minY
 			let targetButton = window!.standardWindowButton(.closeButton)!.superview!
 			self.blurPopovers[id]?.show(relativeTo: targetButton.bounds , of: targetButton, preferredEdge: prefEdge)
-//			self.blurFuncArray[id]
+			callBlurUpdate(id: id)
 		} else if id == 7 {
 			self.updateMedianFilter()
 		}
@@ -207,6 +205,27 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			self.blurPopovers[x]?.behavior = NSPopover.Behavior.transient
 			self.blurPopovers[x]?.delegate = self
 			(self.blurPopovers[x]?.contentViewController as? PopoverViewController)?.windowController = self
+		}
+	}
+	
+	func callBlurUpdate(id: Int) {
+		if let originalCIImage = originalCIImage {
+			switch id {
+			case 1:
+				updateBoxBlur(with: 10.0)
+			case 2:
+				updateDiscBlur(with: 10.0)
+			case 3:
+				updateGaussianBlur(with: 10.0)
+			case 4:
+				updateMotionBlur(with: 10.0, motionAngle: 0.0)
+			case 5:
+				updateNoiseReduction(with: 0.2, sharpness: 1.0)
+			case 6:
+				updateZoomBlur(with: 10.0, center: CIVector(x: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2))
+			default:
+				self.doNothing()
+			}
 		}
 	}
 	
@@ -225,7 +244,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateColorControls(with saturation: Double, brightness: Double, contrast: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIColorControls", withInputParameters: ["inputSaturation": saturation, "inputBrightness": brightness, "inputContrast": contrast])
+			var filteredImage = image.applyingFilter("CIColorControls", withInputParameters: ["inputSaturation": saturation, "inputBrightness": brightness, "inputContrast": contrast])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -234,7 +254,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateExposureAdjust(with ev: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIExposureAdjust", withInputParameters: ["inputEV": ev])
+			var filteredImage = image.applyingFilter("CIExposureAdjust", withInputParameters: ["inputEV": ev])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -243,7 +264,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateGammaAdjust(with power: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIGammaAdjust", withInputParameters: ["inputPower": power])
+			var filteredImage = image.applyingFilter("CIGammaAdjust", withInputParameters: ["inputPower": power])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -252,7 +274,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateHueAdjust(with angle: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIHueAdjust", withInputParameters: ["inputAngle": angle])
+			var filteredImage = image.applyingFilter("CIHueAdjust", withInputParameters: ["inputAngle": angle])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -261,7 +284,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateLinearToSRGBFilter() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CILinearToSRGBToneCurve", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CILinearToSRGBToneCurve", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -270,7 +294,18 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateSRGBToLinearFilter() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CISRGBToneCurveToLinear", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CISRGBToneCurveToLinear", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
+			view.image = filteredImage
+			setApplyState(state: true)
+		}
+	}
+	
+	func updateTemperatureAndTint(with temperature: CGFloat, tint: CGFloat) {
+		if let view = window?.contentViewController as? ViewController,
+			let image = originalCIImage {
+			var filteredImage = image.applyingFilter("CITemperatureAndTint", withInputParameters: ["inputNeutral": CIVector(x: temperature, y: tint), "inputTargetNeutral": CIVector(x: 0.0, y: 0.0)])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -279,7 +314,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateVibranceAdjust(with vibrance: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIVibrance", withInputParameters: ["inputAmount": vibrance])
+			var filteredImage = image.applyingFilter("CIVibrance", withInputParameters: ["inputAmount": vibrance])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -288,7 +324,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateWhitePointAdjust(with whitePoint: CIColor) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIWhitePointAdjust", withInputParameters: ["inputColor": whitePoint])
+			var filteredImage = image.applyingFilter("CIWhitePointAdjust", withInputParameters: ["inputColor": whitePoint])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -314,6 +351,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 				let targetButton = window!.standardWindowButton(.closeButton)!.superview!
 				let prefEdge: NSRectEdge = NSRectEdge.minY
 				self.colorAdjustmentPopovers[id]?.show(relativeTo: targetButton.bounds, of: targetButton, preferredEdge: prefEdge)
+				callColorAdjustmentUpdate(id: id)
 			}
 		}
 	}
@@ -328,6 +366,29 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			self.colorAdjustmentPopovers[x]?.behavior = NSPopover.Behavior.transient
 			self.colorAdjustmentPopovers[x]?.delegate = self
 			(self.colorAdjustmentPopovers[x]?.contentViewController as? PopoverViewController)?.windowController = self
+		}
+	}
+	
+	func callColorAdjustmentUpdate(id: Int) {
+		if let originalCIImage = originalCIImage {
+			switch id {
+			case 1:
+				updateColorControls(with: 2.0, brightness: 0.25, contrast: 1.5)
+			case 2:
+				updateExposureAdjust(with: 1.0)
+			case 3:
+				updateGammaAdjust(with: 0.5)
+			case 4:
+				updateHueAdjust(with: 1.57079633)
+			case 7:
+				self.doNothing()
+			case 8:
+				updateVibranceAdjust(with: 0.5)
+			case 9:
+				updateWhitePointAdjust(with: CIColor(red: 255 / 256, green: 255 / 256, blue: 200/256))
+			default:
+				self.doNothing()
+			}
 		}
 	}
 	
@@ -346,7 +407,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateSharpenLuminance(with sharpness: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CISharpenLuminance", withInputParameters: ["inputSharpness": sharpness])
+			var filteredImage = image.applyingFilter("CISharpenLuminance", withInputParameters: ["inputSharpness": sharpness])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -355,7 +417,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateUnsharpMask(with radius: Double, intensity: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIUnsharpMask", withInputParameters: ["inputRadius": radius, "inputIntensity": intensity])
+			var filteredImage = image.applyingFilter("CIUnsharpMask", withInputParameters: ["inputRadius": radius, "inputIntensity": intensity])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -375,6 +438,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let prefEdge: NSRectEdge = NSRectEdge.minY
 			let targetButton = window!.standardWindowButton(.closeButton)!.superview!
 			self.sharpenPopovers[id]?.show(relativeTo: targetButton.bounds , of: targetButton, preferredEdge: prefEdge)
+			callSharpenUpdate(id: id)
 		}
 	}
 	
@@ -388,6 +452,17 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			self.sharpenPopovers[x]?.behavior = NSPopover.Behavior.transient
 			self.sharpenPopovers[x]?.delegate = self
 			(self.sharpenPopovers[x]?.contentViewController as? PopoverViewController)?.windowController = self
+		}
+	}
+	
+	func callSharpenUpdate(id: Int) {
+		switch id {
+		case 1:
+			self.updateSharpenLuminance(with: 0.5)
+		case 2:
+			self.updateUnsharpMask(with: 0.5, intensity: 0.5)
+		default:
+			self.doNothing()
 		}
 	}
 	
@@ -424,7 +499,6 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			offsetRect.origin.y += image.extent.origin.y
 			let filteredImage = image.applyingFilter("CICrop", withInputParameters: ["inputRectangle": CIVector(cgRect: offsetRect)])
 			view.image = filteredImage
-			setApplyState(state: true)
 			setApplyState(state: true)
 		}
 	}
@@ -463,7 +537,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateInvertColors() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIColorInvert", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIColorInvert", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -472,7 +547,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateMonochromeAdjust(with color: CIColor, intensity: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIColorMonochrome", withInputParameters: ["inputColor": color, "inputIntensity": intensity])
+			var filteredImage = image.applyingFilter("CIColorMonochrome", withInputParameters: ["inputColor": color, "inputIntensity": intensity])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -481,7 +557,18 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updatePosterize(with levels: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIColorPosterize", withInputParameters: ["inputLevels": levels])
+			var filteredImage = image.applyingFilter("CIColorPosterize", withInputParameters: ["inputLevels": levels])
+			filteredImage = filteredImage.cropping(to: image.extent)
+			view.image = filteredImage
+			setApplyState(state: true)
+		}
+	}
+	
+	func updateFalseColor(with color0: CIColor, color1: CIColor) {
+		if let view = window?.contentViewController as? ViewController,
+			let image = originalCIImage {
+			var filteredImage = image.applyingFilter("CIFalseColor", withInputParameters: ["inputColor0": color0, "inputColor1": color1])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -490,7 +577,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateMaskToAlpha() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIMaskToAlpha", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIMaskToAlpha", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -499,7 +587,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateMaximumComponent() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIMaximumComponent", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIMaximumComponent", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -508,7 +597,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateMinimumComponent() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIMinimumComponent", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIMinimumComponent", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -517,7 +607,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updatePhotoEffectChrome() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIPhotoEffectChrome", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIPhotoEffectChrome", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -526,7 +617,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updatePhotoEffectFade() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIPhotoEffectFade", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIPhotoEffectFade", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -535,7 +627,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updatePhotoEffectInstant() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIPhotoEffectInstant", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIPhotoEffectInstant", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -544,7 +637,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updatePhotoEffectMono() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIPhotoEffectMono", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIPhotoEffectMono", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -553,7 +647,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updatePhotoEffectNoir() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIPhotoEffectNoir", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIPhotoEffectNoir", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -562,7 +657,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updatePhotoEffectProcess() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIPhotoEffectProcess", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIPhotoEffectProcess", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -571,7 +667,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updatePhotoEffectTonal() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIPhotoEffectTonal", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIPhotoEffectTonal", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -580,7 +677,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updatePhotoEffectTransfer() {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIPhotoEffectTransfer", withInputParameters: [:])
+			var filteredImage = image.applyingFilter("CIPhotoEffectTransfer", withInputParameters: [:])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -589,7 +687,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateSepiaTone(with intensity: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CISepiaTone", withInputParameters: ["inputIntensity": intensity])
+			var filteredImage = image.applyingFilter("CISepiaTone", withInputParameters: ["inputIntensity": intensity])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -598,7 +697,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateVignette(with radius: Double, intensity: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIVignette", withInputParameters: ["inputIntensity": intensity, "inputRadius": radius])
+			var filteredImage = image.applyingFilter("CIVignette", withInputParameters: ["inputIntensity": intensity, "inputRadius": radius])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -607,7 +707,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateVignetteEffect(with radius: Double, intensity: Double, center: CIVector) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIVignetteEffect", withInputParameters: ["inputIntensity": intensity, "inputRadius": radius, "inputCenter": center])
+			var filteredImage = image.applyingFilter("CIVignetteEffect", withInputParameters: ["inputIntensity": intensity, "inputRadius": radius, "inputCenter": center])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -655,6 +756,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 				let targetButton = window!.standardWindowButton(.closeButton)!.superview!
 				let prefEdge: NSRectEdge = NSRectEdge.minY
 				self.colorEffectPopovers[id]?.show(relativeTo: targetButton.bounds, of: targetButton, preferredEdge: prefEdge)
+				self.callColorEffectUpdate(id: id)
 			}
 		}
 	}
@@ -669,6 +771,27 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			self.colorEffectPopovers[x]?.behavior = NSPopover.Behavior.transient
 			self.colorEffectPopovers[x]?.delegate = self
 			(self.colorEffectPopovers[x]?.contentViewController as? PopoverViewController)?.windowController = self
+		}
+	}
+	
+	func callColorEffectUpdate(id: Int) {
+		if let originalCIImage = originalCIImage {
+			switch id {
+			case 2:
+				updateMonochromeAdjust(with: CIColor(red: 200 / 256, green: 255 / 256, blue: 255 / 256), intensity: 1.0)
+			case 3:
+				updatePosterize(with: 20.0)
+			case 4:
+				updateFalseColor(with: CIColor(red: 0.0, green: 0.0, blue: 100 / 256), color1: CIColor(red: 255 / 256, green: 200 / 256, blue: 255 / 256))
+			case 16:
+				updateSepiaTone(with: 0.5)
+			case 17:
+				updateVignette(with: Double(originalCIImage.extent.size.width/4), intensity: 2.0)
+			case 18:
+				updateVignetteEffect(with: Double(originalCIImage.extent.size.width/8), intensity: 0.7, center: CIVector(x: originalCIImage.extent.size.width/2, y: originalCIImage.extent.size.height/2))
+			default:
+				self.doNothing()
+			}
 		}
 	}
 	
@@ -733,7 +856,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let imageData = nsImage!.tiffRepresentation!
 			let ciImage = CIImage(data: imageData)
 			
-			let filteredImage = image.applyingFilter("CIGlassDistortion", withInputParameters: ["inputCenter": CIVector(x: x, y: y), "inputScale": scale, "inputTexture": ciImage!])
+			var filteredImage = image.applyingFilter("CIGlassDistortion", withInputParameters: ["inputCenter": CIVector(x: x, y: y), "inputScale": scale, "inputTexture": ciImage!])
+			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -772,7 +896,8 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 	func updateStretchCrop(with width: CGFloat, height: CGFloat, cropAmount: Double, centerStretchAmount: Double) {
 		if let view = window?.contentViewController as? ViewController,
 			let image = originalCIImage {
-			let filteredImage = image.applyingFilter("CIStrecthCrop", withInputParameters: ["inputSize": CIVector(x: width, y: height), "inputCropAmount": cropAmount, "inputCenterStretchAmount": centerStretchAmount])
+			let filteredImage = image.applyingFilter("CIStretchCrop", withInputParameters: ["inputSize": CIVector(x: width, y: height), "inputCropAmount": cropAmount, "inputCenterStretchAmount": centerStretchAmount])
+//			filteredImage = filteredImage.cropping(to: image.extent)
 			view.image = filteredImage
 			setApplyState(state: true)
 		}
@@ -824,6 +949,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			let targetButton = window!.standardWindowButton(.closeButton)!.superview!
 			let prefEdge: NSRectEdge = NSRectEdge.minY
 			self.distortionEffectPopovers[id]?.show(relativeTo: targetButton.bounds, of: targetButton, preferredEdge: prefEdge)
+			callDistortionUpdate(id: id)
 		}
 	}
 	
@@ -840,6 +966,38 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 		}
 	}
 	
+	func callDistortionUpdate(id: Int) {
+		if let originalCIImage = originalCIImage {
+			switch id {
+			case 1:
+				updateBumpDistortion(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius: Double(originalCIImage.extent.size.width) / 8, scale: 2.0)
+			case 2:
+				updateBumpDistortionLinear(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius:  Double(originalCIImage.extent.size.width) / 8, angle: 0.0, scale: 2.0)
+			case 3:
+				updateCircleSplashDistortion(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius: Double(originalCIImage.extent.size.width / 8))
+			case 4:
+				updateCircularWrap(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius: Double(originalCIImage.extent.size.width / 8), angle: 0.0)
+			case 5:
+				updateGlassDistortion(with: 0.0, y: 0.0, scale: 75.0)
+			case 6:
+				updateHoleDistortion(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius: Double(originalCIImage.extent.size.width / 8))
+			case 7:
+				updateLightTunnel(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius: Double(originalCIImage.extent.size.width / 8), rotation: 10.0)
+			case 8:
+				updatePinchDistortion(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius: Double(originalCIImage.extent.size.width / 8), scale: 0.8)
+			case 9:
+				updateStretchCrop(with: originalCIImage.extent.size.width * 1.5, height: originalCIImage.extent.size.width, cropAmount: 0.4, centerStretchAmount: 0.0)
+			case 10:
+				updateTorusLensDistortion(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius:  Double(originalCIImage.extent.size.width / 4), width:  Double(originalCIImage.extent.size.width / 8), refraction: 2.0)
+			case 11:
+				updateTwirlDistortion(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius: Double(originalCIImage.extent.size.width / 8), angle: 3.14159265)
+			case 12:
+				updateVortexDistortion(with: originalCIImage.extent.size.width / 2, y: originalCIImage.extent.size.height / 2, radius: Double(originalCIImage.extent.size.width / 8), angle: 31.41562653 * 2)
+			default:
+				self.doNothing()
+			}
+		}
+	}
 	
 	//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 	//  stylize filter and toolbar item
@@ -994,6 +1152,7 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 				let targetButton = window!.standardWindowButton(.closeButton)!.superview!
 				let prefEdge: NSRectEdge = NSRectEdge.minY
 				self.stylizePopovers[id]?.show(relativeTo: targetButton.bounds, of: targetButton, preferredEdge: prefEdge)
+				callStylizeUpdate(id: id)
 			}
 		}
 	}
@@ -1008,6 +1167,37 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSPopoverDelegate
 			self.stylizePopovers[x]?.behavior = NSPopover.Behavior.transient
 			self.stylizePopovers[x]?.delegate = self
 			(self.stylizePopovers[x]?.contentViewController as? PopoverViewController)?.windowController = self
+		}
+	}
+	
+	func callStylizeUpdate(id: Int) {
+		if let originalCIImage = originalCIImage {
+			switch id {
+			case 1:
+				updateBloom(with: 20.0, intensity: 0.5)
+			case 3:
+				updateCrystallize(with: originalCIImage.extent.size.width / 200, y: originalCIImage.extent.size.height / 200, radius: Double(originalCIImage.extent.size.width / 80))
+			case 4:
+				updateEdges(with: 10.0)
+			case 5:
+				updateEdgeWork(with: 2.0)
+			case 6:
+				updateGloom(with: 25.0, intensity: 0.5)
+			case 7:
+				updateHeightFieldFromMask(with: 25.0)
+			case 8:
+				updateHexagonalPixellate(with: originalCIImage.extent.size.width / 200, y: originalCIImage.extent.size.height / 200, scale: Double(originalCIImage.extent.size.width / 80))
+			case 9:
+				updateHighlightShadow(with: 0.5, shadow: -0.3)
+			case 10:
+				updateLineOverlay(with: 0.01, NRSharpness: 3, edgeIntensity: 2, threshold: 1.5, contrast: 0.25)
+			case 11:
+				updatePixellate(with: originalCIImage.extent.size.width / 200, y: originalCIImage.extent.size.height / 200, scale: Double(originalCIImage.extent.size.width / 80))
+			case 12:
+				updatePointillize(with: originalCIImage.extent.size.width / 200, y: originalCIImage.extent.size.height / 200, radius: Double(originalCIImage.extent.size.width / 80))
+			default:
+				self.doNothing()
+			}
 		}
 	}
 	
