@@ -22,7 +22,7 @@ class ViewController: NSViewController, MTKViewDelegate {
     @IBOutlet var scrollView: NSScrollView?
     
     let metalDevice: MTLDevice = MTLCreateSystemDefaultDevice()!
-    var commandQueue: MTLCommandQueue { return metalDevice.makeCommandQueue() }
+    var commandQueue: MTLCommandQueue { return metalDevice.makeCommandQueue()! }
     let context = CIContext()
     
     
@@ -36,7 +36,7 @@ class ViewController: NSViewController, MTKViewDelegate {
                 let translateImageX = -image.extent.origin.x
                 let translateImageY = -image.extent.origin.y
                 let imageTransformTranslation = CGAffineTransform(translationX: translateImageX, y: translateImageY)
-                image = image.applying(imageTransformTranslation)
+                image = image.transformed(by: imageTransformTranslation)
                 
                 let scale: CGFloat
                 if (CGFloat(drawable.texture.width) / CGFloat(drawable.texture.height)) > (image.extent.size.width / image.extent.size.height) {
@@ -45,7 +45,7 @@ class ViewController: NSViewController, MTKViewDelegate {
                     scale = CGFloat(drawable.texture.width) / image.extent.size.width
                 }
                 let transformScale = CGAffineTransform(scaleX: scale, y: scale)
-                var viewingImage = image.applying(transformScale)
+                var viewingImage = image.transformed(by: transformScale)
                 
                 
                 var translationX: CGFloat
@@ -58,7 +58,7 @@ class ViewController: NSViewController, MTKViewDelegate {
                     translationX = -viewingImage.extent.origin.x
                 }
                 let transformTranslation = CGAffineTransform(translationX: translationX, y: translationY)
-                viewingImage = viewingImage.applying(transformTranslation)
+                viewingImage = viewingImage.transformed(by: transformTranslation)
                 
                 do {
                     let renderDestination = CIRenderDestination(mtlTexture: drawable.texture, commandBuffer: commandBuffer)
@@ -70,9 +70,9 @@ class ViewController: NSViewController, MTKViewDelegate {
                 
                 
             }
-            commandBuffer.present(drawable)
-            commandBuffer.commit()
-            commandBuffer.waitUntilCompleted()
+            commandBuffer!.present(drawable)
+            commandBuffer!.commit()
+            commandBuffer!.waitUntilCompleted()
         }
         
         

@@ -40,7 +40,7 @@ class CustomImageView: NSView {
             image = (windowController?.contentViewController as! ViewController).image
             switch indexOfButton {
             case 0:
-                self.cropRect.origin = convert(event.locationInWindow, to: window?.contentView)
+                self.cropRect.origin = transformCoordinate(from: event.locationInWindow)
                 self.theOrigin = transformCoordinate(from: event.locationInWindow)
                 self.mouseLocationDragStart = self.theOrigin
             case 1:
@@ -71,7 +71,7 @@ class CustomImageView: NSView {
                 finalRotationAngle = pointToAngle(from: transformCoordinate(from: event.locationInWindow), imageSize: image!.extent.size)
                 self.windowController?.updateRotation(with: finalRotationAngle - initialRotationAngle)
             default:
-                let a = 4
+                _ = 4
             }
         }
     }

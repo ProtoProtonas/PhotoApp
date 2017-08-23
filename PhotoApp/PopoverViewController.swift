@@ -424,7 +424,7 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var TnTTemperatureSlider: NSSlider!
     @IBOutlet weak var TnTTintSlider: NSSlider!
     @IBAction func getTnTTemperature(_ sender: NSSlider) {
-        TnTTemperatureTextField.stringValue = String(sender.doubleValue.roundTo(places: 2))
+        TnTTemperatureTextField.stringValue = String(sender.integerValue)
         self.TnTTemperatureValue = CGFloat(sender.doubleValue.roundTo(places: 2))
     }
     @IBAction func getTnTTint(_ sender: NSSlider) {
