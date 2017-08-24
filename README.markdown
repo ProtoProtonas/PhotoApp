@@ -2,7 +2,7 @@
 
 Photo editing application based on Core Image framwork.
 
-![GitHub Logo](/Resources/Screen Shot 2017-08-24 at 1.36.27 AM.png)
+![GitHub Logo](/Resources/screenshot.png)
 Format: ![Alt Text](url)
 
 ### Features
