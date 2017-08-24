@@ -1133,7 +1133,7 @@
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pcB-J5-MQ0">
                                 <rect key="frame" x="70" y="21" width="157" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="1" maxValue="50" doubleValue="10" tickMarkPosition="above" sliderType="linear" id="Io8-Ra-RxS"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="Io8-Ra-RxS"/>
                                 <connections>
                                     <action selector="getDiscBlur:" target="ESi-M6-7tt" id="Uy0-d9-jkt"/>
                                 </connections>
