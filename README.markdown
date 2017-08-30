@@ -1,11 +1,12 @@
 # PhotoApp
 
-Photo editing application based on Core Image framework.
+Photo editing application for macOS based on Core Image framework.
 
 ![GitHub Logo](/Resources/screenshot.png)
 
 ### Features
 
+* macOS application developed using Swift 4. 
 * Image editing is based on Core Image framework.
 * Image rendering and outputting to the screen is done using Metal framework which utilizes GPU, so the process is much quicker than rendering with the CPU.
 * Needs no internet connection, no logging in - just download it, build it and start using the app right away!
@@ -17,7 +18,7 @@ Photo editing application based on Core Image framework.
 * Build: Xcode 9 beta 6 or Xcode 9
 
 ### Usage
-* Simple as ever - open the image You want to edit, select filter, move sliders (sometimes You won't have to do even that) and you are all set!
+* Simple as ever - open the image You want to edit, select filter, fiddle with the sliders (sometimes You won't have to do even that) and you are all set!
 
 ### Background
-* This app was written as a project for my summer internship at Pixelmator. 
+* This app was written as a project for my summer internship at Pixelmator Team. 
